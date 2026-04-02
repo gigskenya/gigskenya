@@ -3421,6 +3421,24 @@ function boot() {
   db = firebase.firestore();
   analytics = firebase.analytics();
 
+  // Live admin settings sync for activation fee and payment details
+  if(unsubSettings) unsubSettings();
+  unsubSettings = settingsDoc().onSnapshot(snap=>{
+    if(snap.exists) {
+      platformSettings = normalizePlatformSettings(snap.data()||{});
+    } else {
+      platformSettings = normalizePlatformSettings({});
+    }
+    syncPaymentInstructionUI();
+    if(activeView==='jobs') renderJobs();
+    if(activeView==='dashboard') renderDashboard();
+    if(activeView==='mygigs') renderMyGigs();
+    if(activeView==='messages') renderMessages();
+  },()=>{
+    platformSettings = normalizePlatformSettings({});
+    syncPaymentInstructionUI();
+  });
+
   // Elevate public jobs listener to load even when not logged in
   if(unsubJobs) unsubJobs();
   unsubJobs = pubCol('jobs').onSnapshot(snap=>{
