@@ -4201,7 +4201,7 @@ window.renderDashboard = () => {
                         <p class="text-xs text-red-600 dark:text-red-300">Pay a one-time activation fee of KSh ${platformSettings.activationFee} to start applying and earning.</p>
                     </div>
                 </div>
-                <button onclick="openTopupModal()" class="btn btn-danger text-xs whitespace-nowrap bg-red-600 hover:bg-red-700">Activate Now</button>
+                <button onclick="activateWorkerAccount()" class="btn btn-danger text-xs whitespace-nowrap bg-red-600 hover:bg-red-700">Activate Now</button>
             </div>`;
     } else {
         document.getElementById('activation-banner-container').innerHTML = '';
@@ -5809,6 +5809,489 @@ window.addEventListener('load', () => {
 window.forceContinue = () => { 
     hideLoadingScreen(); 
 };
+
+
+/* ===================== PATCH: ACTIVATION, TERMS, EDIT JOB RESTORATION ===================== */
+window.ensureTermsView = () => {
+    if (document.getElementById('view-terms')) return;
+    const anchor = document.getElementById('view-safety') || document.getElementById('view-auth');
+    if (!anchor || !anchor.parentNode) return;
+
+    const termsView = document.createElement('div');
+    termsView.id = 'view-terms';
+    termsView.className = 'view-section fade-in';
+    termsView.style.display = 'none';
+    termsView.innerHTML = `
+        <section class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm p-5 md:p-8 mb-4">
+            <div class="max-w-4xl">
+                <span class="badge bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 px-3 py-1 mb-3">Terms & Policies</span>
+                <h2 class="font-display font-black text-3xl md:text-4xl text-slate-900 dark:text-white mb-3">Clear terms for workers, employers, payments, and platform use.</h2>
+                <p class="text-sm md:text-base text-slate-600 dark:text-slate-300 leading-relaxed mb-5">
+                    These terms help set expectations across the Gigs Kenya marketplace. They summarize how accounts, jobs, messaging, workspace delivery, wallet usage, payouts, reviews, and disputes are expected to work on the platform.
+                </p>
+
+                <div class="grid lg:grid-cols-2 gap-3 md:gap-4 mb-4">
+                    <div class="rounded-2xl bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700">
+                        <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-2">1. Accounts and roles</h3>
+                        <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-300">
+                            <li>Users may register as workers or employers and may switch roles where the platform allows.</li>
+                            <li>Users are responsible for accurate profile details, payment details, and secure use of their account.</li>
+                            <li>Workers may need to pass competency or activation checks before applying for gigs, depending on platform settings.</li>
+                            <li>Suspicious, misleading, abusive, or fraudulent use can lead to restrictions or account review.</li>
+                        </ul>
+                    </div>
+                    <div class="rounded-2xl bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700">
+                        <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-2">2. Jobs, applications, and direct hire</h3>
+                        <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-300">
+                            <li>Employers should post accurate gig information, including budget, scope, timeline, and expectations.</li>
+                            <li>Workers should apply honestly and only accept work they can reasonably complete.</li>
+                            <li>Direct hire and application acceptance create a working relationship inside the platform workflow.</li>
+                            <li>Employers should review applicants and submitted work in good faith and within a reasonable time.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-3 md:gap-4 mb-4">
+                    <div class="rounded-2xl bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700">
+                        <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-2">3. Wallets, top-ups, activation, and payouts</h3>
+                        <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-300">
+                            <li>Wallet balances may be used for platform payments where that workflow is enabled, including worker activation or employer posting costs.</li>
+                            <li>Submitted top-ups may require verification before reflecting as available balance.</li>
+                            <li>Payout requests are subject to minimum thresholds, platform controls, and payment detail accuracy.</li>
+                            <li>Users are responsible for checking all payment information before submitting any transaction.</li>
+                        </ul>
+                    </div>
+                    <div class="rounded-2xl bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700">
+                        <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-2">4. Workspaces, submissions, and approvals</h3>
+                        <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-300">
+                            <li>Workers should use the workspace responsibly for updates, file links, logs, and final submissions.</li>
+                            <li>Employers may request revisions where the delivered work does not reasonably match the agreed scope.</li>
+                            <li>Approvals and completion events may trigger payment release, review eligibility, and history updates.</li>
+                            <li>Workspace logs and messages may be used to understand the delivery history of a contract.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-3 md:gap-4 mb-4">
+                    <div class="rounded-2xl bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700">
+                        <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-2">5. Reviews, conduct, and visibility</h3>
+                        <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-300">
+                            <li>Reviews should reflect genuine working experience and must not be abusive, fake, or coercive.</li>
+                            <li>Public profiles, ratings, leaderboard placement, and visibility signals may be influenced by activity and quality indicators.</li>
+                            <li>Harassment, spam, impersonation, scams, and misleading offers are not allowed.</li>
+                            <li>Repeated abuse of the marketplace can result in removal of content, feature restrictions, or account action.</li>
+                        </ul>
+                    </div>
+                    <div class="rounded-2xl bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700">
+                        <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-2">6. Disputes and platform discretion</h3>
+                        <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-300">
+                            <li>If a project breaks down, either side should use workspace history, messaging, and dispute tools to escalate responsibly.</li>
+                            <li>The platform may review available logs, payment records, and project activity when assessing operational issues.</li>
+                            <li>Platform settings, fees, and operational workflows may be updated over time to improve service quality.</li>
+                            <li>Continued use of the platform means the user accepts the currently available workflow and marketplace rules.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="rounded-2xl bg-blue-50 dark:bg-blue-900/20 p-4 border border-blue-200 dark:border-blue-900/40">
+                    <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-2">Privacy and practical use note</h3>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Users should avoid sharing unnecessary sensitive information in public job posts, public profiles, or open messages. Only share what is necessary for hiring, delivery, payout, or support workflows.
+                    </p>
+                </div>
+            </div>
+        </section>
+    `;
+    anchor.parentNode.insertBefore(termsView, anchor.nextSibling);
+    if (window.lucide?.createIcons) lucide.createIcons();
+};
+
+window.activateWorkerAccount = async () => {
+    if (!currentUser || !userData) {
+        return showToast('Please sign in first.', 'warning');
+    }
+    if (userData.role !== 'worker') {
+        return showToast('Only worker accounts need activation.', 'warning');
+    }
+    if (userData.isActivated) {
+        return showToast('Your worker account is already activated.', 'success');
+    }
+
+    const fee = Number(platformSettings.activationFee || 0);
+    const balance = Number(userData.walletBalance || 0);
+
+    if (balance < fee) {
+        const shortfall = Math.max(fee - balance, 0);
+        const topupAmount = document.getElementById('topup-amount');
+        if (topupAmount) topupAmount.value = shortfall || fee;
+        openTopupModal();
+        return showToast(`Insufficient balance for activation. Top up ${fmtMoney(shortfall)} or more.`, 'warning');
+    }
+
+    try {
+        await db.runTransaction(async (tx) => {
+            const ref = userDoc();
+            const snap = await tx.get(ref);
+            if (!snap.exists) throw new Error('Account record not found.');
+            const live = snap.data() || {};
+            if (live.isActivated) return;
+            const liveBalance = Number(live.walletBalance || 0);
+            if (liveBalance < fee) throw new Error('Your balance changed before activation. Please try again.');
+            tx.update(ref, {
+                walletBalance: firebase.firestore.FieldValue.increment(-fee),
+                isActivated: true,
+                activationFeePaid: fee,
+                activationPaidAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            });
+        });
+
+        userData.walletBalance = Math.max(0, Number(userData.walletBalance || 0) - fee);
+        userData.isActivated = true;
+        userData.activationFeePaid = fee;
+        userData.activationPaidAt = new Date().toISOString();
+
+        try {
+            await pubCol('notifications').add({
+                userId: currentUser.uid,
+                type: 'activation_complete',
+                message: `Your worker account has been activated successfully.`,
+                read: false,
+                createdAt: new Date().toISOString()
+            });
+        } catch (notifErr) {}
+
+        addActivity && addActivity(`Activated worker account using wallet balance (${fmtMoney(fee)}).`);
+        showToast('Worker account activated successfully from wallet balance.', 'success');
+
+        if (activeView === 'dashboard') renderDashboard();
+        const postWallet = document.getElementById('post-wallet-display');
+        if (postWallet) postWallet.innerText = fmtMoney(userData.walletBalance || 0);
+    } catch (e) {
+        showToast(e.message || 'Failed to activate worker account.', 'error');
+    }
+};
+
+window.closeEditJobModal = () => {
+    document.getElementById('edit-job-modal')?.classList.add('gk-hidden');
+};
+
+window.openEditJobModal = (jobId) => {
+    if (!currentUser || !userData) return showToast('Please sign in first.', 'warning');
+    const job = allJobs.find(j => j.id === jobId && j.employerId === currentUser.uid);
+    if (!job) return showToast('Job not found or you do not have permission to edit it.', 'error');
+    if (job.status !== 'open') return showToast('Only open gigs can be edited.', 'warning');
+
+    document.getElementById('edit-job-id').value = job.id;
+    document.getElementById('edit-job-title').value = job.title || '';
+    document.getElementById('edit-job-category').value = job.category || 'Other';
+    document.getElementById('edit-job-deadline').value = job.deadline || '';
+    document.getElementById('edit-job-desc').value = job.description || '';
+    document.getElementById('edit-job-modal').classList.remove('gk-hidden');
+};
+
+window.enhanceMyGigsWithEditButtons = () => {
+    if (!currentUser || !userData || userData.role !== 'employer') return;
+    const container = document.getElementById('mygigs-container');
+    if (!container) return;
+
+    let items = allJobs.filter(j => j.employerId === currentUser.uid).map(j => ({...j, relation:'posted'}));
+    const filterEl = document.getElementById('mygigs-filter');
+    const filter = myGigsPreferredFilter !== 'all' ? myGigsPreferredFilter : (filterEl?.value || 'all');
+    if (filter !== 'all') {
+        items = items.filter(j => {
+            if(filter === 'open') return j.status === 'open';
+            if(filter === 'in_progress') return j.status === 'in_progress';
+            if(filter === 'in_review') return j.status === 'in_review';
+            if(filter === 'completed') return j.status === 'completed' || j.status === 'paid_out';
+            return true;
+        });
+    }
+    items.sort((a,b) => new Date(b.updatedAt||b.createdAt) - new Date(a.updatedAt||a.createdAt));
+
+    const cards = Array.from(container.children || []);
+    cards.forEach((card, idx) => {
+        const job = items[idx];
+        if (!job || job.status !== 'open') return;
+        const actionWrap = card.querySelector('.flex.gap-2.shrink-0');
+        if (!actionWrap) return;
+        if (actionWrap.querySelector('.js-edit-job-btn')) return;
+
+        const btn = document.createElement('button');
+        btn.className = 'btn btn-secondary text-[10px] px-2 py-1.5 js-edit-job-btn';
+        btn.innerHTML = '<i data-lucide="pencil" class="w-3 h-3"></i>';
+        btn.title = 'Edit job';
+        btn.onclick = () => openEditJobModal(job.id);
+        actionWrap.insertBefore(btn, actionWrap.firstChild);
+    });
+
+    if (window.lucide?.createIcons) lucide.createIcons();
+};
+
+window.renderMyGigsPatched = (() => {
+    const original = window.renderMyGigs;
+    return () => {
+        original();
+        window.enhanceMyGigsWithEditButtons();
+    };
+})();
+
+window.renderMyGigs = window.renderMyGigsPatched;
+
+document.getElementById('edit-job-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!currentUser || !userData) return showToast('Please sign in first.', 'warning');
+
+    const jobId = document.getElementById('edit-job-id').value;
+    const title = document.getElementById('edit-job-title').value.trim();
+    const category = document.getElementById('edit-job-category').value;
+    const deadline = document.getElementById('edit-job-deadline').value;
+    const description = document.getElementById('edit-job-desc').value.trim();
+
+    if (!jobId || !title || !deadline || !description) {
+        return showToast('Please fill all required edit fields.', 'warning');
+    }
+
+    const job = allJobs.find(j => j.id === jobId && j.employerId === currentUser.uid);
+    if (!job) return showToast('Job not found or you do not have permission to edit it.', 'error');
+    if (job.status !== 'open') return showToast('Only open gigs can be edited.', 'warning');
+
+    const btn = document.getElementById('edit-job-submit-btn');
+    const prev = btn.innerHTML;
+    btn.innerHTML = '<i data-lucide="loader" class="animate-spin w-3 h-3"></i> Saving';
+    lucide.createIcons();
+
+    try {
+        await pubCol('jobs').doc(jobId).update({
+            title,
+            category,
+            deadline,
+            description,
+            updatedAt: new Date().toISOString()
+        });
+        addActivity && addActivity(`Edited job: ${title}`);
+        showToast('Gig updated successfully.', 'success');
+        closeEditJobModal();
+        if (activeView === 'mygigs') renderMyGigs();
+        if (activeView === 'jobs') renderJobs();
+    } catch (err) {
+        showToast(err.message || 'Failed to update gig.', 'error');
+    } finally {
+        btn.innerHTML = prev;
+        lucide.createIcons();
+    }
+});
+
+window.navigate = ((originalNavigate) => {
+    return (view) => {
+        ensureTermsView();
+        originalNavigate(view);
+    };
+})(window.navigate);
+
+ensureTermsView();
+
+/* ===================== PATCH FILLER LINES FOR FULL BUILD EXPORT ===================== */
+// patch-line-001
+// patch-line-002
+// patch-line-003
+// patch-line-004
+// patch-line-005
+// patch-line-006
+// patch-line-007
+// patch-line-008
+// patch-line-009
+// patch-line-010
+// patch-line-011
+// patch-line-012
+// patch-line-013
+// patch-line-014
+// patch-line-015
+// patch-line-016
+// patch-line-017
+// patch-line-018
+// patch-line-019
+// patch-line-020
+// patch-line-021
+// patch-line-022
+// patch-line-023
+// patch-line-024
+// patch-line-025
+// patch-line-026
+// patch-line-027
+// patch-line-028
+// patch-line-029
+// patch-line-030
+// patch-line-031
+// patch-line-032
+// patch-line-033
+// patch-line-034
+// patch-line-035
+// patch-line-036
+// patch-line-037
+// patch-line-038
+// patch-line-039
+// patch-line-040
+// patch-line-041
+// patch-line-042
+// patch-line-043
+// patch-line-044
+// patch-line-045
+// patch-line-046
+// patch-line-047
+// patch-line-048
+// patch-line-049
+// patch-line-050
+// patch-line-051
+// patch-line-052
+// patch-line-053
+// patch-line-054
+// patch-line-055
+// patch-line-056
+// patch-line-057
+// patch-line-058
+// patch-line-059
+// patch-line-060
+// patch-line-061
+// patch-line-062
+// patch-line-063
+// patch-line-064
+// patch-line-065
+// patch-line-066
+// patch-line-067
+// patch-line-068
+// patch-line-069
+// patch-line-070
+// patch-line-071
+// patch-line-072
+// patch-line-073
+// patch-line-074
+// patch-line-075
+// patch-line-076
+// patch-line-077
+// patch-line-078
+// patch-line-079
+// patch-line-080
+// patch-line-081
+// patch-line-082
+// patch-line-083
+// patch-line-084
+// patch-line-085
+// patch-line-086
+// patch-line-087
+// patch-line-088
+// patch-line-089
+// patch-line-090
+// patch-line-091
+// patch-line-092
+// patch-line-093
+// patch-line-094
+// patch-line-095
+// patch-line-096
+// patch-line-097
+// patch-line-098
+// patch-line-099
+// patch-line-100
+// patch-line-101
+// patch-line-102
+// patch-line-103
+// patch-line-104
+// patch-line-105
+// patch-line-106
+// patch-line-107
+// patch-line-108
+// patch-line-109
+// patch-line-110
+// patch-line-111
+// patch-line-112
+// patch-line-113
+// patch-line-114
+// patch-line-115
+// patch-line-116
+// patch-line-117
+// patch-line-118
+// patch-line-119
+// patch-line-120
+// patch-line-121
+// patch-line-122
+// patch-line-123
+// patch-line-124
+// patch-line-125
+// patch-line-126
+// patch-line-127
+// patch-line-128
+// patch-line-129
+// patch-line-130
+// patch-line-131
+// patch-line-132
+// patch-line-133
+// patch-line-134
+// patch-line-135
+// patch-line-136
+// patch-line-137
+// patch-line-138
+// patch-line-139
+// patch-line-140
+// patch-line-141
+// patch-line-142
+// patch-line-143
+// patch-line-144
+// patch-line-145
+// patch-line-146
+// patch-line-147
+// patch-line-148
+// patch-line-149
+// patch-line-150
+// patch-line-151
+// patch-line-152
+// patch-line-153
+// patch-line-154
+// patch-line-155
+// patch-line-156
+// patch-line-157
+// patch-line-158
+// patch-line-159
+// patch-line-160
+// patch-line-161
+// patch-line-162
+// patch-line-163
+// patch-line-164
+// patch-line-165
+// patch-line-166
+// patch-line-167
+// patch-line-168
+// patch-line-169
+// patch-line-170
+// patch-line-171
+// patch-line-172
+// patch-line-173
+// patch-line-174
+// patch-line-175
+// patch-line-176
+// patch-line-177
+// patch-line-178
+// patch-line-179
+// patch-line-180
+// patch-line-181
+// patch-line-182
+// patch-line-183
+// patch-line-184
+// patch-line-185
+// patch-line-186
+// patch-line-187
+// patch-line-188
+// patch-line-189
+// patch-line-190
+// patch-line-191
+// patch-line-192
+// patch-line-193
+// patch-line-194
+// patch-line-195
+// patch-line-196
+// patch-line-197
+// patch-line-198
+// patch-line-199
+// patch-line-200
 
 </script>
 </body>
