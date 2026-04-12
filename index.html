@@ -843,6 +843,9 @@
                      <button onclick="exportWorkspacePDF()" class="btn btn-secondary text-[10px] md:text-xs px-2 py-1.5 hidden sm:flex" title="Export Contract/Summary">
                              <i data-lucide="download" class="w-3.5 h-3.5"></i> Export
                      </button>
+                     <button id="ws-history-btn" class="btn btn-secondary text-[10px] md:text-xs px-2 md:px-3 py-1.5 hidden" onclick="openHistoryFromMenu()">
+                             <i data-lucide="history" class="w-3.5 h-3.5"></i> <span class="hidden sm:inline">History</span>
+                     </button>
                      <button id="ws-message-btn" class="btn btn-primary text-[10px] md:text-xs px-2 md:px-3 py-1.5" onclick="startWorkspaceChat()">
                              <i data-lucide="message-square" class="w-3.5 h-3.5"></i> <span class="hidden sm:inline">Message</span>
                      </button>
@@ -1159,6 +1162,10 @@
             <h4 class="font-bold text-[10px] opacity-60 uppercase mb-1.5">Skills</h4>
             <div id="profile-modal-skills" class="flex flex-wrap gap-1"></div>
         </div>
+        <div class="mb-3">
+            <h4 class="font-bold text-[10px] opacity-60 uppercase mb-1.5">Professional Details</h4>
+            <div id="profile-modal-details" class="grid grid-cols-2 gap-2 text-[10px]"></div>
+        </div>
         <div id="profile-reviews-section" class="mb-3">
             <h4 class="font-bold text-[10px] opacity-60 uppercase mb-1.5">Recent Reviews</h4>
             <div id="profile-reviews-list" class="space-y-1.5"></div>
@@ -1368,7 +1375,7 @@
     <div class="max-w-7xl mx-auto px-3 md:px-6 h-14 flex items-center justify-between gap-3">
         
         <div class="flex items-center gap-3">
-            <div class="flex items-center gap-2 cursor-pointer shrink-0" onclick="navigate('jobs')">
+            <div class="flex items-center gap-2 cursor-pointer shrink-0" onclick="navigate('home')">
                 <div class="bg-brand p-1.5 rounded-xl shadow-md glow"><i data-lucide="briefcase" class="text-white w-4 h-4"></i></div>
                 <span class="font-display font-black text-xl text-slate-900 dark:text-white hidden sm:block">Gigs<span class="text-brand">Kenya</span></span>
             </div>
@@ -1382,7 +1389,10 @@
 
         <!-- Desktop nav -->
         <div class="hidden md:flex items-center gap-1">
+            <button onclick="navigate('home')" class="nav-link"><i data-lucide="house" class="w-4 h-4"></i> Home</button>
             <button onclick="navigate('jobs')" class="nav-link"><i data-lucide="search" class="w-4 h-4"></i> Jobs</button>
+            <button onclick="navigate('about')" class="nav-link"><i data-lucide="building-2" class="w-4 h-4"></i> About Us</button>
+            <button onclick="navigate('howitworks')" class="nav-link"><i data-lucide="sparkles" class="w-4 h-4"></i> How It Works</button>
             <button onclick="navigate('leaderboard')" class="nav-link"><i data-lucide="trophy" class="w-4 h-4"></i> Top Workers</button>
         </div>
 
@@ -1425,10 +1435,13 @@
                         <button onclick="closeTopRightMenus(); navigate('mygigs')" class="w-full text-left px-4 py-1.5 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2 text-xs md:text-sm text-slate-600 dark:text-slate-300"><i data-lucide="folder-check" class="w-3.5 h-3.5"></i> My Gigs</button>
                         <button onclick="closeTopRightMenus(); navigate('bookmarks')" class="w-full text-left px-4 py-1.5 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2 text-xs md:text-sm text-slate-600 dark:text-slate-300"><i data-lucide="bookmark" class="w-3.5 h-3.5"></i> Saved Jobs</button>
                         <button onclick="closeTopRightMenus(); navigate('messages')" class="w-full text-left px-4 py-1.5 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2 text-xs md:text-sm text-slate-600 dark:text-slate-300"><i data-lucide="message-square" class="w-3.5 h-3.5"></i> Messages</button>
+                        <button onclick="closeTopRightMenus(); openHistoryFromMenu()" class="w-full text-left px-4 py-1.5 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2 text-xs md:text-sm text-slate-600 dark:text-slate-300"><i data-lucide="history" class="w-3.5 h-3.5"></i> History</button>
                         <button onclick="closeTopRightMenus(); openLedgerModal()" class="w-full text-left px-4 py-1.5 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2 text-xs md:text-sm text-slate-600 dark:text-slate-300"><i data-lucide="list" class="w-3.5 h-3.5"></i> Ledger & Pending</button>
                         <button onclick="closeTopRightMenus(); openSettings()" class="w-full text-left px-4 py-1.5 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2 text-xs md:text-sm text-slate-600 dark:text-slate-300"><i data-lucide="settings" class="w-3.5 h-3.5"></i> Settings</button>
                         
                         <div class="border-t dark:border-slate-700 my-1"></div>
+                        <button onclick="closeTopRightMenus(); navigate('terms')" class="w-full text-left px-4 py-1.5 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2 text-xs md:text-sm text-slate-600 dark:text-slate-300"><i data-lucide="file-text" class="w-3.5 h-3.5"></i> Terms</button>
+                        <button onclick="closeTopRightMenus(); navigate('safety')" class="w-full text-left px-4 py-1.5 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2 text-xs md:text-sm text-slate-600 dark:text-slate-300"><i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Policies</button>
                         <button onclick="closeTopRightMenus(); switchRole()" class="w-full text-left px-4 py-1.5 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2 text-xs md:text-sm text-brand font-bold"><i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Switch to <span id="switch-role-text">Employer</span></button>
                         <div class="border-t dark:border-slate-700 my-1"></div>
                         <button onclick="closeTopRightMenus(); logout()" class="w-full text-left px-4 py-1.5 hover:bg-red-50 dark:hover:bg-red-900/10 flex items-center gap-2 text-xs md:text-sm text-red-500"><i data-lucide="log-out" class="w-3.5 h-3.5"></i> Sign Out</button>
@@ -1438,6 +1451,7 @@
 
             <!-- Guest links -->
             <div id="nav-guest-links" class="flex items-center gap-2">
+                <button onclick="navigate('about')" class="btn btn-secondary text-[10px] md:text-xs px-2.5 py-1.5 hidden sm:inline-flex"><i data-lucide="info" class="w-3.5 h-3.5"></i> About</button>
                 <button onclick="navigate('auth')" class="btn btn-primary text-[10px] md:text-xs px-2.5 py-1.5"><i data-lucide="log-in" class="w-3.5 h-3.5"></i> Sign In</button>
             </div>
         </div>
@@ -1453,6 +1467,278 @@
 <div id="main-scroller" class="flex-1 overflow-y-auto overflow-x-hidden w-full relative">
     
     <main class="max-w-7xl mx-auto w-full px-3 md:px-6 py-4 md:py-5 space-y-0 pb-6">
+
+
+        <!-- ===== HOME VIEW ===== -->
+        <div id="view-home" class="view-section fade-in" style="display:block">
+            <section class="gradient-hero rounded-3xl p-5 md:p-8 lg:p-10 mb-4 md:mb-6 text-white shadow-xl relative overflow-hidden">
+                <div class="absolute inset-0 opacity-20" style="background-image:radial-gradient(circle at 15% 15%, #60a5fa 0%, transparent 28%), radial-gradient(circle at 85% 20%, #2563eb 0%, transparent 26%), radial-gradient(circle at 50% 85%, #93c5fd 0%, transparent 26%)"></div>
+                <div class="relative z-10 grid lg:grid-cols-2 gap-6 items-center">
+                    <div>
+                        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] mb-3">
+                            <i data-lucide="badge-check" class="w-3.5 h-3.5"></i> Built for Kenya's freelance economy
+                        </span>
+                        <h1 class="font-display font-black text-3xl md:text-5xl leading-tight mb-3">Professional freelance hiring and work delivery, made simple.</h1>
+                        <p class="text-slate-200 text-sm md:text-base max-w-2xl mb-5">Gigs Kenya helps employers hire faster, workers earn through trusted projects, and both sides manage work, reviews, payouts, escrow-style workflows, and messaging in one place.</p>
+                        <div class="flex flex-col sm:flex-row gap-2.5 mb-5">
+                            <button onclick="navigate('jobs')" class="btn btn-primary bg-white text-brand hover:bg-slate-100 border-white px-4 py-3 text-sm">
+                                <i data-lucide="search" class="w-4 h-4"></i> Explore Open Jobs
+                            </button>
+                            <button onclick="navigate('auth')" class="btn text-sm px-4 py-3 bg-white/10 text-white border border-white/20 hover:bg-white/20">
+                                <i data-lucide="user-plus" class="w-4 h-4"></i> Join Gigs Kenya
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 md:gap-3">
+                            <div class="bg-white/10 border border-white/10 rounded-2xl p-3">
+                                <p class="text-[10px] uppercase tracking-widest text-slate-300 font-bold">Open gigs</p>
+                                <p id="home-stat-jobs" class="font-display font-black text-2xl mt-1">0</p>
+                            </div>
+                            <div class="bg-white/10 border border-white/10 rounded-2xl p-3">
+                                <p class="text-[10px] uppercase tracking-widest text-slate-300 font-bold">Workers</p>
+                                <p id="home-stat-workers" class="font-display font-black text-2xl mt-1">0</p>
+                            </div>
+                            <div class="bg-white/10 border border-white/10 rounded-2xl p-3">
+                                <p class="text-[10px] uppercase tracking-widest text-slate-300 font-bold">Employers</p>
+                                <p id="home-stat-employers" class="font-display font-black text-2xl mt-1">0</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid sm:grid-cols-2 gap-3">
+                        <div class="bg-white text-slate-900 rounded-3xl p-4 shadow-2xl">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="badge bg-emerald-100 text-emerald-700">For Employers</span>
+                                <i data-lucide="briefcase-business" class="w-5 h-5 text-brand"></i>
+                            </div>
+                            <h3 class="font-display font-black text-lg mb-1">Post once. Hire with confidence.</h3>
+                            <p class="text-xs text-slate-600 mb-3">Create a gig, review applicants, manage work, track milestones, approve submissions, and rate top performers.</p>
+                            <div class="space-y-2 text-[11px] text-slate-700">
+                                <div class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500"></i> Structured applications</div>
+                                <div class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500"></i> Built-in messaging and workspaces</div>
+                                <div class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500"></i> Ratings, reviews and leaderboards</div>
+                            </div>
+                        </div>
+                        <div class="bg-slate-900/70 backdrop-blur border border-white/10 text-white rounded-3xl p-4 shadow-2xl">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="badge bg-blue-100 text-blue-700">For Workers</span>
+                                <i data-lucide="badge-dollar-sign" class="w-5 h-5 text-blue-300"></i>
+                            </div>
+                            <h3 class="font-display font-black text-lg mb-1">Turn your skills into steady income.</h3>
+                            <p class="text-xs text-slate-300 mb-3">Discover gigs, save jobs, submit proposals, work with clients, grow your rating, and withdraw earnings with familiar payment flows.</p>
+                            <div class="space-y-2 text-[11px] text-slate-200">
+                                <div class="flex items-center gap-2"><i data-lucide="star" class="w-4 h-4 text-yellow-300"></i> Verified worker pathways</div>
+                                <div class="flex items-center gap-2"><i data-lucide="star" class="w-4 h-4 text-yellow-300"></i> Referral rewards and visibility boosts</div>
+                                <div class="flex items-center gap-2"><i data-lucide="star" class="w-4 h-4 text-yellow-300"></i> Clear status tracking from application to payout</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="grid lg:grid-cols-3 gap-3 md:gap-4 mb-4 md:mb-6">
+                <div class="bg-white dark:bg-slate-800 p-4 md:p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <div class="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-900/20 text-brand flex items-center justify-center mb-3"><i data-lucide="shield-check" class="w-5 h-5"></i></div>
+                    <h3 class="font-display font-black text-lg text-slate-900 dark:text-white mb-1">Professional trust signals</h3>
+                    <p class="text-xs text-slate-600 dark:text-slate-400">Profiles, reviews, competency checks, work histories, and status updates make it easier to hire and deliver professionally.</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-4 md:p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <div class="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 flex items-center justify-center mb-3"><i data-lucide="wallet-cards" class="w-5 h-5"></i></div>
+                    <h3 class="font-display font-black text-lg text-slate-900 dark:text-white mb-1">Kenya-friendly payments</h3>
+                    <p class="text-xs text-slate-600 dark:text-slate-400">Wallet balances, top-ups, payout requests, invoice generation, and familiar payment language fit how local users already transact.</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-4 md:p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <div class="w-10 h-10 rounded-2xl bg-amber-50 dark:bg-amber-900/20 text-amber-600 flex items-center justify-center mb-3"><i data-lucide="workflow" class="w-5 h-5"></i></div>
+                    <h3 class="font-display font-black text-lg text-slate-900 dark:text-white mb-1">Workflows that actually help</h3>
+                    <p class="text-xs text-slate-600 dark:text-slate-400">From application review to workspace delivery, milestone tracking, time logging, and reviews, the platform stays useful after the hire.</p>
+                </div>
+            </section>
+
+            <section class="grid lg:grid-cols-2 gap-3 md:gap-4 mb-4 md:mb-6">
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <div class="flex items-center justify-between mb-3">
+                        <h2 class="font-display font-black text-xl text-slate-900 dark:text-white">Why businesses choose Gigs Kenya</h2>
+                        <i data-lucide="building" class="w-5 h-5 text-brand"></i>
+                    </div>
+                    <div class="space-y-3 text-xs text-slate-600 dark:text-slate-300">
+                        <div class="flex gap-3"><div class="timeline-dot"></div><p>Publish opportunities across writing, design, tech, telecom, finance, admin support, marketing and more.</p></div>
+                        <div class="flex gap-3"><div class="timeline-dot"></div><p>Compare applicants in one place and move qualified workers into active workspaces with fewer back-and-forth steps.</p></div>
+                        <div class="flex gap-3"><div class="timeline-dot"></div><p>Keep records of submissions, deadlines, reviews, payout activity and communication for a cleaner hiring process.</p></div>
+                    </div>
+                    <div class="mt-4 flex gap-2">
+                        <button onclick="navigate('post')" class="btn btn-primary text-xs"><i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Post a Gig</button>
+                        <button onclick="navigate('howitworks')" class="btn btn-secondary text-xs"><i data-lucide="arrow-right" class="w-3.5 h-3.5"></i> See workflow</button>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <div class="flex items-center justify-between mb-3">
+                        <h2 class="font-display font-black text-xl text-slate-900 dark:text-white">Popular categories</h2>
+                        <i data-lucide="layout-grid" class="w-5 h-5 text-brand"></i>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="badge bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1">Writing</span>
+                        <span class="badge bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1">Web Development</span>
+                        <span class="badge bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1">Graphic Design</span>
+                        <span class="badge bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1">Telecom</span>
+                        <span class="badge bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1">Virtual Assistant</span>
+                        <span class="badge bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1">Finance</span>
+                        <span class="badge bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1">Social Media</span>
+                        <span class="badge bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1">Research</span>
+                    </div>
+                    <div class="rounded-2xl bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700">
+                        <p class="text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Need a fast start?</p>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 mb-3">Go straight to the jobs board, sign in to save jobs, or create an account to post, apply, and track work from one dashboard.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="navigate('jobs')" class="btn btn-secondary text-xs">Browse Jobs</button>
+                            <button onclick="navigate('auth')" class="btn btn-primary text-xs">Create Account</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ===== ABOUT VIEW ===== -->
+        <div id="view-about" class="view-section fade-in" style="display:none">
+            <section class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm p-5 md:p-8 mb-4">
+                <div class="max-w-4xl">
+                    <span class="badge bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1 mb-3">About Gigs Kenya</span>
+                    <h2 class="font-display font-black text-3xl md:text-4xl text-slate-900 dark:text-white mb-3">A smarter freelance marketplace for Kenyan talent and hiring teams.</h2>
+                    <p class="text-sm md:text-base text-slate-600 dark:text-slate-300 leading-relaxed mb-4">Gigs Kenya is designed to help skilled workers and serious employers connect inside a practical, professional environment. Beyond listings, the platform supports messaging, application review, workspaces, reviews, payout flows, top workers visibility, and useful account tools that make the whole job cycle easier to manage.</p>
+                    <div class="grid md:grid-cols-3 gap-3">
+                        <div class="bg-slate-50 dark:bg-slate-900 rounded-2xl p-4 border border-slate-200 dark:border-slate-700">
+                            <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-1">Mission</h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-400">Make digital work opportunities easier to access, easier to manage, and more trustworthy for people hiring and working in Kenya.</p>
+                        </div>
+                        <div class="bg-slate-50 dark:bg-slate-900 rounded-2xl p-4 border border-slate-200 dark:border-slate-700">
+                            <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-1">Focus</h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-400">Professional user experience, local relevance, clear job workflows, practical payment handling, and strong visibility for good workers.</p>
+                        </div>
+                        <div class="bg-slate-50 dark:bg-slate-900 rounded-2xl p-4 border border-slate-200 dark:border-slate-700">
+                            <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-1">Approach</h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-400">Build credibility through reviews, structured applications, competency signals, work history, and cleaner communication between both sides.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="grid lg:grid-cols-2 gap-3 md:gap-4 mb-4">
+                <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-5">
+                    <h3 class="font-display font-black text-xl text-slate-900 dark:text-white mb-3">What the platform already supports</h3>
+                    <div class="grid sm:grid-cols-2 gap-3 text-xs text-slate-600 dark:text-slate-300">
+                        <div class="flex gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i><span>Worker and employer role switching</span></div>
+                        <div class="flex gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i><span>Job posting, editing, application review and direct hire</span></div>
+                        <div class="flex gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i><span>Saved jobs, public profiles and worker ratings</span></div>
+                        <div class="flex gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i><span>Workspaces with milestones, time logs and file vault</span></div>
+                        <div class="flex gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i><span>Wallet, top-up, payout and invoice flows</span></div>
+                        <div class="flex gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i><span>Notifications, leaderboard and review workflows</span></div>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-5">
+                    <h3 class="font-display font-black text-xl text-slate-900 dark:text-white mb-3">Who it is for</h3>
+                    <div class="space-y-3 text-xs text-slate-600 dark:text-slate-300">
+                        <div class="rounded-xl bg-slate-50 dark:bg-slate-900 p-3 border border-slate-200 dark:border-slate-700">
+                            <p class="font-bold text-slate-800 dark:text-white mb-1">Employers and businesses</p>
+                            <p>Teams that need quick access to reliable freelance talent in content, tech, telecom, design, admin, research, support, sales and other digital categories.</p>
+                        </div>
+                        <div class="rounded-xl bg-slate-50 dark:bg-slate-900 p-3 border border-slate-200 dark:border-slate-700">
+                            <p class="font-bold text-slate-800 dark:text-white mb-1">Freelancers and skilled workers</p>
+                            <p>Individuals who want a cleaner place to showcase skills, win work, deliver confidently, build reputation, and earn from real opportunities.</p>
+                        </div>
+                        <div class="rounded-xl bg-slate-50 dark:bg-slate-900 p-3 border border-slate-200 dark:border-slate-700">
+                            <p class="font-bold text-slate-800 dark:text-white mb-1">Growing professional communities</p>
+                            <p>Organizations or communities that want a modern, locally relevant digital work platform with practical workflows instead of a simple listing board.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ===== HOW IT WORKS VIEW ===== -->
+        <div id="view-howitworks" class="view-section fade-in" style="display:none">
+            <section class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm p-5 md:p-8 mb-4">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-5">
+                    <div>
+                        <span class="badge bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 px-3 py-1 mb-3">How It Works</span>
+                        <h2 class="font-display font-black text-3xl md:text-4xl text-slate-900 dark:text-white">From posting to payout, the workflow stays clear.</h2>
+                    </div>
+                    <div class="rounded-2xl bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700 max-w-md">
+                        <p class="text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Quick summary</p>
+                        <p class="text-xs text-slate-600 dark:text-slate-300">Employers post and review. Workers apply and deliver. Both collaborate in a shared workspace, then completion and reviews strengthen platform trust.</p>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-3">
+                    <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4 bg-slate-50 dark:bg-slate-900">
+                        <div class="w-10 h-10 rounded-2xl bg-blue-100 dark:bg-blue-900/30 text-brand flex items-center justify-center mb-3"><span class="font-display font-black">1</span></div>
+                        <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-1">Create or sign in</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400">Join as a worker or employer, complete your profile, and access the dashboard tools that fit your role.</p>
+                    </div>
+                    <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4 bg-slate-50 dark:bg-slate-900">
+                        <div class="w-10 h-10 rounded-2xl bg-blue-100 dark:bg-blue-900/30 text-brand flex items-center justify-center mb-3"><span class="font-display font-black">2</span></div>
+                        <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-1">Post or apply</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400">Employers publish gigs. Workers browse, filter, save jobs, answer custom questions, and submit pitches.</p>
+                    </div>
+                    <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4 bg-slate-50 dark:bg-slate-900">
+                        <div class="w-10 h-10 rounded-2xl bg-blue-100 dark:bg-blue-900/30 text-brand flex items-center justify-center mb-3"><span class="font-display font-black">3</span></div>
+                        <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-1">Collaborate in workspace</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400">Use milestones, file vault, time logs, quick actions, submissions, approval states, and project messaging.</p>
+                    </div>
+                    <div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4 bg-slate-50 dark:bg-slate-900">
+                        <div class="w-10 h-10 rounded-2xl bg-blue-100 dark:bg-blue-900/30 text-brand flex items-center justify-center mb-3"><span class="font-display font-black">4</span></div>
+                        <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-1">Complete, review, grow</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400">After completion, reviews update trust signals, invoices stay available, and strong workers rise through ratings and visibility.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="grid lg:grid-cols-2 gap-3 md:gap-4">
+                <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-5">
+                    <h3 class="font-display font-black text-xl text-slate-900 dark:text-white mb-3">Worker journey</h3>
+                    <div class="space-y-3 text-xs text-slate-600 dark:text-slate-300">
+                        <div class="flex gap-3"><div class="timeline-dot"></div><p>Browse jobs, filter by budget, and bookmark promising opportunities.</p></div>
+                        <div class="flex gap-3"><div class="timeline-dot"></div><p>Apply with a pitch, rate, delivery timeline, and any competency responses requested.</p></div>
+                        <div class="flex gap-3"><div class="timeline-dot"></div><p>Work inside the shared workspace, communicate updates, log time, store files, and submit deliverables.</p></div>
+                        <div class="flex gap-3"><div class="timeline-dot"></div><p>Earn reviews, improve ranking, request payouts, and use your referral code to grow earnings.</p></div>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-5">
+                    <h3 class="font-display font-black text-xl text-slate-900 dark:text-white mb-3">Employer journey</h3>
+                    <div class="space-y-3 text-xs text-slate-600 dark:text-slate-300">
+                        <div class="flex gap-3"><div class="timeline-dot"></div><p>Post a detailed gig with category, budget, deadline and job questions if needed.</p></div>
+                        <div class="flex gap-3"><div class="timeline-dot"></div><p>Review applications or directly hire a strong worker from their public profile.</p></div>
+                        <div class="flex gap-3"><div class="timeline-dot"></div><p>Track delivery progress, review submitted work, request changes, approve work, and keep a clean project history.</p></div>
+                        <div class="flex gap-3"><div class="timeline-dot"></div><p>Leave reviews and build an employer reputation that attracts better applicants over time.</p></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ===== TRUST & SAFETY VIEW ===== -->
+        <div id="view-safety" class="view-section fade-in" style="display:none">
+            <section class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm p-5 md:p-8">
+                <span class="badge bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 px-3 py-1 mb-3">Trust & Safety</span>
+                <h2 class="font-display font-black text-3xl md:text-4xl text-slate-900 dark:text-white mb-3">Helpful safeguards for better marketplace behavior.</h2>
+                <p class="text-sm text-slate-600 dark:text-slate-300 max-w-3xl mb-5">Gigs Kenya already includes practical product features that encourage better behavior: profile transparency, public reviews, competency checks, approval flows, activity logs, file history, dispute escalation, and notification records.</p>
+                <div class="grid md:grid-cols-2 gap-3">
+                    <div class="rounded-2xl bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700">
+                        <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-2">Safer collaboration habits</h3>
+                        <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-300">
+                            <li>Use detailed job descriptions and written expectations.</li>
+                            <li>Keep communication inside platform messages and workspace updates.</li>
+                            <li>Review profiles, skill tags, ratings and recent reviews before hiring.</li>
+                            <li>Use milestones, approvals and disputes when work becomes unclear.</li>
+                        </ul>
+                    </div>
+                    <div class="rounded-2xl bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700">
+                        <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-2">Useful account tools</h3>
+                        <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-300">
+                            <li>Notification history for important events</li>
+                            <li>Activity logs inside workspaces</li>
+                            <li>Review submissions after gig completion</li>
+                            <li>Public reporting options on visible profiles</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
 
         <!-- ===== AUTH VIEW ===== -->
         <div id="view-auth" class="view-section" style="display:none;align-items:center;justify-content:center;min-height:65vh">
@@ -1498,7 +1784,7 @@
         </div>
 
         <!-- ===== JOBS VIEW ===== -->
-        <div id="view-jobs" class="view-section fade-in" style="display: block;">
+        <div id="view-jobs" class="view-section fade-in" style="display:none">
             <!-- Hero -->
             <div class="gradient-hero rounded-2xl p-5 md:p-8 mb-4 md:mb-6 text-white shadow-xl relative overflow-hidden">
                 <div class="absolute inset-0 opacity-10" style="background-image:radial-gradient(circle at 80% 50%, #3b82f6 0%, transparent 60%)"></div>
@@ -1526,7 +1812,8 @@
                 </div>
             </div>
             <!-- Category filters -->
-            <div id="category-filters" class="flex flex-wrap gap-1.5 md:gap-2 mb-4"></div>
+            <div id="category-filters" class="flex flex-wrap gap-1.5 md:gap-2 mb-2"></div>
+            <p class="text-[9px] md:text-[10px] text-slate-500 dark:text-slate-400 mb-4">Terms & policy: browse only genuine, lawful opportunities. Location tags indicate where work happens or is coordinated, and users are expected to keep category and location details accurate.</p>
             <!-- Save search -->
             <div id="save-search-bar" class="gk-hidden flex items-center gap-2 mb-4 p-2.5 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800">
                 <i data-lucide="bookmark" class="w-3.5 h-3.5 text-brand"></i>
@@ -1575,6 +1862,7 @@
                             <select id="post-location" class="gk-input">
                                 <option value="Remote">Remote</option><option value="Nairobi">Nairobi</option><option value="Mombasa">Mombasa</option><option value="Kisumu">Kisumu</option><option value="Hybrid">Hybrid</option><option value="On-site">On-site</option>
                             </select>
+                            <p class="mt-1 text-[9px] text-slate-500 dark:text-slate-400">Policy: only choose a location that matches where the work will actually be done or coordinated. Remote means fully online, Hybrid means mixed remote/on-site, and On-site means physical attendance may be required. By posting, you confirm the location and work details are accurate and lawful.</p>
                         </div>
                         <div>
                             <label class="block text-[10px] md:text-xs font-bold mb-1 text-slate-700 dark:text-slate-300">Estimated Time</label>
@@ -1692,7 +1980,7 @@ What tools will you use?"></textarea>
 
                 <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-4 rounded-2xl text-white shadow-sm flex flex-col justify-center">
                     <h3 class="font-display font-black text-lg mb-1 flex items-center gap-1.5"><i data-lucide="gift" class="w-4 h-4"></i> Refer & Earn</h3>
-                    <p class="text-indigo-100 text-xs mb-3">Earn KSh 500 for every friend who joins. Share code!</p>
+                    <p class="text-indigo-100 text-xs mb-3">Earn KSh 50 for every friend who joins. Share code!</p>
                     <div class="flex items-center gap-2 bg-white/20 rounded-xl px-3 py-2 border border-white/30 justify-between">
                         <span id="referral-code" class="font-mono font-black tracking-widest text-sm">GK-XXXXX</span>
                         <button onclick="copyReferralCode()" class="btn bg-white text-indigo-600 text-[10px] font-bold hover:bg-indigo-50 px-2 py-1">Copy</button>
@@ -1708,7 +1996,7 @@ What tools will you use?"></textarea>
             <div class="bg-white dark:bg-slate-800 p-4 md:p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
                 <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-4">
                     <h2 class="font-display font-black text-xl flex items-center gap-1.5 text-slate-800 dark:text-white"><i data-lucide="folder-check" class="text-indigo-500 w-5 h-5"></i> My Gigs</h2>
-                    <select id="mygigs-filter" onchange="renderMyGigs()" class="gk-input text-xs w-full sm:w-auto py-1.5">
+                    <select id="mygigs-filter" onchange="myGigsPreferredFilter=this.value; renderMyGigs()" class="gk-input text-xs w-full sm:w-auto py-1.5">
                         <option value="all">All Status</option><option value="applied">Applied</option><option value="open">Open / Pending</option><option value="in_progress">In Progress</option><option value="in_review">In Review</option><option value="completed">Completed</option>
                     </select>
                 </div>
@@ -1765,8 +2053,16 @@ What tools will you use?"></textarea>
 
     <!-- Footer inside scrolling area to ensure it's at the absolute bottom -->
     <footer class="bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 py-5 mt-auto no-print hidden md:block">
-        <div class="max-w-7xl mx-auto px-4 md:px-6 flex flex-col md:flex-row justify-between items-center gap-2 text-[10px] md:text-xs text-slate-500 dark:text-slate-400">
-            <p class="font-bold">&copy; 2026 Gigs Kenya. All rights reserved.</p>
+        <div class="max-w-7xl mx-auto px-4 md:px-6 flex flex-col md:flex-row justify-between items-center gap-3 text-[10px] md:text-xs text-slate-500 dark:text-slate-400">
+            <div class="flex flex-col md:flex-row items-center gap-2 md:gap-4">
+                <p class="font-bold">&copy; 2026 Gigs Kenya. All rights reserved.</p>
+                <div class="flex items-center gap-3">
+                    <button onclick="navigate('home')" class="hover:text-brand transition">Home</button>
+                    <button onclick="navigate('about')" class="hover:text-brand transition">About Us</button>
+                    <button onclick="navigate('howitworks')" class="hover:text-brand transition">How It Works</button>
+                    <button onclick="navigate('safety')" class="hover:text-brand transition">Trust & Safety</button>
+                </div>
+            </div>
             <div class="flex items-center gap-3">
                 <span class="flex items-center gap-1 text-emerald-500"><div class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div> Live</span>
                 <span>Built for Kenya 🇰🇪</span>
@@ -1852,8 +2148,9 @@ let reviewStar = 0;
 let activeThread = null;
 let activeThreadName = '';
 let jobsPage = 0;
+let myGigsPreferredFilter = 'all';
 const JOBS_PER_PAGE = 12;
-let activeView = 'jobs';
+let activeView = 'home';
 
 // Fixes & State tracking for notifications and sounds
 let soundPromptDismissed = false;
@@ -1874,10 +2171,10 @@ const testBank = [
     { q:"What is 15% of 200?", type:"text", ans:"30" },
     { q:"What is the square root of 64?", type:"text", ans:"8" },
     { q:"Which planet is known as the Red Planet?", type:"radio", opts:[{v:"mars",t:"Mars"},{v:"venus",t:"Venus"},{v:"jupiter",t:"Jupiter"}], ans:"mars" },
-    { q:"How many months in a year?", type:"text", ans:"12" },
+    { q:"How many months are in a year?", type:"text", ans:"12" },
     { q:"What is 7 × 8?", type:"text", ans:"56" },
     { q:"What is the main currency of Kenya?", type:"radio", opts:[{v:"ksh",t:"Kenyan Shilling"},{v:"usd",t:"US Dollar"},{v:"euro",t:"Euro"}], ans:"ksh" },
-    { q:"Which of the following is a Javascript framework?", type:"radio", opts:[{v:"react",t:"React"},{v:"laravel",t:"Laravel"},{v:"django",t:"Django"}], ans:"react" },
+    { q:"Which of the following is a JavaScript framework?", type:"radio", opts:[{v:"react",t:"React"},{v:"laravel",t:"Laravel"},{v:"django",t:"Django"}], ans:"react" },
     { q:"What does HTML stand for?", type:"text", ans:"HyperText Markup Language" },
     { q:"How many hours are in 3 days?", type:"text", ans:"72" },
     { q:"What is the largest ocean on Earth?", type:"radio", opts:[{v:"pacific",t:"Pacific Ocean"},{v:"atlantic",t:"Atlantic Ocean"},{v:"indian",t:"Indian Ocean"}], ans:"pacific" },
@@ -1885,8 +2182,61 @@ const testBank = [
     { q:"If a gig pays 10,000 KSh and platform takes 5%, what is the net earning?", type:"text", ans:"9500" },
     { q:"What is the capital city of Uganda?", type:"radio", opts:[{v:"kampala",t:"Kampala"},{v:"kigali",t:"Kigali"},{v:"nairobi",t:"Nairobi"}], ans:"kampala" },
     { q:"What is 100 divided by 4?", type:"text", ans:"25" },
-    { q:"Which shortcut is universally used for 'Copy'?", type:"radio", opts:[{v:"ctrlc",t:"Ctrl+C"},{v:"ctrlx",t:"Ctrl+X"},{v:"ctrlv",t:"Ctrl+V"}], ans:"ctrlc" }
+    { q:"Which shortcut is universally used for Copy?", type:"radio", opts:[{v:"ctrlc",t:"Ctrl+C"},{v:"ctrlx",t:"Ctrl+X"},{v:"ctrlv",t:"Ctrl+V"}], ans:"ctrlc" },
+    { q:"What is 9 + 13?", type:"text", ans:"22" },
+    { q:"How many minutes are in 2 hours?", type:"text", ans:"120" },
+    { q:"Which continent is Kenya in?", type:"radio", opts:[{v:"africa",t:"Africa"},{v:"asia",t:"Asia"},{v:"europe",t:"Europe"}], ans:"africa" },
+    { q:"What is 12 × 12?", type:"text", ans:"144" },
+    { q:"Which device is mainly used to move the pointer on a computer screen?", type:"radio", opts:[{v:"mouse",t:"Mouse"},{v:"printer",t:"Printer"},{v:"router",t:"Router"}], ans:"mouse" },
+    { q:"What is 2500 + 750?", type:"text", ans:"3250" },
+    { q:"Which one is a web browser?", type:"radio", opts:[{v:"chrome",t:"Chrome"},{v:"excel",t:"Excel"},{v:"photoshop",t:"Photoshop"}], ans:"chrome" },
+    { q:"How many sides does a triangle have?", type:"text", ans:"3" },
+    { q:"What is the opposite of profit in business?", type:"radio", opts:[{v:"loss",t:"Loss"},{v:"tax",t:"Tax"},{v:"credit",t:"Credit"}], ans:"loss" },
+    { q:"What is 18 - 7?", type:"text", ans:"11" },
+    { q:"Which office app is mainly used for spreadsheets?", type:"radio", opts:[{v:"excel",t:"Excel"},{v:"word",t:"Word"},{v:"paint",t:"Paint"}], ans:"excel" },
+    { q:"What is 20% of 500?", type:"text", ans:"100" },
+    { q:"What does CPU stand for?", type:"text", ans:"Central Processing Unit" },
+    { q:"Which one is a mobile money service in Kenya?", type:"radio", opts:[{v:"mpesa",t:"M-Pesa"},{v:"paypal",t:"PayPal"},{v:"visa",t:"Visa"}], ans:"mpesa" },
+    { q:"If you earn KSh 6,000 and spend KSh 2,500, how much remains?", type:"text", ans:"3500" },
+    { q:"Which day comes after Friday?", type:"radio", opts:[{v:"saturday",t:"Saturday"},{v:"sunday",t:"Sunday"},{v:"thursday",t:"Thursday"}], ans:"saturday" },
+    { q:"What is 81 divided by 9?", type:"text", ans:"9" },
+    { q:"Which file format is commonly used for documents?", type:"radio", opts:[{v:"pdf",t:"PDF"},{v:"mp3",t:"MP3"},{v:"png",t:"PNG"}], ans:"pdf" },
+    { q:"How many weeks are in 14 days?", type:"text", ans:"2" },
+    { q:"Which of these is a communication app?", type:"radio", opts:[{v:"whatsapp",t:"WhatsApp"},{v:"calculator",t:"Calculator"},{v:"camera",t:"Camera"}], ans:"whatsapp" },
+    { q:"What is 5 squared?", type:"text", ans:"25" },
+    { q:"If a worker charges KSh 500 per hour for 4 hours, what is the total?", type:"text", ans:"2000" },
+    { q:"Which one stores files online?", type:"radio", opts:[{v:"google drive",t:"Google Drive"},{v:"notepad",t:"Notepad"},{v:"bluetooth",t:"Bluetooth"}], ans:"google drive" },
+    { q:"What is the sum of 45 and 55?", type:"text", ans:"100" },
+    { q:"What color is usually used to show success or approved status?", type:"radio", opts:[{v:"green",t:"Green"},{v:"red",t:"Red"},{v:"black",t:"Black"}], ans:"green" },
+    { q:"How many centimeters are in 1 meter?", type:"text", ans:"100" },
+    { q:"Which one is a search engine?", type:"radio", opts:[{v:"google",t:"Google"},{v:"telegram",t:"Telegram"},{v:"canva",t:"Canva"}], ans:"google" },
+    { q:"What is 14 × 6?", type:"text", ans:"84" },
+    { q:"If a deadline is extended by 3 days from Monday, which day is it?", type:"radio", opts:[{v:"thursday",t:"Thursday"},{v:"wednesday",t:"Wednesday"},{v:"friday",t:"Friday"}], ans:"thursday" },
+    { q:"What is half of 96?", type:"text", ans:"48" }
 ];
+const TEST_QUESTION_COUNT = 10;
+const TEST_PASS_PERCENT = 90;
+
+function normalizeTestAnswer(v) {
+    return String(v || '').trim().toLowerCase().replace(/[^a-z0-9.]/g, '');
+}
+
+function getUnusedTestIndexes() {
+    let used = [];
+    try { used = JSON.parse(localStorage.getItem('gk_used_test_indexes') || '[]'); } catch(e) {}
+    used = Array.isArray(used) ? used.filter(i => Number.isInteger(i) && i >= 0 && i < testBank.length) : [];
+    if(testBank.length - used.length < TEST_QUESTION_COUNT) used = [];
+    const pool = testBank.map((_, i) => i).filter(i => !used.includes(i));
+    return { used, pool };
+}
+
+function pickRandomTestIndexes() {
+    const { used, pool } = getUnusedTestIndexes();
+    const shuffled = [...pool].sort(() => 0.5 - Math.random());
+    const chosen = shuffled.slice(0, TEST_QUESTION_COUNT);
+    try { localStorage.setItem('gk_used_test_indexes', JSON.stringify([...used, ...chosen])); } catch(e) {}
+    return chosen;
+}
 
 // ===================== UTILITY HELPERS =====================
 window.safeText = (t) => t ? String(t).replace(/[&<>"]/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])) : '';
@@ -2191,6 +2541,20 @@ window.downloadExpandedWork = () => {
 };
 
 
+function renderPublicPageStats() {
+    const jobCount = (allJobs || []).filter(j => (j.status || 'open') === 'open').length;
+    const workers = (allUsers || []).filter(u => (u.role || '').toLowerCase() === 'worker').length;
+    const employers = (allUsers || []).filter(u => (u.role || '').toLowerCase() === 'employer').length;
+
+    const jobsEl = document.getElementById('home-stat-jobs');
+    const workersEl = document.getElementById('home-stat-workers');
+    const employersEl = document.getElementById('home-stat-employers');
+
+    if(jobsEl) jobsEl.innerText = String(jobCount);
+    if(workersEl) workersEl.innerText = String(workers);
+    if(employersEl) employersEl.innerText = String(employers);
+}
+
 // ===================== NAVIGATION =====================
 window.navigate = (view) => {
     document.querySelectorAll('.view-section').forEach(s => {
@@ -2230,7 +2594,11 @@ function updateBottomNav(view) {
     document.querySelector('.center-job-btn')?.classList.remove('border-branddark');
     
     const map = {
+        home: 'bnav-jobs',
         jobs: 'bnav-jobs',
+        about: 'bnav-jobs',
+        howitworks: 'bnav-jobs',
+        safety: 'bnav-jobs',
         mygigs: 'bnav-mygigs',
         dashboard: 'bnav-dashboard',
         messages: 'bnav-messages',
@@ -2378,8 +2746,8 @@ function updateNavUI() {
 
 // ===================== COMPETENCY TEST =====================
 window.initTest = () => {
-    const shuffled = [...testBank].sort(()=>0.5-Math.random());
-    activeTestQuestions = shuffled.slice(0,4);
+    const chosenIndexes = pickRandomTestIndexes();
+    activeTestQuestions = chosenIndexes.map(i => ({ ...testBank[i], bankIndex: i }));
     
     document.getElementById('dynamic-test-questions').innerHTML = activeTestQuestions.map((q,i) => `
         <div class="bg-slate-50 dark:bg-slate-700/50 p-3 rounded-xl border border-slate-200 dark:border-slate-600">
@@ -2391,14 +2759,17 @@ window.initTest = () => {
         </div>`).join('');
         
     document.getElementById('test-modal').classList.remove('gk-hidden');
-    let time = 120;
+    document.getElementById('test-error-overlay').classList.add('gk-hidden');
+    let time = 180;
     const timer = document.getElementById('test-timer');
+    timer.classList.remove('text-red-600','font-mono');
+    timer.innerText = time;
     if(testInterval) clearInterval(testInterval);
     
     testInterval = setInterval(() => {
         time--; 
         timer.innerText = time;
-        if(time <= 15) timer.classList.add('text-red-600','font-mono');
+        if(time <= 20) timer.classList.add('text-red-600','font-mono');
         if(time <= 0) { 
             clearInterval(testInterval); 
             failTest("Time's up! Retry to apply."); 
@@ -2410,7 +2781,7 @@ document.getElementById('test-form').addEventListener('submit', async e => {
     e.preventDefault();
     if(testInterval) clearInterval(testInterval);
     
-    let passed = true;
+    let correctAnswers = 0;
     for(let i=0; i<activeTestQuestions.length; i++) {
         const q = activeTestQuestions[i]; 
         let ans = '';
@@ -2420,20 +2791,21 @@ document.getElementById('test-form').addEventListener('submit', async e => {
         } else {
             ans = document.getElementById(`tq${i}`)?.value || '';
         }
-        if(ans.trim().toLowerCase() !== q.ans.toString().toLowerCase()) passed = false;
+        if(normalizeTestAnswer(ans) === normalizeTestAnswer(q.ans)) correctAnswers++;
     }
+    const scorePercent = Math.round((correctAnswers / activeTestQuestions.length) * 100);
     
-    if(passed) {
+    if(scorePercent >= TEST_PASS_PERCENT) {
         if(currentUser) {
             await userDoc().update({testPassed:true});
-            addActivity('Competency test passed ✅');
+            addActivity(`Competency test passed ✅ (${scorePercent}%)`);
         }
         if(userData) userData.testPassed = true;
-        showToast('Test passed! You can now apply for premium jobs.','success');
+        showToast(`Test passed at ${scorePercent}%! You can now apply for premium jobs.`,'success');
         document.getElementById('test-modal').classList.add('gk-hidden');
         if(activeView==='dashboard') renderDashboard();
     } else {
-        failTest('Incorrect answers. You need all correct to pass.');
+        failTest(`You scored ${scorePercent}%. Answer at least 9 of 10 questions correctly to pass.`);
     }
 });
 
@@ -2470,10 +2842,19 @@ window.getSkillMatch = (jobSkills, userSkills) => {
 function renderCategoryFilters() {
     const c = document.getElementById('category-filters');
     if(c) {
-        c.innerHTML = categories.map(cat => `
-            <button onclick="setCategory('${cat}')" class="px-3 py-1 rounded-full text-[10px] md:text-xs font-bold border-2 transition ${cat===activeCategory?'bg-brand text-white border-brand':'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-brand hover:text-brand dark:hover:text-brand'}">
-                ${cat}
-            </button>`).join('');
+        const primaryCategories = categories.slice(0, 8);
+        const moreCategories = categories.slice(8);
+        c.innerHTML = `
+            <div class="w-full flex flex-wrap items-center gap-1.5 md:gap-2">
+                ${primaryCategories.map(cat => `
+                    <button onclick="setCategory('${cat}')" class="px-3 py-1 rounded-full text-[10px] md:text-xs font-bold border-2 transition ${cat===activeCategory?'bg-brand text-white border-brand':'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-brand hover:text-brand dark:hover:text-brand'}">
+                        ${cat}
+                    </button>`).join('')}
+                <select id="more-category-filter" onchange="if(this.value){setCategory(this.value)}" class="px-3 py-1 rounded-full text-[10px] md:text-xs font-bold border-2 transition bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 max-w-[140px]">
+                    <option value="">More Categories</option>
+                    ${moreCategories.map(cat => `<option value="${safeText(cat)}" ${cat===activeCategory?'selected':''}>${safeText(cat)}</option>`).join('')}
+                </select>
+            </div>`;
     }
 }
 
@@ -2557,7 +2938,7 @@ window.renderJobs = () => {
             </div>
             <div class="mt-auto">
                 <div class="flex flex-wrap gap-1 mb-2">
-                    ${job.skills?job.skills.split(',').slice(0,3).map(s=>`<span class="bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 px-1.5 py-0.5 rounded text-[8px] font-bold">#${safeText(s.trim())}</span>`).join(''):''}
+                    ${job.skills?job.skills.split(',').slice(0,2).map(s=>`<span class="bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 px-1.5 py-0.5 rounded text-[8px] font-bold">#${safeText(s.trim())}</span>`).join('') + (job.skills.split(',').length>2 ? `<span class="bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 px-1.5 py-0.5 rounded text-[8px] font-bold">+${job.skills.split(',').length-2} more</span>` : ''):''}
                 </div>
                 <div class="flex justify-between items-center text-[9px] text-slate-400 dark:text-slate-500 pt-2 border-t dark:border-slate-700">
                     <span class="flex items-center gap-1"><i data-lucide="map-pin" class="w-2.5 h-2.5"></i>${safeText(job.location||'Remote')}</span>
@@ -3829,22 +4210,34 @@ window.renderDashboard = () => {
     let activeJobsCount = 0;
     let completedJobsCount = 0;
     let applicationsCount = 0;
+    let avgRating = 0;
+    let myCompletedJobs = [];
+    let myReviews = [];
 
     if(userData.role === 'employer') {
         const myJobs = allJobs.filter(j => j.employerId === currentUser.uid);
         activeJobsCount = myJobs.filter(j => j.status === 'open' || j.status === 'in_progress' || j.status === 'in_review').length;
         completedJobsCount = myJobs.filter(j => j.status === 'completed' || j.status === 'paid_out').length;
-        
+        myCompletedJobs = myJobs.filter(j => j.status === 'completed' || j.status === 'paid_out');
+        myReviews = allReviews.filter(r => r.reviewerId === currentUser.uid || r.targetId === currentUser.uid);
+        avgRating = myReviews.length ? Number((myReviews.reduce((a,b)=>a+Number(b.rating||0),0) / myReviews.length).toFixed(1)) : 0;
         document.getElementById('dash-chart-title').innerText = 'Total Spent';
         document.getElementById('earnings-total').innerText = fmtMoney(userData.totalSpent || 0);
     } else {
         applicationsCount = allApps.filter(a => a.workerId === currentUser.uid).length;
         activeJobsCount = allJobs.filter(j => j.workerId === currentUser.uid && (j.status === 'in_progress' || j.status === 'in_review')).length;
         completedJobsCount = allJobs.filter(j => j.workerId === currentUser.uid && (j.status === 'completed' || j.status === 'paid_out')).length;
-        
+        myCompletedJobs = allJobs.filter(j => j.workerId === currentUser.uid && (j.status === 'completed' || j.status === 'paid_out'));
+        myReviews = allReviews.filter(r => r.targetId === currentUser.uid);
+        avgRating = myReviews.length ? Number((myReviews.reduce((a,b)=>a+Number(b.rating||0),0) / myReviews.length).toFixed(1)) : 0;
         document.getElementById('dash-chart-title').innerText = 'Total Earnings';
         document.getElementById('earnings-total').innerText = fmtMoney(userData.totalEarnings || 0);
     }
+
+    const completionRate = userData.completionRate || (completedJobsCount + activeJobsCount ? Math.round((completedJobsCount / Math.max(completedJobsCount + activeJobsCount, 1)) * 100) : 0);
+    const responseTime = userData.responseTime || 'N/A';
+    const memberSince = userData.createdAt ? new Date(userData.createdAt).toLocaleDateString() : '—';
+    const openApplications = allApps.filter(a => (userData.role === 'worker' ? a.workerId === currentUser.uid : a.employerId === currentUser.uid) && a.status === 'pending').length;
 
     const grid = document.getElementById('dashboard-metrics-grid');
     grid.innerHTML = `
@@ -3860,6 +4253,14 @@ window.renderDashboard = () => {
             <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="check-square" class="w-3 h-3 text-emerald-500"></i> Completed</p>
             <p class="text-lg md:text-xl font-display font-black text-slate-800 dark:text-white">${completedJobsCount}</p>
         </div>
+        <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-center">
+            <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="star" class="w-3 h-3 text-amber-500"></i> Rating</p>
+            <p class="text-lg md:text-xl font-display font-black text-slate-800 dark:text-white">${avgRating || 0}</p>
+        </div>
+        <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-center">
+            <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="badge-percent" class="w-3 h-3 text-indigo-500"></i> Completion</p>
+            <p class="text-lg md:text-xl font-display font-black text-slate-800 dark:text-white">${completionRate}%</p>
+        </div>
         ${userData.role === 'worker' ? `
         <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-center">
             <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="send" class="w-3 h-3 text-purple-500"></i> Apps Sent</p>
@@ -3869,6 +4270,18 @@ window.renderDashboard = () => {
             <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="eye" class="w-3 h-3 text-amber-500"></i> Profile Views</p>
             <p class="text-lg md:text-xl font-display font-black text-slate-800 dark:text-white">${userData.profileViews || 0}</p>
         </div>
+        <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-center">
+            <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="clock-3" class="w-3 h-3 text-cyan-500"></i> Response Time</p>
+            <p class="text-sm md:text-base font-display font-black text-slate-800 dark:text-white">${safeText(responseTime)}</p>
+        </div>
+        <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-center">
+            <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="badge-check" class="w-3 h-3 text-emerald-500"></i> Test Status</p>
+            <p class="text-sm md:text-base font-display font-black text-slate-800 dark:text-white">${userData.testPassed ? 'Passed' : 'Pending'}</p>
+        </div>
+        <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-center">
+            <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="banknote" class="w-3 h-3 text-lime-500"></i> Hourly Rate</p>
+            <p class="text-sm md:text-base font-display font-black text-slate-800 dark:text-white">${fmtMoney(userData.rate || 0)}</p>
+        </div>
         ` : `
         <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-center">
             <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="users" class="w-3 h-3 text-purple-500"></i> Talent Pool</p>
@@ -3876,7 +4289,19 @@ window.renderDashboard = () => {
         </div>
         <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-center">
             <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="star" class="w-3 h-3 text-amber-500"></i> Escrow Total</p>
-            <p class="text-lg md:text-xl font-display font-black text-slate-800 dark:text-white">${fmtMoney(allJobs.filter(j=>j.employerId===currentUser.uid && j.status!=='completed').reduce((sum,j)=>sum+Number(j.budget),0))}</p>
+            <p class="text-sm md:text-base font-display font-black text-slate-800 dark:text-white">${fmtMoney(allJobs.filter(j=>j.employerId===currentUser.uid && j.status!=='completed').reduce((sum,j)=>sum+Number(j.budget),0))}</p>
+        </div>
+        <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-center">
+            <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="clipboard-list" class="w-3 h-3 text-cyan-500"></i> Pending Apps</p>
+            <p class="text-lg md:text-xl font-display font-black text-slate-800 dark:text-white">${openApplications}</p>
+        </div>
+        <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-center">
+            <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="map-pinned" class="w-3 h-3 text-rose-500"></i> City</p>
+            <p class="text-sm md:text-base font-display font-black text-slate-800 dark:text-white">${safeText(userData.city || '—')}</p>
+        </div>
+        <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-center">
+            <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="badge-check" class="w-3 h-3 text-emerald-500"></i> Account</p>
+            <p class="text-sm md:text-base font-display font-black text-slate-800 dark:text-white">${userData.isActivated ? 'Active' : 'Pending'}</p>
         </div>
         `}
     `;
@@ -3901,25 +4326,41 @@ window.renderDashboard = () => {
                 `).join('') || '<p class="text-xs text-slate-400 text-center py-4">No recent activity</p>'}
             </div>
         </div>
-        <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
-            <h3 class="font-display font-bold text-sm text-slate-800 dark:text-white mb-3">Quick Actions</h3>
-            <div class="grid grid-cols-2 gap-2">
-                <button onclick="openTopupModal()" class="flex flex-col items-center justify-center gap-2 p-3 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-brand transition group">
-                    <i data-lucide="arrow-up-circle" class="w-5 h-5 text-emerald-500 group-hover:scale-110 transition"></i>
-                    <span class="text-[10px] font-bold">Deposit Funds</span>
-                </button>
-                <button onclick="openPayoutModal()" class="flex flex-col items-center justify-center gap-2 p-3 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-brand transition group">
-                    <i data-lucide="arrow-down-circle" class="w-5 h-5 text-blue-500 group-hover:scale-110 transition"></i>
-                    <span class="text-[10px] font-bold">Withdraw Funds</span>
-                </button>
-                <button onclick="openSettings()" class="flex flex-col items-center justify-center gap-2 p-3 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-brand transition group">
-                    <i data-lucide="user" class="w-5 h-5 text-indigo-500 group-hover:scale-110 transition"></i>
-                    <span class="text-[10px] font-bold">Edit Profile</span>
-                </button>
-                <button onclick="navigate('messages')" class="flex flex-col items-center justify-center gap-2 p-3 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-brand transition group">
-                    <i data-lucide="message-square" class="w-5 h-5 text-purple-500 group-hover:scale-110 transition"></i>
-                    <span class="text-[10px] font-bold">Support Chat</span>
-                </button>
+        <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col gap-3">
+            <div class="bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 p-3">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="font-display font-bold text-sm text-slate-800 dark:text-white">Account Snapshot</h3>
+                    <span class="text-[9px] font-bold uppercase text-slate-400">Member since ${safeText(memberSince)}</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-[10px]">
+                    <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 px-2.5 py-2"><span class="text-slate-400 block">Availability</span><span class="font-bold text-slate-700 dark:text-slate-200">${safeText(userData.availability || (userData.isAvailable ? 'Available' : 'Busy'))}</span></div>
+                    <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 px-2.5 py-2"><span class="text-slate-400 block">City</span><span class="font-bold text-slate-700 dark:text-slate-200">${safeText(userData.city || '—')}</span></div>
+                    <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 px-2.5 py-2"><span class="text-slate-400 block">Education</span><span class="font-bold text-slate-700 dark:text-slate-200">${safeText(userData.education || '—')}</span></div>
+                    <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 px-2.5 py-2"><span class="text-slate-400 block">Experience</span><span class="font-bold text-slate-700 dark:text-slate-200">${Number(userData.experience || 0)} yrs</span></div>
+                    <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 px-2.5 py-2"><span class="text-slate-400 block">Payment</span><span class="font-bold text-slate-700 dark:text-slate-200">${safeText(userData.paymentMethod || '—')}</span></div>
+                    <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 px-2.5 py-2"><span class="text-slate-400 block">Referral Bonus</span><span class="font-bold text-slate-700 dark:text-slate-200">KSh 50</span></div>
+                </div>
+            </div>
+            <div>
+                <h3 class="font-display font-bold text-sm text-slate-800 dark:text-white mb-3">Quick Actions</h3>
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="openTopupModal()" class="flex flex-col items-center justify-center gap-2 p-3 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-brand transition group">
+                        <i data-lucide="arrow-up-circle" class="w-5 h-5 text-emerald-500 group-hover:scale-110 transition"></i>
+                        <span class="text-[10px] font-bold">Deposit Funds</span>
+                    </button>
+                    <button onclick="openPayoutModal()" class="flex flex-col items-center justify-center gap-2 p-3 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-brand transition group">
+                        <i data-lucide="arrow-down-circle" class="w-5 h-5 text-blue-500 group-hover:scale-110 transition"></i>
+                        <span class="text-[10px] font-bold">Withdraw Funds</span>
+                    </button>
+                    <button onclick="openSettings()" class="flex flex-col items-center justify-center gap-2 p-3 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-brand transition group">
+                        <i data-lucide="user" class="w-5 h-5 text-indigo-500 group-hover:scale-110 transition"></i>
+                        <span class="text-[10px] font-bold">Edit Profile</span>
+                    </button>
+                    <button onclick="navigate('messages')" class="flex flex-col items-center justify-center gap-2 p-3 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-brand transition group">
+                        <i data-lucide="message-square" class="w-5 h-5 text-purple-500 group-hover:scale-110 transition"></i>
+                        <span class="text-[10px] font-bold">Support Chat</span>
+                    </button>
+                </div>
             </div>
         </div>
     `;
@@ -3952,7 +4393,9 @@ function generateChartCurve() {
 // ===================== MY GIGS =====================
 window.renderMyGigs = () => {
     const container = document.getElementById('mygigs-container');
-    const filter = document.getElementById('mygigs-filter').value;
+    const filterEl = document.getElementById('mygigs-filter');
+    const filter = myGigsPreferredFilter !== 'all' ? myGigsPreferredFilter : filterEl.value;
+    if(filterEl && filterEl.value !== filter) filterEl.value = filter;
     
     let items = [];
     
@@ -4056,6 +4499,12 @@ window.renderMyGigs = () => {
     }).join('');
     
     lucide.createIcons();
+};
+
+window.openHistoryFromMenu = () => {
+    myGigsPreferredFilter = 'completed';
+    closeTopRightMenus && closeTopRightMenus();
+    navigate('mygigs');
 };
 
 // ===================== BOOKMARKS =====================
@@ -4437,7 +4886,7 @@ window.renderLeaderboard = () => {
                 <img src="${w.avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(w.name)}&background=2563eb&color=fff`}" class="w-10 h-10 rounded-full border-2 border-slate-100">
                 <div>
                     <h4 class="font-bold text-xs text-slate-800 dark:text-white flex items-center gap-1">${safeText(w.name)} <i data-lucide="badge-check" class="w-3 h-3 text-brand"></i></h4>
-                    <p class="text-[10px] text-slate-500">${safeText(w.headline||'Freelancer')}</p>
+                    <p class="text-[10px] text-slate-500">${safeText(w.headline||'Freelancer')} · ${fmtMoney(w.rate||0)}/hr</p>
                 </div>
             </div>
             <div class="text-right">
@@ -4480,6 +4929,23 @@ window.showPublicProfile = (uid) => {
     document.getElementById('profile-modal-skills').innerHTML = skillsList.length 
         ? skillsList.map(s => `<span class="badge bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 text-blue-700 dark:text-blue-300 font-bold">${safeText(s)}</span>`).join('') 
         : '<span class="text-[10px] text-slate-400 italic">None listed</span>';
+
+    const completedJobs = allJobs.filter(j => j.workerId === uid && (j.status === 'completed' || j.status === 'paid_out')).length;
+    const perDay = Number(u.rate || 0) ? Number(u.rate || 0) * 8 : 0;
+    document.getElementById('profile-modal-details').innerHTML = [
+        {label:'Fee / Hour', value: fmtMoney(u.rate || 0)},
+        {label:'Fee / Day', value: fmtMoney(perDay)},
+        {label:'Availability', value: safeText(u.availability || (u.isAvailable ? 'Available' : 'Busy'))},
+        {label:'Experience', value: `${Number(u.experience || 0)} yrs`},
+        {label:'Education', value: safeText(u.education || '—')},
+        {label:'Location', value: safeText(u.city || '—')},
+        {label:'Language 1', value: safeText(u.lang1 || '—')},
+        {label:'Language 2', value: safeText(u.lang2 || '—')},
+        {label:'Response Time', value: safeText(u.responseTime || 'N/A')},
+        {label:'Completion Rate', value: `${Number(u.completionRate || 0)}%`},
+        {label:'Jobs Done', value: String(completedJobs)},
+        {label:'Total Earned', value: fmtMoney(u.totalEarnings || 0)}
+    ].map(item => `<div class="bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 px-2.5 py-2"><span class="text-slate-400 block">${item.label}</span><span class="font-bold text-slate-700 dark:text-slate-200">${item.value}</span></div>`).join('');
 
     // Reviews
     const revs = allReviews.filter(r => r.targetId === uid);
@@ -5163,7 +5629,7 @@ function setupAuthListener() {
             
             setupPublicListeners();
             
-            if(activeView !== 'jobs') navigate('jobs');
+            if(!['home','about','howitworks','safety','jobs','auth'].includes(activeView)) navigate('home');
         }
     });
 }
@@ -5204,6 +5670,7 @@ function setupPublicListeners() {
         
         if(activeView === 'leaderboard') renderLeaderboard();
         if(activeView === 'dashboard' && userData?.role === 'employer') renderDashboard();
+        if(['home','about','howitworks','safety'].includes(activeView)) renderPublicPageStats();
     });
     
     // Platform Settings
@@ -5213,6 +5680,7 @@ function setupPublicListeners() {
             platformSettings = normalizePlatformSettings(snap.data());
         }
         syncPaymentInstructionUI();
+        if(['home','about','howitworks','safety'].includes(activeView)) renderPublicPageStats();
     });
 }
 
@@ -5328,10 +5796,10 @@ window.addEventListener('load', () => {
         document.documentElement.classList.add('dark');
     }
     
-    // Ensure we open explicitly to jobs view immediately on load, unless deep-linked
+    // Ensure we open explicitly to the public home page immediately on load, unless deep-linked
     const params = new URLSearchParams(window.location.search);
     if(!params.get('job') && !params.get('profile')) {
-        navigate('jobs');
+        navigate('home');
     }
     
     // Fallback if network is stuck
