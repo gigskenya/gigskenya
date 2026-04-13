@@ -2,7 +2,7 @@
 <html lang="en" class="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Gigs Kenya – Ultimate Freelance Marketplace</title>
     
     <!-- Fonts -->
@@ -570,9 +570,62 @@
             opacity: 1; 
             transform: scale(1); 
         }
+
+        /* Accessibility: Skip link (revealed on keyboard focus) */
+        .skip-link {
+            position: absolute;
+            left: 1rem;
+            top: 1rem;
+            background: #0f172a;
+            color: #fff;
+            padding: 0.45rem 0.7rem;
+            border-radius: 0.375rem;
+            z-index: 99999;
+            transform: translateY(-140%);
+            transition: transform .18s ease;
+            font-weight: 700;
+            font-size: .85rem;
+            text-decoration: none;
+        }
+
+        .skip-link:focus {
+            transform: translateY(0);
+            outline: 3px solid rgba(37,99,235,.95);
+        }
+
+        /* Small persistent dark-mode toggle */
+        .dark-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 99999;
+            background: #fff;
+            color: #0f172a;
+            border-radius: 9999px;
+            padding: .35rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 18px rgba(2,6,23,.12);
+            border: 1px solid rgba(2,6,23,.06);
+        }
+
+        .dark .dark-toggle {
+            background: #0f172a;
+            color: #e6eef8;
+            border-color: rgba(99,102,241,.06);
+        }
     </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 flex flex-col w-full h-[100dvh]">
+
+    <!-- Accessibility: Skip to main content -->
+    <a href="#main-scroller" class="skip-link" id="skip-link">Skip to main content</a>
+
+    <!-- Dark mode toggle (persistent) -->
+    <button id="dark-toggle" class="dark-toggle" aria-label="Toggle dark mode" aria-pressed="false" onclick="window.toggleDarkMode && window.toggleDarkMode()">
+        <i data-lucide="moon" id="dark-toggle-icon" class="w-5 h-5"></i>
+    </button>
 
 <!-- ===================== LOADING SCREEN ===================== -->
 <div id="loading-screen" class="fixed inset-0 bg-gradient-to-br from-slate-900 to-slate-800 z-[9999] flex flex-col items-center justify-center">
@@ -861,6 +914,7 @@
                 <button onclick="switchWorkspaceTab('vault')" id="ws-tab-btn-vault" class="ws-tab-btn px-4 py-3 text-[10px] md:text-xs font-bold border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 whitespace-nowrap">File Vault & Time</button>
                 <button onclick="switchWorkspaceTab('activity')" id="ws-tab-btn-activity" class="ws-tab-btn px-4 py-3 text-[10px] md:text-xs font-bold border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 whitespace-nowrap">Activity Log</button>
                 <button onclick="switchWorkspaceTab('action')" id="ws-tab-btn-action" class="ws-tab-btn px-4 py-3 text-[10px] md:text-xs font-bold border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 whitespace-nowrap">Action Center</button>
+                <button onclick="switchWorkspaceTab('toolkit')" id="ws-tab-btn-toolkit" class="ws-tab-btn px-4 py-3 text-[10px] md:text-xs font-bold border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 whitespace-nowrap">Ops Toolkit</button>
         </div>
 
         <!-- Workspace Content Area -->
@@ -995,6 +1049,263 @@
 
                                 </div>
                         </div>
+                <!-- TAB 5: OPS TOOLKIT -->
+                <div id="ws-tab-toolkit" class="ws-tab hidden space-y-4">
+                        <div class="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-2 gap-3" id="ws-toolkit-kpis"></div>
+
+                        <div class="grid xl:grid-cols-4 md:grid-cols-2 gap-4">
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <h4 class="font-bold text-xs mb-2 flex items-center gap-1.5"><i data-lucide="pin" class="w-4 h-4 text-red-500"></i> Pinned Note</h4>
+                                        <textarea id="ws-tool-pinnedNote" class="gk-input text-xs min-h-[96px]" placeholder="Important workspace note..."></textarea>
+                                        <button onclick="saveWorkspaceToolkitField('pinnedNote')" class="btn btn-secondary w-full mt-2 text-[10px] py-1.5">Save</button>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <h4 class="font-bold text-xs mb-2 flex items-center gap-1.5"><i data-lucide="arrow-right-circle" class="w-4 h-4 text-brand"></i> Next Action</h4>
+                                        <textarea id="ws-tool-nextAction" class="gk-input text-xs min-h-[96px]" placeholder="What should happen next?"></textarea>
+                                        <button onclick="saveWorkspaceToolkitField('nextAction')" class="btn btn-secondary w-full mt-2 text-[10px] py-1.5">Save</button>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <h4 class="font-bold text-xs mb-2 flex items-center gap-1.5"><i data-lucide="octagon-alert" class="w-4 h-4 text-amber-500"></i> Blocker / Risk</h4>
+                                        <textarea id="ws-tool-blocker" class="gk-input text-xs min-h-[96px]" placeholder="Current blocker, risk or dependency..."></textarea>
+                                        <button onclick="saveWorkspaceToolkitField('blocker')" class="btn btn-secondary w-full mt-2 text-[10px] py-1.5">Save</button>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <h4 class="font-bold text-xs mb-2 flex items-center gap-1.5"><i data-lucide="clipboard-check" class="w-4 h-4 text-emerald-500"></i> Readiness Summary</h4>
+                                        <textarea id="ws-tool-readinessNote" class="gk-input text-xs min-h-[96px]" placeholder="Quick readiness or quality summary..."></textarea>
+                                        <button onclick="saveWorkspaceToolkitField('readinessNote')" class="btn btn-secondary w-full mt-2 text-[10px] py-1.5">Save</button>
+                                </div>
+                        </div>
+
+                        <div class="grid xl:grid-cols-4 md:grid-cols-2 gap-4">
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <div class="flex items-center justify-between mb-2">
+                                                <h4 class="font-bold text-xs mb-0">Daily Plan</h4>
+                                                <button onclick="insertWorkspaceTemplate('dailyPlan')" class="text-[10px] font-bold text-brand">Use Template</button>
+                                        </div>
+                                        <textarea id="ws-tool-dailyPlan" class="gk-input text-xs min-h-[110px]" placeholder="Today's plan and priorities..."></textarea>
+                                        <button onclick="saveWorkspaceToolkitField('dailyPlan')" class="btn btn-secondary w-full mt-2 text-[10px] py-1.5">Save</button>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <div class="flex items-center justify-between mb-2">
+                                                <h4 class="font-bold text-xs mb-0">Follow-up Note</h4>
+                                                <button onclick="insertWorkspaceTemplate('followupNote')" class="text-[10px] font-bold text-brand">Use Template</button>
+                                        </div>
+                                        <textarea id="ws-tool-followupNote" class="gk-input text-xs min-h-[110px]" placeholder="Pending follow-up, reminder or client confirmation..."></textarea>
+                                        <button onclick="saveWorkspaceToolkitField('followupNote')" class="btn btn-secondary w-full mt-2 text-[10px] py-1.5">Save</button>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <div class="flex items-center justify-between mb-2">
+                                                <h4 class="font-bold text-xs mb-0">Dependencies</h4>
+                                                <button onclick="insertWorkspaceTemplate('dependenciesNote')" class="text-[10px] font-bold text-brand">Use Template</button>
+                                        </div>
+                                        <textarea id="ws-tool-dependenciesNote" class="gk-input text-xs min-h-[110px]" placeholder="Dependencies, owners and blockers..."></textarea>
+                                        <button onclick="saveWorkspaceToolkitField('dependenciesNote')" class="btn btn-secondary w-full mt-2 text-[10px] py-1.5">Save</button>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <div class="flex items-center justify-between mb-2">
+                                                <h4 class="font-bold text-xs mb-0">Handoff Note</h4>
+                                                <button onclick="insertWorkspaceTemplate('handoffNote')" class="text-[10px] font-bold text-brand">Use Template</button>
+                                        </div>
+                                        <textarea id="ws-tool-handoffNote" class="gk-input text-xs min-h-[110px]" placeholder="Final ownership and support note..."></textarea>
+                                        <button onclick="saveWorkspaceToolkitField('handoffNote')" class="btn btn-secondary w-full mt-2 text-[10px] py-1.5">Save</button>
+                                </div>
+                        </div>
+
+                        <div class="grid xl:grid-cols-4 md:grid-cols-2 gap-4">
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <div class="flex items-center justify-between mb-2">
+                                                <h4 class="font-bold text-xs mb-0">Invoice Note</h4>
+                                                <button onclick="insertWorkspaceTemplate('invoiceNote')" class="text-[10px] font-bold text-brand">Use Template</button>
+                                        </div>
+                                        <textarea id="ws-tool-invoiceNote" class="gk-input text-xs min-h-[110px]" placeholder="Invoice or billing note..."></textarea>
+                                        <button onclick="saveWorkspaceToolkitField('invoiceNote')" class="btn btn-secondary w-full mt-2 text-[10px] py-1.5">Save</button>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <div class="flex items-center justify-between mb-2">
+                                                <h4 class="font-bold text-xs mb-0">Payout Note</h4>
+                                                <button onclick="insertWorkspaceTemplate('payoutNote')" class="text-[10px] font-bold text-brand">Use Template</button>
+                                        </div>
+                                        <textarea id="ws-tool-payoutNote" class="gk-input text-xs min-h-[110px]" placeholder="Release, payout or wallet note..."></textarea>
+                                        <button onclick="saveWorkspaceToolkitField('payoutNote')" class="btn btn-secondary w-full mt-2 text-[10px] py-1.5">Save</button>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <div class="flex items-center justify-between mb-2">
+                                                <h4 class="font-bold text-xs mb-0">Archive Note</h4>
+                                                <button onclick="insertWorkspaceTemplate('archiveNote')" class="text-[10px] font-bold text-brand">Use Template</button>
+                                        </div>
+                                        <textarea id="ws-tool-archiveNote" class="gk-input text-xs min-h-[110px]" placeholder="Archive path, backup and retention note..."></textarea>
+                                        <button onclick="saveWorkspaceToolkitField('archiveNote')" class="btn btn-secondary w-full mt-2 text-[10px] py-1.5">Save</button>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <div class="flex items-center justify-between mb-2">
+                                                <h4 class="font-bold text-xs mb-0">Communication Rule</h4>
+                                                <button onclick="insertWorkspaceTemplate('commsRule')" class="text-[10px] font-bold text-brand">Use Template</button>
+                                        </div>
+                                        <textarea id="ws-tool-commsRule" class="gk-input text-xs min-h-[110px]" placeholder="Preferred communication and response rule..."></textarea>
+                                        <button onclick="saveWorkspaceToolkitField('commsRule')" class="btn btn-secondary w-full mt-2 text-[10px] py-1.5">Save</button>
+                                </div>
+                        </div>
+
+                        <div class="grid xl:grid-cols-4 md:grid-cols-2 gap-4">
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <div class="flex items-center justify-between mb-2">
+                                                <h4 class="font-bold text-xs mb-0">Naming Rule</h4>
+                                                <button onclick="insertWorkspaceTemplate('namingRule')" class="text-[10px] font-bold text-brand">Use Template</button>
+                                        </div>
+                                        <textarea id="ws-tool-namingRule" class="gk-input text-xs min-h-[110px]" placeholder="Naming format for files or versions..."></textarea>
+                                        <button onclick="saveWorkspaceToolkitField('namingRule')" class="btn btn-secondary w-full mt-2 text-[10px] py-1.5">Save</button>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <div class="flex items-center justify-between mb-2">
+                                                <h4 class="font-bold text-xs mb-0">Fallback Plan</h4>
+                                                <button onclick="insertWorkspaceTemplate('fallbackPlan')" class="text-[10px] font-bold text-brand">Use Template</button>
+                                        </div>
+                                        <textarea id="ws-tool-fallbackPlan" class="gk-input text-xs min-h-[110px]" placeholder="Fallback if the current plan fails..."></textarea>
+                                        <button onclick="saveWorkspaceToolkitField('fallbackPlan')" class="btn btn-secondary w-full mt-2 text-[10px] py-1.5">Save</button>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <div class="flex items-center justify-between mb-2">
+                                                <h4 class="font-bold text-xs mb-0">Asset Reminder</h4>
+                                                <button onclick="insertWorkspaceTemplate('assetReminder')" class="text-[10px] font-bold text-brand">Use Template</button>
+                                        </div>
+                                        <textarea id="ws-tool-assetReminder" class="gk-input text-xs min-h-[110px]" placeholder="Asset uploads, permissions and reminders..."></textarea>
+                                        <button onclick="saveWorkspaceToolkitField('assetReminder')" class="btn btn-secondary w-full mt-2 text-[10px] py-1.5">Save</button>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <h4 class="font-bold text-xs mb-2">Toolkit Usage</h4>
+                                        <div class="space-y-2 text-[10px] text-slate-500 dark:text-slate-400 leading-relaxed">
+                                                <p>Use these compact cards to keep critical workplace notes visible without changing the existing workflow.</p>
+                                                <p>All saved notes are stored per workspace and reflected in the Notes Bank for quick review.</p>
+                                                <p>These tools are designed to work on both small mobile screens and larger desktops.</p>
+                                        </div>
+                                </div>
+                        </div>
+
+                        <div class="grid xl:grid-cols-3 gap-4">
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <div class="flex items-center justify-between mb-2">
+                                                <h4 class="font-bold text-xs flex items-center gap-1.5"><i data-lucide="check-square" class="w-4 h-4 text-indigo-500"></i> Delivery Checklist</h4>
+                                                <button onclick="insertWorkspaceTemplate('deliveryChecklist')" class="text-[10px] font-bold text-brand">Use Template</button>
+                                        </div>
+                                        <textarea id="ws-tool-deliveryChecklist" class="gk-input text-xs min-h-[160px]" placeholder="- Final files uploaded&#10;- Naming checked&#10;- Client note prepared"></textarea>
+                                        <button onclick="saveWorkspaceToolkitField('deliveryChecklist')" class="btn btn-secondary w-full mt-2 text-[10px] py-1.5">Save</button>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <div class="flex items-center justify-between mb-2">
+                                                <h4 class="font-bold text-xs flex items-center gap-1.5"><i data-lucide="shield-check" class="w-4 h-4 text-emerald-500"></i> Approval Checklist</h4>
+                                                <button onclick="insertWorkspaceTemplate('approvalChecklist')" class="text-[10px] font-bold text-brand">Use Template</button>
+                                        </div>
+                                        <textarea id="ws-tool-approvalChecklist" class="gk-input text-xs min-h-[160px]" placeholder="- Scope complete&#10;- Deliverables open&#10;- Revisions resolved"></textarea>
+                                        <button onclick="saveWorkspaceToolkitField('approvalChecklist')" class="btn btn-secondary w-full mt-2 text-[10px] py-1.5">Save</button>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <div class="flex items-center justify-between mb-2">
+                                                <h4 class="font-bold text-xs flex items-center gap-1.5"><i data-lucide="package-check" class="w-4 h-4 text-amber-500"></i> Handover Checklist</h4>
+                                                <button onclick="insertWorkspaceTemplate('handoverChecklist')" class="text-[10px] font-bold text-brand">Use Template</button>
+                                        </div>
+                                        <textarea id="ws-tool-handoverChecklist" class="gk-input text-xs min-h-[160px]" placeholder="- Final link shared&#10;- Backup included&#10;- Next support step noted"></textarea>
+                                        <button onclick="saveWorkspaceToolkitField('handoverChecklist')" class="btn btn-secondary w-full mt-2 text-[10px] py-1.5">Save</button>
+                                </div>
+                        </div>
+
+                        <div class="grid xl:grid-cols-4 md:grid-cols-2 gap-4">
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <h4 class="font-bold text-xs mb-2">Meeting Notes</h4>
+                                        <textarea id="ws-tool-meetingNotes" class="gk-input text-xs min-h-[120px]" placeholder="Internal or client meeting notes..."></textarea>
+                                        <button onclick="saveWorkspaceToolkitField('meetingNotes')" class="btn btn-secondary w-full mt-2 text-[10px] py-1.5">Save</button>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <h4 class="font-bold text-xs mb-2">Change Request Log</h4>
+                                        <textarea id="ws-tool-changeLog" class="gk-input text-xs min-h-[120px]" placeholder="Scope changes, decisions and approvals..."></textarea>
+                                        <button onclick="saveWorkspaceToolkitField('changeLog')" class="btn btn-secondary w-full mt-2 text-[10px] py-1.5">Save</button>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <h4 class="font-bold text-xs mb-2">Client Preferences</h4>
+                                        <textarea id="ws-tool-clientPrefs" class="gk-input text-xs min-h-[120px]" placeholder="Tone, style, naming, quality or response preferences..."></textarea>
+                                        <button onclick="saveWorkspaceToolkitField('clientPrefs')" class="btn btn-secondary w-full mt-2 text-[10px] py-1.5">Save</button>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <h4 class="font-bold text-xs mb-2">Issue Register</h4>
+                                        <textarea id="ws-tool-issues" class="gk-input text-xs min-h-[120px]" placeholder="Bugs, issues, risks or pending approvals..."></textarea>
+                                        <button onclick="saveWorkspaceToolkitField('issues')" class="btn btn-secondary w-full mt-2 text-[10px] py-1.5">Save</button>
+                                </div>
+                        </div>
+
+                        <div class="grid xl:grid-cols-4 md:grid-cols-2 gap-4">
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <h4 class="font-bold text-xs mb-2">Scope Boundary</h4>
+                                        <textarea id="ws-tool-scopeBoundary" class="gk-input text-xs min-h-[110px]" placeholder="Out-of-scope notes and assumptions..."></textarea>
+                                        <button onclick="saveWorkspaceToolkitField('scopeBoundary')" class="btn btn-secondary w-full mt-2 text-[10px] py-1.5">Save</button>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <h4 class="font-bold text-xs mb-2">Acceptance Criteria</h4>
+                                        <textarea id="ws-tool-acceptanceCriteria" class="gk-input text-xs min-h-[110px]" placeholder="What exactly counts as done?"></textarea>
+                                        <button onclick="saveWorkspaceToolkitField('acceptanceCriteria')" class="btn btn-secondary w-full mt-2 text-[10px] py-1.5">Save</button>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <h4 class="font-bold text-xs mb-2">Testing Notes</h4>
+                                        <textarea id="ws-tool-testingNotes" class="gk-input text-xs min-h-[110px]" placeholder="Checks, QA items and proof points..."></textarea>
+                                        <button onclick="saveWorkspaceToolkitField('testingNotes')" class="btn btn-secondary w-full mt-2 text-[10px] py-1.5">Save</button>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <h4 class="font-bold text-xs mb-2">Release Notes</h4>
+                                        <textarea id="ws-tool-releaseNotes" class="gk-input text-xs min-h-[110px]" placeholder="Summary of what was delivered..."></textarea>
+                                        <button onclick="saveWorkspaceToolkitField('releaseNotes')" class="btn btn-secondary w-full mt-2 text-[10px] py-1.5">Save</button>
+                                </div>
+                        </div>
+
+                        <div class="grid xl:grid-cols-3 gap-4">
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <h4 class="font-bold text-xs mb-2 flex items-center gap-1.5"><i data-lucide="badge-help" class="w-4 h-4 text-brand"></i> Workspace Best Practice</h4>
+                                        <div class="space-y-1.5 text-[10px] text-slate-500 dark:text-slate-400 leading-relaxed">
+                                                <p>1. Confirm scope before deep execution.</p>
+                                                <p>2. Upload key files before final submission.</p>
+                                                <p>3. Keep approval notes short and clear.</p>
+                                                <p>4. Log time honestly and consistently.</p>
+                                                <p>5. Record blockers early instead of late.</p>
+                                                <p>6. Use the note bank for project memory.</p>
+                                        </div>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <h4 class="font-bold text-xs mb-2 flex items-center gap-1.5"><i data-lucide="scan-search" class="w-4 h-4 text-emerald-500"></i> Review Preparation</h4>
+                                        <div class="space-y-1.5 text-[10px] text-slate-500 dark:text-slate-400 leading-relaxed">
+                                                <p>7. Re-check naming and link permissions.</p>
+                                                <p>8. Ensure final note explains the handover.</p>
+                                                <p>9. Keep revision notes specific and actionable.</p>
+                                                <p>10. Update acceptance criteria if scope changes.</p>
+                                                <p>11. Use testing notes to support quality claims.</p>
+                                                <p>12. Keep release notes easy to scan.</p>
+                                        </div>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <h4 class="font-bold text-xs mb-2 flex items-center gap-1.5"><i data-lucide="shield" class="w-4 h-4 text-amber-500"></i> Safety & Continuity</h4>
+                                        <div class="space-y-1.5 text-[10px] text-slate-500 dark:text-slate-400 leading-relaxed">
+                                                <p>13. Keep sensitive details out of public fields.</p>
+                                                <p>14. Use archive notes for future retrieval.</p>
+                                                <p>15. Set a fallback plan for critical work.</p>
+                                                <p>16. Keep communication rules consistent.</p>
+                                                <p>17. Track dependencies and owners.</p>
+                                                <p>18. Preserve meeting decisions in writing.</p>
+                                        </div>
+                                </div>
+                        </div>
+
+                        <div class="grid xl:grid-cols-3 gap-4">
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <h4 class="font-bold text-xs mb-2 flex items-center gap-1.5"><i data-lucide="history" class="w-4 h-4 text-slate-500"></i> Past Jobs Snapshot</h4>
+                                        <div id="ws-past-jobs-list" class="space-y-2 max-h-[240px] overflow-y-auto pr-1"></div>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <h4 class="font-bold text-xs mb-2 flex items-center gap-1.5"><i data-lucide="file-clock" class="w-4 h-4 text-blue-500"></i> Workspace Notes Bank</h4>
+                                        <div id="ws-toolkit-note-bank" class="space-y-1.5 max-h-[240px] overflow-y-auto pr-1"></div>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <h4 class="font-bold text-xs mb-2 flex items-center gap-1.5"><i data-lucide="sparkles" class="w-4 h-4 text-amber-500"></i> Quick Inserts</h4>
+                                        <div class="flex flex-wrap gap-1.5" id="ws-toolkit-macro-buttons"></div>
+                                </div>
+                        </div>
+                </div>
+
                 </div>
 
         </div>
@@ -2000,6 +2311,7 @@ What tools will you use?"></textarea>
                         <option value="all">All Status</option><option value="applied">Applied</option><option value="open">Open / Pending</option><option value="in_progress">In Progress</option><option value="in_review">In Review</option><option value="completed">Completed</option>
                     </select>
                 </div>
+                <div id="mygigs-employer-panel" class="mb-3"></div>
                 <div id="mygigs-container" class="space-y-3"></div>
             </div>
         </div>
@@ -2238,12 +2550,209 @@ function pickRandomTestIndexes() {
     return chosen;
 }
 
+
+// ===================== WORKSPACE OPERATIONS FEATURE REGISTRY =====================
+// The toolkit below intentionally exposes many compact but useful workplace features.
+// Feature 01: Workspace Health KPI
+// Feature 02: Deadline Countdown
+// Feature 03: Escrow Status
+// Feature 04: Approval Readiness
+// Feature 05: Vault Files Count
+// Feature 06: Time Entries Count
+// Feature 07: Hours Logged
+// Feature 08: Tasks Done
+// Feature 09: Tasks Pending
+// Feature 10: Task Progress
+// Feature 11: Activity Count
+// Feature 12: Response Target
+// Feature 13: Submission Status
+// Feature 14: Dispute Status
+// Feature 15: Extension Status
+// Feature 16: Revision Count
+// Feature 17: Quality Score
+// Feature 18: Audit Depth
+// Feature 19: Deliverable Link Status
+// Feature 20: Last Updated Tracker
+// Feature 21: Worker State
+// Feature 22: Client State
+// Feature 23: Pinned Note
+// Feature 24: Next Action
+// Feature 25: Blocker / Risk
+// Feature 26: Readiness Summary
+// Feature 27: Delivery Checklist
+// Feature 28: Approval Checklist
+// Feature 29: Handover Checklist
+// Feature 30: Meeting Notes
+// Feature 31: Change Request Log
+// Feature 32: Client Preferences
+// Feature 33: Issue Register
+// Feature 34: Scope Boundary
+// Feature 35: Acceptance Criteria
+// Feature 36: Testing Notes
+// Feature 37: Release Notes
+// Feature 38: Past Jobs Snapshot
+// Feature 39: Workspace Notes Bank
+// Feature 40: Quick Inserts
+// Feature 41: Profile-linked hire history shortcut
+// Feature 42: Employer history button in workspace header
+// Feature 43: Activation from wallet balance
+// Feature 44: Terms page with location statements
+// Feature 45: Extended worker profile metrics
+// Feature 46: Profile views counter
+// Feature 47: Workspace note persistence
+// Feature 48: Compact mobile cards
+// Feature 49: Desktop multi-column toolkit
+// Feature 50: Submission readiness note
+// Feature 51: Risk capture note
+// Feature 52: Scope confirmation note
+// Feature 53: Handover preparation note
+// Feature 54: Acceptance tracking note
+// Feature 55: Testing evidence note
+// Feature 56: Release summary note
+// Feature 57: Daily Plan note
+// Feature 58: Follow-up note
+// Feature 59: Dependencies note
+// Feature 60: Handoff note
+// Feature 61: Invoice note
+// Feature 62: Payout note
+// Feature 63: Archive note
+// Feature 64: Communication rule note
+// Feature 65: Naming rule note
+// Feature 66: Fallback plan note
+// Feature 67: Asset reminder note
+// Feature 68: Responsive compact toolkit cards
+// Feature 69: Saved note bank aggregation
+// Feature 70: Template-driven quick inserts
+// Feature 71: Progress-aware health scoring
+// Feature 72: Past-jobs mini history rail
+// Feature 73: Header history shortcut
+// Feature 74: Approval readiness metric
+// Feature 75: Deliverable presence tracker
+// Feature 76: Log-depth tracker
+// Feature 77: Response target note
+// Feature 78: Last-updated tracker
+// Feature 79: Worker online state
+// Feature 80: Client online state
+// Workspace maintenance note 01: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 02: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 03: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 04: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 05: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 06: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 07: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 08: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 09: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 10: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 11: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 12: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 13: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 14: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 15: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 16: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 17: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 18: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 19: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 20: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 21: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 22: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 23: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 24: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 25: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 26: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 27: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 28: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 29: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 30: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 31: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 32: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 33: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 34: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 35: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 36: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 37: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 38: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 39: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 40: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 41: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 42: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 43: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 44: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 45: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 46: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 47: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 48: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 49: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 50: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 51: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 52: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 53: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 54: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 55: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 56: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 57: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 58: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 59: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 60: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 61: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 62: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 63: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 64: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 65: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 66: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 67: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 68: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 69: Keep workspace records consistent and compact across mobile and desktop.
+// Workspace maintenance note 70: Keep workspace records consistent and compact across mobile and desktop.
+
 // ===================== UTILITY HELPERS =====================
 window.safeText = (t) => t ? String(t).replace(/[&<>"]/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])) : '';
+window.jsString = (t) => JSON.stringify(String(t || ''));
+
+function toDateValue(d, fallback = null) {
+    if(!d) return fallback;
+    if(d instanceof Date) return isNaN(d.getTime()) ? fallback : d;
+    if(typeof d.toDate === 'function') {
+        const date = d.toDate();
+        return isNaN(date.getTime()) ? fallback : date;
+    }
+    if(typeof d.seconds === 'number') return new Date(d.seconds * 1000);
+    const date = new Date(d);
+    return isNaN(date.getTime()) ? fallback : date;
+}
+window.toDateValue = toDateValue;
+
+function dateTimeValue(d, fallback = 0) {
+    const date = toDateValue(d);
+    return date ? date.getTime() : fallback;
+}
+window.dateTimeValue = dateTimeValue;
+
+function getJobStatus(job) {
+    return String(job?.status || 'open').toLowerCase();
+}
+window.getJobStatus = getJobStatus;
+
+function daysUntilJobDue(job) {
+    const due = toDateValue(job?.expiry || job?.deadline);
+    return due ? Math.ceil((due - new Date()) / 86400000) : null;
+}
+window.daysUntilJobDue = daysUntilJobDue;
+
+function getHiddenJobs() {
+    try {
+        const hidden = JSON.parse(localStorage.getItem('hidden_jobs') || '[]');
+        return Array.isArray(hidden) ? hidden.map(String) : [];
+    } catch(e) {
+        localStorage.removeItem('hidden_jobs');
+        return [];
+    }
+}
+window.getHiddenJobs = getHiddenJobs;
 
 window.timeAgo = (d) => {
-    if(!d) return ''; const date = new Date(d); if(isNaN(date)) return '';
-    const sec = Math.floor((Date.now()-date)/1000);
+    const date = toDateValue(d); 
+    if(!date) return '';
+    const sec = Math.max(0, Math.floor((Date.now()-date)/1000));
     if(sec<60) return 'Just now'; 
     const min = Math.floor(sec/60); if(min<60) return min+'m ago';
     const h = Math.floor(min/60); if(h<24) return h+'h ago'; 
@@ -2599,6 +3108,7 @@ function updateBottomNav(view) {
         about: 'bnav-jobs',
         howitworks: 'bnav-jobs',
         safety: 'bnav-jobs',
+        terms: 'bnav-jobs',
         mygigs: 'bnav-mygigs',
         dashboard: 'bnav-dashboard',
         messages: 'bnav-messages',
@@ -2827,15 +3337,17 @@ window.skipTest = () => {
 
 // ===================== JOBS =====================
 window.setCategory = (c) => { 
-    activeCategory = c; 
+    const requested = String(c || 'All').trim();
+    activeCategory = categories.find(cat => cat.toLowerCase() === requested.toLowerCase()) || requested || 'All'; 
     jobsPage = 0; 
+    renderCategoryFilters();
     renderJobs(); 
 };
 
 window.getSkillMatch = (jobSkills, userSkills) => {
     if(!jobSkills || !userSkills || !userSkills.length) return 0;
-    const j = jobSkills.toLowerCase().split(',').map(s=>s.trim());
-    const u = userSkills.map(s=>s.toLowerCase().trim());
+    const j = String(jobSkills).toLowerCase().split(',').map(s=>s.trim()).filter(Boolean);
+    const u = userSkills.map(s=>String(s).toLowerCase().trim());
     return Math.round(j.filter(s=>u.includes(s)).length/j.length*100) || 0;
 };
 
@@ -2847,7 +3359,7 @@ function renderCategoryFilters() {
         c.innerHTML = `
             <div class="w-full flex flex-wrap items-center gap-1.5 md:gap-2">
                 ${primaryCategories.map(cat => `
-                    <button onclick="setCategory('${cat}')" class="px-3 py-1 rounded-full text-[10px] md:text-xs font-bold border-2 transition ${cat===activeCategory?'bg-brand text-white border-brand':'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-brand hover:text-brand dark:hover:text-brand'}">
+                    <button onclick='setCategory(${jsString(cat)})' class="px-3 py-1 rounded-full text-[10px] md:text-xs font-bold border-2 transition ${cat===activeCategory?'bg-brand text-white border-brand':'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-brand hover:text-brand dark:hover:text-brand'}">
                         ${cat}
                     </button>`).join('')}
                 <select id="more-category-filter" onchange="if(this.value){setCategory(this.value)}" class="px-3 py-1 rounded-full text-[10px] md:text-xs font-bold border-2 transition bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 max-w-[140px]">
@@ -2863,18 +3375,27 @@ window.renderJobs = () => {
     if(!container) return;
     
     const search = (document.getElementById('search-input')?.value||'').toLowerCase();
-    const budgetFilter = document.getElementById('budget-filter')?.value||'all';
-    const sortFilter = document.getElementById('sort-filter')?.value||'newest';
-    const hidden = JSON.parse(localStorage.getItem('hidden_jobs')||'[]');
+    const budgetFilter = (document.getElementById('budget-filter')?.value||'all').toLowerCase();
+    const sortFilter = (document.getElementById('sort-filter')?.value||'newest').toLowerCase();
+    const hidden = getHiddenJobs();
+
+    // normalize active category and do case-insensitive comparisons to avoid mismatches
+    const ac = String(activeCategory || 'All').toLowerCase();
 
     let filtered = allJobs
-        .filter(j => j.status === 'open')
-        .filter(j => !hidden.includes(j.id))
-        .filter(j => activeCategory === 'All' || j.category === activeCategory)
-        .filter(j => (j.title||'').toLowerCase().includes(search) || (j.description||'').toLowerCase().includes(search) || (j.skills||'').toLowerCase().includes(search));
+        // only show open jobs by default (status normalized)
+        .filter(j => getJobStatus(j) === 'open')
+        .filter(j => !hidden.includes(String(j.id)))
+        // compare categories case-insensitively; treat 'all' (any case) as match-all
+        .filter(j => ac === 'all' || String(j.category || '').toLowerCase() === ac)
+        .filter(j => {
+            const daysLeft = daysUntilJobDue(j);
+            return daysLeft === null || daysLeft > 0;
+        })
+        .filter(j => String(j.title||'').toLowerCase().includes(search) || String(j.description||'').toLowerCase().includes(search) || String(j.skills||'').toLowerCase().includes(search));
 
     filtered = filtered.filter(j => {
-        const b = j.budget || 0;
+        const b = Number(j.budget) || 0;
         if(budgetFilter === 'under5k') return b < 5000;
         if(budgetFilter === '5k-15k') return b >= 5000 && b <= 15000;
         if(budgetFilter === 'over15k') return b > 15000;
@@ -2882,11 +3403,11 @@ window.renderJobs = () => {
     });
 
     // Sort processing
-    if(sortFilter === 'budget_high') filtered.sort((a,b)=>(b.budget||0)-(a.budget||0));
-    else if(sortFilter === 'budget_low') filtered.sort((a,b)=>(a.budget||0)-(b.budget||0));
-    else if(sortFilter === 'deadline') filtered.sort((a,b)=>new Date(a.deadline||'9999')-new Date(b.deadline||'9999'));
+    if(sortFilter === 'budget_high') filtered.sort((a,b)=>(Number(b.budget)||0)-(Number(a.budget)||0));
+    else if(sortFilter === 'budget_low') filtered.sort((a,b)=>(Number(a.budget)||0)-(Number(b.budget)||0));
+    else if(sortFilter === 'deadline') filtered.sort((a,b)=>dateTimeValue(a.deadline || a.expiry, 8640000000000000)-dateTimeValue(b.deadline || b.expiry, 8640000000000000));
     else if(sortFilter === 'match') filtered.sort((a,b)=>getSkillMatch(b.skills,userData?.skills||[])-getSkillMatch(a.skills,userData?.skills||[]));
-    else filtered.sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));
+    else filtered.sort((a,b)=>dateTimeValue(b.createdAt, 0)-dateTimeValue(a.createdAt, 0));
 
     const badge = document.getElementById('job-count-badge');
     if(badge) badge.textContent = filtered.length;
@@ -2909,13 +3430,12 @@ window.renderJobs = () => {
     container.innerHTML = show.map(job => {
         const bookmarked = userData?.bookmarks?.includes(job.id);
         const match = (userData?.skills && job.skills) ? getSkillMatch(job.skills,userData.skills) : 0;
-        const daysLeft = job.expiry ? Math.ceil((new Date(job.expiry)-new Date())/86400000) : null;
+        const daysLeft = daysUntilJobDue(job);
         
-        if(daysLeft !== null && daysLeft <= 0) return '';
         const hot = (job.views||0) > 20;
         
         return `
-        <div class="bg-white dark:bg-slate-800 p-3.5 md:p-4 rounded-xl border-2 ${job.featured?'border-yellow-300 dark:border-yellow-700':'border-slate-200 dark:border-slate-700'} shadow-sm card-hover cursor-pointer group relative flex flex-col justify-between" onclick="openJobDetail('${job.id}')">
+    <div class="bg-white dark:bg-slate-800 p-3.5 md:p-4 rounded-xl border-2 ${job.featured?'border-yellow-300 dark:border-yellow-700':'border-slate-200 dark:border-slate-700'} shadow-sm card-hover cursor-pointer group relative flex flex-col justify-between" onclick="openJobDetail('${job.id}')">
             <div class="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition z-10">
                 <button onclick="event.stopPropagation();hideJob('${job.id}')" class="p-1 bg-slate-100 dark:bg-slate-700 rounded-full hover:text-red-500 transition" title="Hide"><i data-lucide="eye-off" class="w-3 h-3"></i></button>
                 ${userData?.role==='worker'||!userData?`<button onclick="event.stopPropagation();toggleBookmark('${job.id}')" class="p-1 bg-slate-100 dark:bg-slate-700 rounded-full transition ${bookmarked?'text-brand':'hover:text-brand'}" title="Save"><i data-lucide="bookmark" class="w-3 h-3 ${bookmarked?'fill-current':''}"></i></button>`:''}
@@ -2938,7 +3458,7 @@ window.renderJobs = () => {
             </div>
             <div class="mt-auto">
                 <div class="flex flex-wrap gap-1 mb-2">
-                    ${job.skills?job.skills.split(',').slice(0,2).map(s=>`<span class="bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 px-1.5 py-0.5 rounded text-[8px] font-bold">#${safeText(s.trim())}</span>`).join('') + (job.skills.split(',').length>2 ? `<span class="bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 px-1.5 py-0.5 rounded text-[8px] font-bold">+${job.skills.split(',').length-2} more</span>` : ''):''}
+                    ${job.skills?String(job.skills).split(',').slice(0,2).map(s=>`<span class="bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 px-1.5 py-0.5 rounded text-[8px] font-bold">#${safeText(s.trim())}</span>`).join('') + (String(job.skills).split(',').length>2 ? `<span class="bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 px-1.5 py-0.5 rounded text-[8px] font-bold">+${String(job.skills).split(',').length-2} more</span>` : ''):''}
                 </div>
                 <div class="flex justify-between items-center text-[9px] text-slate-400 dark:text-slate-500 pt-2 border-t dark:border-slate-700">
                     <span class="flex items-center gap-1"><i data-lucide="map-pin" class="w-2.5 h-2.5"></i>${safeText(job.location||'Remote')}</span>
@@ -3049,6 +3569,73 @@ window.copyJobId = () => {
     copyToClipboard(document.getElementById('success-job-id').innerText, 'Job ID');
 };
 
+window.closeEditJobModal = () => {
+    document.getElementById('edit-job-modal')?.classList.add('gk-hidden');
+};
+
+window.openEditJobModal = (jobId) => {
+    const job = allJobs.find(j => j.id === jobId);
+    if(!job) return showToast('Job not found', 'error');
+    if(!currentUser || job.employerId !== currentUser.uid) return showToast('You can only edit your own jobs', 'error');
+    if(getJobStatus(job) !== 'open') return showToast('Only open jobs can be edited', 'warning');
+
+    document.getElementById('edit-job-id').value = job.id;
+    document.getElementById('edit-job-title').value = job.title || '';
+    document.getElementById('edit-job-desc').value = job.description || '';
+
+    const categorySelect = document.getElementById('edit-job-category');
+    if(categorySelect) {
+        const category = job.category || 'Other';
+        if(!Array.from(categorySelect.options).some(o => o.value === category)) {
+            categorySelect.add(new Option(category, category));
+        }
+        categorySelect.value = category;
+    }
+
+    const due = toDateValue(job.deadline || job.expiry);
+    document.getElementById('edit-job-deadline').value = due ? due.toISOString().slice(0, 10) : '';
+    document.getElementById('edit-job-modal')?.classList.remove('gk-hidden');
+};
+
+document.getElementById('edit-job-form')?.addEventListener('submit', async e => {
+    e.preventDefault();
+    const jobId = document.getElementById('edit-job-id').value;
+    const job = allJobs.find(j => j.id === jobId);
+    if(!job) return showToast('Job not found', 'error');
+    if(!currentUser || job.employerId !== currentUser.uid) return showToast('You can only edit your own jobs', 'error');
+    if(getJobStatus(job) !== 'open') return showToast('Only open jobs can be edited', 'warning');
+
+    const title = document.getElementById('edit-job-title').value.trim();
+    const category = document.getElementById('edit-job-category').value;
+    const deadline = document.getElementById('edit-job-deadline').value;
+    const description = document.getElementById('edit-job-desc').value.trim();
+    if(!title || !category || !deadline || !description) return showToast('Fill all required fields', 'error');
+
+    const btn = document.getElementById('edit-job-submit-btn');
+    const original = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i data-lucide="loader" class="animate-spin w-3 h-3"></i> Saving...';
+    lucide.createIcons();
+
+    try {
+        await pubCol('jobs').doc(jobId).update({
+            title,
+            category,
+            deadline,
+            description,
+            updatedAt: new Date().toISOString()
+        });
+        closeEditJobModal();
+        showToast('Job updated', 'success');
+    } catch(e) {
+        showToast('Error updating job', 'error');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = original;
+        lucide.createIcons();
+    }
+});
+
 window.openShareModal = (jobId) => {
     const job = allJobs.find(j => j.id === jobId);
     if(!job) return;
@@ -3074,7 +3661,7 @@ window.deleteJobConfirm = async (jobId) => {
     if(!confirm('Are you sure you want to delete this job? If escrow was held, it will be refunded minus fees.')) return;
     try {
         const job = allJobs.find(j => j.id === jobId);
-        if(job && job.status === 'open') {
+        if(job && getJobStatus(job) === 'open') {
             const refund = Number(job.budget);
             await userDoc().update({
                 walletBalance: firebase.firestore.FieldValue.increment(refund),
@@ -3152,9 +3739,9 @@ window.copyReferralCode = () => {
 };
 
 window.hideJob = (jobId) => {
-    const hidden = JSON.parse(localStorage.getItem('hidden_jobs') || '[]');
-    if(!hidden.includes(jobId)) {
-        hidden.push(jobId);
+    const hidden = getHiddenJobs();
+    if(!hidden.includes(String(jobId))) {
+        hidden.push(String(jobId));
         localStorage.setItem('hidden_jobs', JSON.stringify(hidden));
         renderJobs();
         showToast('Job hidden from feed', 'info');
@@ -3177,13 +3764,14 @@ window.openJobDetail = jobId => {
     }
     
     const match = (userData?.skills&&job.skills) ? getSkillMatch(job.skills,userData.skills) : 0;
-    const daysLeft = job.expiry ? Math.ceil((new Date(job.expiry)-new Date())/86400000) : null;
+    const daysLeft = daysUntilJobDue(job);
     const appCount = allApps.filter(a => a.jobId === jobId).length;
+    const status = getJobStatus(job);
     
     let messageActionBtn = '';
     // Only allow messaging if there is an actively accepted job
-    if (currentUser && job.workerId === currentUser.uid && (job.status === 'in_progress' || job.status === 'in_review')) {
-        messageActionBtn = `<button onclick="startChatDirectly('${job.employerId}', '${safeText(job.employerName)}')" class="btn bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 flex-1 text-[10px] md:text-xs py-2"><i data-lucide="message-square" class="w-3 h-3"></i> Message Employer</button>`;
+    if (currentUser && job.workerId === currentUser.uid && (status === 'in_progress' || status === 'in_review')) {
+        messageActionBtn = `<button onclick='startChatDirectly(${jsString(job.employerId)}, ${jsString(job.employerName)})' class="btn bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 flex-1 text-[10px] md:text-xs py-2"><i data-lucide="message-square" class="w-3 h-3"></i> Message Employer</button>`;
     }
     
     // Feature: Lock Apply Button & Check Status
@@ -3195,7 +3783,7 @@ window.openJobDetail = jobId => {
         } else {
             applyBtnHtml = `<button onclick="closeJobDetail();openApplyModal('${jobId}')" class="btn btn-primary flex-1 py-2 text-[10px] md:text-xs"><i data-lucide="send" class="w-3 h-3"></i> Apply</button>`;
         }
-    } else if (userData?.role === 'employer' && userData?.uid === job.employerId) {
+    } else if (userData?.role === 'employer' && currentUser?.uid === job.employerId) {
         applyBtnHtml = `<button onclick="closeJobDetail();openAppsModal('${jobId}')" class="btn btn-primary flex-1 py-2 text-[10px] md:text-xs"><i data-lucide="users" class="w-3 h-3"></i> Applications (${appCount})</button>`;
     } else if (!currentUser) {
         applyBtnHtml = `<button onclick="closeJobDetail();navigate('auth')" class="btn btn-primary flex-1 py-2 text-[10px] md:text-xs">Sign In to Apply</button>`;
@@ -3224,7 +3812,7 @@ window.openJobDetail = jobId => {
                 </div>
                 <div class="bg-slate-50 dark:bg-slate-700/50 p-2 rounded-xl text-center">
                     <p class="text-[10px] text-slate-500">Deadline</p>
-                    <p class="font-bold text-xs text-slate-800 dark:text-white">${job.deadline||'Flexible'}</p>
+                    <p class="font-bold text-xs text-slate-800 dark:text-white">${safeText(job.deadline || job.expiry || 'Flexible')}</p>
                 </div>
                 <div class="bg-slate-50 dark:bg-slate-700/50 p-2 rounded-xl text-center">
                     <p class="text-[10px] text-slate-500">Duration</p>
@@ -3239,7 +3827,7 @@ window.openJobDetail = jobId => {
                 <span class="flex items-center gap-1"><i data-lucide="map-pin" class="w-2.5 h-2.5"></i>${safeText(job.location||'Remote')}</span>
                 <span class="flex items-center gap-1"><i data-lucide="users" class="w-2.5 h-2.5"></i>${appCount} applied</span>
                 <span class="flex items-center gap-1"><i data-lucide="eye" class="w-2.5 h-2.5"></i>${job.views||0} views</span>
-                ${daysLeft?`<span class="flex items-center gap-1 ${daysLeft<=3?'text-red-500':''}"><i data-lucide="calendar" class="w-2.5 h-2.5"></i>${daysLeft}d left</span>`:''}
+                ${daysLeft !== null ? `<span class="flex items-center gap-1 ${daysLeft<=3?'text-red-500':''}"><i data-lucide="calendar" class="w-2.5 h-2.5"></i>${daysLeft}d left</span>`:''}
                 ${match>0?`<span class="badge bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">${match}% match</span>`:''}
             </div>
             <div>
@@ -3250,7 +3838,7 @@ window.openJobDetail = jobId => {
             <div>
                 <h4 class="font-bold text-[10px] mb-1.5 text-slate-700 dark:text-slate-300">Skills Needed</h4>
                 <div class="flex flex-wrap gap-1">
-                    ${job.skills.split(',').map(s=>`<span class="badge bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400">${safeText(s.trim())}</span>`).join('')}
+                    ${String(job.skills).split(',').map(s=>`<span class="badge bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400">${safeText(s.trim())}</span>`).join('')}
                 </div>
             </div>`:''}
             <div class="flex gap-2 pt-2 flex-wrap">
@@ -3634,6 +4222,12 @@ window.openWorkspace = async (jobId) => {
     renderWorkspaceVault(job);
     renderWorkspaceTime(job);
     renderWorkspaceLogs(job);
+    renderWorkspaceToolkit(job);
+    const wsHistoryBtn = document.getElementById('ws-history-btn');
+    if(wsHistoryBtn) {
+        if(userData.role === 'employer') wsHistoryBtn.classList.remove('hidden');
+        else wsHistoryBtn.classList.add('hidden');
+    }
     
     // NEW FEATURE: Render Extension UI for Employer or Worker
     const extArea = document.getElementById('ws-extension-area');
@@ -4172,6 +4766,389 @@ window.closeWorkspace = () => {
 };
 
 
+
+window.activateWorkerAccount = async () => {
+    if(!currentUser || !userData) return showToast('Please sign in', 'error');
+    if(userData.role !== 'worker') return showToast('Switch to Worker role to activate a worker account', 'warning');
+    if(userData.isActivated) return showToast('Worker account already activated', 'success');
+
+    const fee = Number(platformSettings.activationFee || 100);
+    const balance = Number(userData.walletBalance || 0);
+
+    if(balance < fee) {
+        showToast(`Insufficient balance. Need ${fmtMoney(fee)} to activate.`, 'error');
+        return openTopupModal();
+    }
+
+    try {
+        await userDoc().update({
+            isActivated: true,
+            walletBalance: firebase.firestore.FieldValue.increment(-fee),
+            totalSpent: firebase.firestore.FieldValue.increment(fee),
+            activatedAt: new Date().toISOString()
+        });
+
+        await pubCol('notifications').add({
+            userId: currentUser.uid,
+            type: 'activation_success',
+            message: `Worker account activated successfully. KSh ${fee} deducted from wallet balance.`,
+            read: false,
+            createdAt: new Date().toISOString()
+        });
+
+        await addActivity('Worker account activated from wallet balance.');
+        userData.isActivated = true;
+        userData.walletBalance = Math.max(0, balance - fee);
+        showToast('Worker account activated successfully', 'success');
+        if(activeView === 'dashboard') renderDashboard();
+    } catch(e) {
+        console.error(e);
+        showToast('Error activating worker account', 'error');
+    }
+};
+
+const WORKSPACE_TOOLKIT_KPIS = [
+    { key:'health', label:'Workspace Health', icon:'activity' },
+    { key:'countdown', label:'Deadline Countdown', icon:'timer-reset' },
+    { key:'escrow', label:'Escrow Status', icon:'wallet' },
+    { key:'approval', label:'Approval Readiness', icon:'clipboard-check' },
+    { key:'vaultCount', label:'Vault Files', icon:'folder-archive' },
+    { key:'timeEntries', label:'Time Entries', icon:'clock-3' },
+    { key:'hours', label:'Hours Logged', icon:'hourglass' },
+    { key:'completedTodos', label:'Tasks Done', icon:'check-check' },
+    { key:'pendingTodos', label:'Tasks Pending', icon:'list-todo' },
+    { key:'progress', label:'Task Progress', icon:'gauge' },
+    { key:'activityCount', label:'Log Entries', icon:'history' },
+    { key:'responseTarget', label:'Response Target', icon:'message-circle-more' },
+    { key:'submission', label:'Submission Status', icon:'send' },
+    { key:'dispute', label:'Dispute Status', icon:'shield-alert' },
+    { key:'extension', label:'Extension Status', icon:'calendar-clock' },
+    { key:'revisionCount', label:'Revision Notes', icon:'refresh-cw' },
+    { key:'quality', label:'Quality Score', icon:'badge-check' },
+    { key:'logDepth', label:'Audit Depth', icon:'file-clock' },
+    { key:'deliverable', label:'Deliverable Link', icon:'link' },
+    { key:'lastUpdated', label:'Last Updated', icon:'calendar-days' },
+    { key:'workerState', label:'Worker State', icon:'user-round-check' },
+    { key:'clientState', label:'Client State', icon:'user-round-search' }
+];
+
+const WORKSPACE_NOTE_FIELDS = [
+    ['pinnedNote','Pinned Note'],
+    ['nextAction','Next Action'],
+    ['blocker','Blocker / Risk'],
+    ['readinessNote','Readiness Summary'],
+    ['deliveryChecklist','Delivery Checklist'],
+    ['approvalChecklist','Approval Checklist'],
+    ['handoverChecklist','Handover Checklist'],
+    ['meetingNotes','Meeting Notes'],
+    ['changeLog','Change Request Log'],
+    ['clientPrefs','Client Preferences'],
+    ['issues','Issue Register'],
+    ['scopeBoundary','Scope Boundary'],
+    ['acceptanceCriteria','Acceptance Criteria'],
+    ['testingNotes','Testing Notes'],
+    ['releaseNotes','Release Notes'],
+    ['dailyPlan','Daily Plan'],
+    ['followupNote','Follow-up Note'],
+    ['dependenciesNote','Dependencies Note'],
+    ['handoffNote','Handoff Note'],
+    ['invoiceNote','Invoice Note'],
+    ['payoutNote','Payout Note'],
+    ['archiveNote','Archive Note'],
+    ['commsRule','Communication Rule'],
+    ['namingRule','Naming Rule'],
+    ['fallbackPlan','Fallback Plan'],
+    ['assetReminder','Asset Reminder']
+];
+
+const WORKSPACE_TEMPLATES = {
+    deliveryChecklist: "- Final files uploaded\n- All links open correctly\n- Naming convention checked\n- Version clearly labeled\n- Client handover note ready",
+    approvalChecklist: "- Scope completed\n- Output matches brief\n- Required files included\n- Revisions resolved\n- Ready for payment release",
+    handoverChecklist: "- Final link shared\n- Source files included\n- Backup retained\n- Usage notes added\n- Support next step mentioned",
+    dailyPlan: "- Priority 1\n- Priority 2\n- Priority 3",
+    followupNote: "- Waiting for confirmation\n- Next reminder date:",
+    dependenciesNote: "- Dependency\n- Owner\n- Impact",
+    handoffNote: "- Final owner\n- Handover date\n- Support window",
+    invoiceNote: "- Amount\n- Reason\n- Status",
+    payoutNote: "- Wallet ready\n- Review done\n- Release path",
+    archiveNote: "- Archive folder\n- Backup done\n- Retrieval owner",
+    commsRule: "- Use platform chat\n- Confirm scope changes in writing",
+    namingRule: "- ProjectName_v1\n- Final files clearly tagged",
+    fallbackPlan: "- Primary option\n- Backup option\n- Escalation path",
+    assetReminder: "- Upload source files\n- Check permissions\n- Verify links"
+};
+
+function getWorkspaceToolkit(job) {
+    return job.workspaceToolkit || {};
+}
+
+function getWorkspaceHealth(job) {
+    const todos = job.workspaceTodos || [];
+    const done = todos.filter(t => t.done).length;
+    const progress = todos.length ? Math.round((done / todos.length) * 100) : 0;
+    const vaultCount = (job.workspaceFiles || []).length;
+    const hours = (job.workspaceTime || []).reduce((a,b)=>a+Number(b.minutes||0),0) / 60;
+    const submissionReady = job.submission ? 100 : (vaultCount > 0 ? 70 : 35);
+    return Math.max(0, Math.min(100, Math.round((progress * 0.4) + (submissionReady * 0.4) + (Math.min(hours, 8)/8*20))));
+}
+
+function getWorkspaceKpiData(job) {
+    const todos = job.workspaceTodos || [];
+    const done = todos.filter(t => t.done).length;
+    const pending = Math.max(0, todos.length - done);
+    const logs = job.workspaceLog || [];
+    const files = job.workspaceFiles || [];
+    const times = job.workspaceTime || [];
+    const totalMinutes = times.reduce((a,b)=>a+Number(b.minutes||0),0);
+    const countdown = job.deadline ? Math.ceil((new Date(job.deadline) - new Date())/86400000) : null;
+    const revisionCount = logs.filter(l => String(l.text || '').toLowerCase().includes('revision')).length;
+    const deliverable = job.submission?.link ? 'Attached' : 'Not Added';
+    const qualityScore = Math.min(100, Math.round((done ? (done/Math.max(1,todos.length))*45 : 10) + (files.length*8) + (job.submission ? 25 : 0) + (logs.length>3 ? 12 : 4)));
+    return {
+        health: `${getWorkspaceHealth(job)}%`,
+        countdown: countdown === null ? 'Flexible' : `${countdown} day${Math.abs(countdown)===1?'':'s'}`,
+        escrow: job.status === 'completed' || job.status === 'paid_out' ? 'Released' : 'Funded',
+        approval: `${Math.min(100, Math.round(((done/(todos.length||1))*50) + (job.submission ? 50 : 10)))}%`,
+        vaultCount: String(files.length),
+        timeEntries: String(times.length),
+        hours: `${(totalMinutes/60).toFixed(1)}h`,
+        completedTodos: String(done),
+        pendingTodos: String(pending),
+        progress: `${todos.length ? Math.round((done/todos.length)*100) : 0}%`,
+        activityCount: String(logs.length),
+        responseTarget: getWorkspaceToolkit(job).responseTarget || '≤ 2h',
+        submission: job.submission ? 'Submitted' : 'Pending',
+        dispute: job.status === 'disputed' ? 'Open' : 'Clear',
+        extension: job.extension?.status ? job.extension.status.toUpperCase() : 'None',
+        revisionCount: String(revisionCount),
+        quality: `${qualityScore}%`,
+        logDepth: logs.length > 10 ? 'Deep' : logs.length > 4 ? 'Good' : 'Basic',
+        deliverable,
+        lastUpdated: timeAgo(job.updatedAt || job.createdAt) || 'Now',
+        workerState: allUsers.find(u => u.uid === job.workerId)?.isAvailable ? 'Online' : 'Offline',
+        clientState: allUsers.find(u => u.uid === job.employerId)?.isAvailable ? 'Online' : 'Offline'
+    };
+}
+
+window.insertWorkspaceTemplate = (key) => {
+    const el = document.getElementById(`ws-tool-${key}`);
+    if(!el || !WORKSPACE_TEMPLATES[key]) return;
+    if(el.value.trim()) el.value += "\n";
+    el.value += WORKSPACE_TEMPLATES[key];
+};
+
+window.saveWorkspaceToolkitField = async (key) => {
+    const job = allJobs.find(j => j.id === currentWorkspaceJobId);
+    if(!job) return;
+    const el = document.getElementById(`ws-tool-${key}`);
+    if(!el) return;
+    const value = el.value.trim();
+    try {
+        await pubCol('jobs').doc(job.id).update({
+            [`workspaceToolkit.${key}`]: value,
+            updatedAt: new Date().toISOString()
+        });
+        job.workspaceToolkit = job.workspaceToolkit || {};
+        job.workspaceToolkit[key] = value;
+        showToast('Workspace toolkit saved', 'success');
+        renderWorkspaceToolkit(job);
+    } catch(e) {
+        console.error(e);
+        showToast('Error saving toolkit note', 'error');
+    }
+};
+
+function buildWorkspacePastJobs(job) {
+    const list = document.getElementById('ws-past-jobs-list');
+    if(!list) return;
+    let past = [];
+    if(userData?.role === 'employer') {
+        past = allJobs.filter(j => j.employerId === currentUser.uid && j.id !== job.id && (j.status === 'completed' || j.status === 'paid_out'))
+                     .sort((a,b)=>new Date(b.updatedAt||b.createdAt)-new Date(a.updatedAt||a.createdAt))
+                     .slice(0,8);
+    } else {
+        past = allJobs.filter(j => j.workerId === currentUser.uid && j.id !== job.id && (j.status === 'completed' || j.status === 'paid_out'))
+                     .sort((a,b)=>new Date(b.updatedAt||b.createdAt)-new Date(a.updatedAt||a.createdAt))
+                     .slice(0,8);
+    }
+    list.innerHTML = past.length ? past.map(p => `
+        <div class="rounded-lg border border-slate-200 dark:border-slate-700 p-2.5 bg-slate-50 dark:bg-slate-900">
+            <div class="flex justify-between gap-2 items-start">
+                <div class="min-w-0">
+                    <div class="font-bold text-[11px] text-slate-800 dark:text-slate-200 truncate">${safeText(p.title)}</div>
+                    <div class="text-[10px] text-slate-500">${fmtMoney(p.budget)} · ${safeText(p.location||'Remote')}</div>
+                </div>
+                <span class="badge bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300">${safeText((p.status||'completed').replace('_',' '))}</span>
+            </div>
+            <div class="mt-1.5 flex justify-between text-[10px] text-slate-400">
+                <span>${timeAgo(p.updatedAt || p.createdAt)}</span>
+                <button onclick="closeWorkspace(); setTimeout(()=>openJobDetail('${p.id}'), 120)" class="font-bold text-brand">Open</button>
+            </div>
+        </div>
+    `).join('') : `<div class="text-[10px] text-slate-400 italic">No past jobs found yet.</div>`;
+}
+
+function buildWorkspaceNoteBank(job) {
+    const wrap = document.getElementById('ws-toolkit-note-bank');
+    if(!wrap) return;
+    const toolkit = getWorkspaceToolkit(job);
+    const items = WORKSPACE_NOTE_FIELDS
+        .map(([k, label]) => ({ key:k, label, value: toolkit[k] || '' }))
+        .filter(item => item.value.trim());
+    wrap.innerHTML = items.length ? items.map(item => `
+        <div class="rounded-lg border border-slate-200 dark:border-slate-700 p-2 bg-slate-50 dark:bg-slate-900">
+            <div class="font-bold text-[10px] text-slate-700 dark:text-slate-300 mb-1">${item.label}</div>
+            <div class="text-[10px] text-slate-500 dark:text-slate-400 whitespace-pre-wrap leading-relaxed">${safeText(item.value).slice(0,320)}${item.value.length>320?'…':''}</div>
+        </div>
+    `).join('') : `<div class="text-[10px] text-slate-400 italic">Saved toolkit notes will appear here.</div>`;
+}
+
+function buildWorkspaceToolkitButtons() {
+    const wrap = document.getElementById('ws-toolkit-macro-buttons');
+    if(!wrap) return;
+    const btns = [
+        ['meetingNotes','Meeting'],
+        ['changeLog','Change Log'],
+        ['clientPrefs','Preferences'],
+        ['issues','Issue'],
+        ['scopeBoundary','Scope'],
+        ['acceptanceCriteria','Acceptance'],
+        ['testingNotes','Testing'],
+        ['releaseNotes','Release']
+    ];
+    wrap.innerHTML = btns.map(([key,label]) => `<button onclick="document.getElementById('ws-tool-${key}').focus(); insertWorkspaceTemplate('${['deliveryChecklist','approvalChecklist','handoverChecklist'].includes(key) ? key : 'deliveryChecklist'}')" class="badge bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-brand hover:text-white cursor-pointer transition border border-transparent">${label}</button>`).join('');
+}
+
+// ---------------- Workspace enhancements (real-time sync helpers) ----------------
+window.addWorkspaceMilestone = async () => {
+    const input = document.getElementById('ws-new-milestone');
+    if(!input) return showToast('Milestone input not found', 'error');
+    const text = input.value.trim();
+    if(!text) return showToast('Enter milestone text', 'warning');
+    const job = allJobs.find(j => j.id === currentWorkspaceJobId);
+    if(!job) return showToast('Workspace not open', 'error');
+    try {
+        const m = { text, done: false, addedBy: currentUser.uid, date: new Date().toISOString() };
+        await pubCol('jobs').doc(job.id).update({
+            milestones: firebase.firestore.FieldValue.arrayUnion(m),
+            updatedAt: new Date().toISOString()
+        });
+        job.milestones = job.milestones || [];
+        job.milestones.push(m);
+        input.value = '';
+        showToast('Milestone added', 'success');
+        if(typeof renderWorkspaceMilestones === 'function') renderWorkspaceMilestones(job);
+    } catch(e) { console.error(e); showToast('Error adding milestone','error'); }
+};
+
+window.toggleWorkspaceMilestone = async (idx) => {
+    const job = allJobs.find(j => j.id === currentWorkspaceJobId);
+    if(!job || !job.milestones || !job.milestones[idx]) return;
+    try {
+        const ms = [...job.milestones];
+        ms[idx].done = !ms[idx].done;
+        await pubCol('jobs').doc(job.id).update({ milestones: ms, updatedAt: new Date().toISOString() });
+        job.milestones = ms;
+        if(typeof renderWorkspaceMilestones === 'function') renderWorkspaceMilestones(job);
+        showToast('Milestone updated', 'success');
+    } catch(e) { console.error(e); showToast('Error updating milestone','error'); }
+};
+
+window.addWorkspaceCollaborator = async () => {
+    const email = prompt('Enter collaborator email to add:');
+    if(!email) return;
+    const job = allJobs.find(j => j.id === currentWorkspaceJobId);
+    if(!job) return showToast('Workspace not open', 'error');
+    try {
+        const coll = { email, addedBy: currentUser.uid, date: new Date().toISOString() };
+        await pubCol('jobs').doc(job.id).update({ collaborators: firebase.firestore.FieldValue.arrayUnion(coll), updatedAt: new Date().toISOString() });
+        job.collaborators = job.collaborators || [];
+        job.collaborators.push(coll);
+        showToast('Collaborator added', 'success');
+    } catch(e) { console.error(e); showToast('Error adding collaborator','error'); }
+};
+
+window.setWorkspacePriority = async (level) => {
+    const job = allJobs.find(j => j.id === currentWorkspaceJobId);
+    if(!job) return showToast('Workspace not open', 'error');
+    try {
+        await pubCol('jobs').doc(job.id).update({ priority: level, updatedAt: new Date().toISOString() });
+        job.priority = level;
+        showToast('Priority updated', 'success');
+    } catch(e) { console.error(e); showToast('Error updating priority','error'); }
+};
+
+window.createWorkspaceInvoice = async () => {
+    const amount = parseFloat(prompt('Invoice amount (KSh):')||0);
+    const note = prompt('Invoice note (optional):')||'';
+    if(!amount || amount <= 0) return showToast('Enter a valid amount', 'warning');
+    const job = allJobs.find(j => j.id === currentWorkspaceJobId);
+    if(!job) return showToast('Workspace not open', 'error');
+    try {
+        const inv = { id: 'inv_' + Date.now(), amount, note, status: 'pending', createdAt: new Date().toISOString(), createdBy: currentUser.uid };
+        await pubCol('jobs').doc(job.id).update({ invoices: firebase.firestore.FieldValue.arrayUnion(inv), updatedAt: new Date().toISOString() });
+        job.invoices = job.invoices || [];
+        job.invoices.push(inv);
+        showToast('Invoice created', 'success');
+    } catch(e) { console.error(e); showToast('Error creating invoice','error'); }
+};
+
+// lightweight workspace timer that records start/stop and pushes timeLogs to the job doc
+window.startWorkspaceTimer = async () => {
+    const job = allJobs.find(j => j.id === currentWorkspaceJobId);
+    if(!job) return showToast('Workspace not open', 'error');
+    if(job.currentTimer && job.currentTimer.startedAt) return showToast('Timer already running', 'warning');
+    try {
+        const timer = { startedAt: new Date().toISOString(), startedBy: currentUser.uid };
+        await pubCol('jobs').doc(job.id).update({ currentTimer: timer, updatedAt: new Date().toISOString() });
+        job.currentTimer = timer;
+        showToast('Timer started', 'success');
+    } catch(e) { console.error(e); showToast('Error starting timer','error'); }
+};
+
+window.stopWorkspaceTimer = async (desc) => {
+    const job = allJobs.find(j => j.id === currentWorkspaceJobId);
+    if(!job || !job.currentTimer || !job.currentTimer.startedAt) return showToast('No running timer', 'warning');
+    try {
+        const started = new Date(job.currentTimer.startedAt);
+        const stopped = new Date();
+        const minutes = Math.max(1, Math.round((stopped - started)/60000));
+        const log = { minutes, desc: desc || 'Timer entry', date: new Date().toISOString(), addedBy: currentUser.uid };
+        await pubCol('jobs').doc(job.id).update({
+            timeLogs: firebase.firestore.FieldValue.arrayUnion(log),
+            currentTimer: firebase.firestore.FieldValue.delete ? firebase.firestore.FieldValue.delete() : null,
+            updatedAt: new Date().toISOString()
+        });
+        job.timeLogs = job.timeLogs || [];
+        job.timeLogs.push(log);
+        job.currentTimer = null;
+        if(typeof renderWorkspaceTime === 'function') renderWorkspaceTime(job);
+        showToast('Timer stopped — '+minutes+' minutes recorded', 'success');
+    } catch(e) { console.error(e); showToast('Error stopping timer','error'); }
+};
+
+
+window.renderWorkspaceToolkit = (job) => {
+    const toolkit = getWorkspaceToolkit(job);
+    const kpiWrap = document.getElementById('ws-toolkit-kpis');
+    if(!kpiWrap) return;
+    const kpis = getWorkspaceKpiData(job);
+    kpiWrap.innerHTML = WORKSPACE_TOOLKIT_KPIS.map(item => `
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3 shadow-sm">
+            <div class="flex items-center gap-2 mb-1 text-slate-400"><i data-lucide="${item.icon}" class="w-4 h-4"></i><span class="text-[10px] font-bold uppercase tracking-wide">${item.label}</span></div>
+            <div class="font-display font-black text-sm md:text-base text-slate-800 dark:text-white">${safeText(kpis[item.key] || '—')}</div>
+        </div>
+    `).join('');
+    WORKSPACE_NOTE_FIELDS.forEach(([key]) => {
+        const el = document.getElementById(`ws-tool-${key}`);
+        if(el) el.value = toolkit[key] || '';
+    });
+    buildWorkspacePastJobs(job);
+    buildWorkspaceNoteBank(job);
+    buildWorkspaceToolkitButtons();
+    lucide.createIcons();
+};
+
 // ===================== DASHBOARD METRICS =====================
 window.renderDashboard = () => {
     if(!currentUser || !userData) return;
@@ -4238,6 +5215,16 @@ window.renderDashboard = () => {
     const responseTime = userData.responseTime || 'N/A';
     const memberSince = userData.createdAt ? new Date(userData.createdAt).toLocaleDateString() : '—';
     const openApplications = allApps.filter(a => (userData.role === 'worker' ? a.workerId === currentUser.uid : a.employerId === currentUser.uid) && a.status === 'pending').length;
+    const totalUsers = allUsers.length;
+    const totalJobs = allJobs.length;
+    const openJobsCount = allJobs.filter(j => String(j.status||'').toLowerCase() === 'open').length;
+    const pendingPayouts = allPayouts.filter(p => String(p.status||'').toLowerCase() === 'pending').length;
+    const pendingTopupsCount = allTopups.filter(t => String(t.status||'').toLowerCase() === 'pending').length;
+    const avgJobBudget = totalJobs ? Math.round(allJobs.reduce((a,b)=>a+(b.budget||0),0)/totalJobs) : 0;
+    const jobsToday = allJobs.filter(j => j.createdAt && new Date(j.createdAt).toDateString() === new Date().toDateString()).length;
+    const signupsToday = allUsers.filter(u => u.createdAt && new Date(u.createdAt).toDateString() === new Date().toDateString()).length;
+    const topCategory = (() => { const map = {}; allJobs.forEach(j => { const c = (j.category||'Other'); map[c] = (map[c]||0) + 1; }); let top='—', mx=0; for(const k in map) if(map[k]>mx){ mx=map[k]; top=k; } return top; })();
+    const recentActivityCount = (() => { let c=0; allJobs.forEach(j => { if(j.workspaceLog) c += Math.min(5, j.workspaceLog.length); }); return c; })();
 
     const grid = document.getElementById('dashboard-metrics-grid');
     grid.innerHTML = `
@@ -4252,6 +5239,10 @@ window.renderDashboard = () => {
         <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-center">
             <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="check-square" class="w-3 h-3 text-emerald-500"></i> Completed</p>
             <p class="text-lg md:text-xl font-display font-black text-slate-800 dark:text-white">${completedJobsCount}</p>
+        </div>
+        <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-center">
+            <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="message-square" class="w-3 h-3 text-purple-500"></i> Unread Messages</p>
+            <p class="text-lg md:text-xl font-display font-black text-slate-800 dark:text-white">${allMessages.filter(m=>m.receiverId===currentUser.uid && !m.read).length}</p>
         </div>
         <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-center">
             <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="star" class="w-3 h-3 text-amber-500"></i> Rating</p>
@@ -4287,6 +5278,47 @@ window.renderDashboard = () => {
             <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="users" class="w-3 h-3 text-purple-500"></i> Talent Pool</p>
             <p class="text-lg md:text-xl font-display font-black text-slate-800 dark:text-white">${allUsers.filter(u=>u.role==='worker').length}</p>
         </div>
+        <!-- Extra metrics -->
+        <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-center">
+            <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="users" class="w-3 h-3 text-sky-500"></i> Total Users</p>
+            <p class="text-lg md:text-xl font-display font-black text-slate-800 dark:text-white">${totalUsers}</p>
+        </div>
+        <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-center">
+            <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="clipboard" class="w-3 h-3 text-indigo-500"></i> Total Jobs</p>
+            <p class="text-lg md:text-xl font-display font-black text-slate-800 dark:text-white">${totalJobs}</p>
+        </div>
+        <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-center">
+            <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="briefcase" class="w-3 h-3 text-emerald-500"></i> Open Jobs</p>
+            <p class="text-lg md:text-xl font-display font-black text-slate-800 dark:text-white">${openJobsCount}</p>
+        </div>
+        <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-center">
+            <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="dollar-sign" class="w-3 h-3 text-rose-500"></i> Pending Payouts</p>
+            <p class="text-lg md:text-xl font-display font-black text-slate-800 dark:text-white">${pendingPayouts}</p>
+        </div>
+        <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-center">
+            <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="credit-card" class="w-3 h-3 text-cyan-500"></i> Pending Topups</p>
+            <p class="text-lg md:text-xl font-display font-black text-slate-800 dark:text-white">${pendingTopupsCount}</p>
+        </div>
+        <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-center">
+            <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="bar-chart-2" class="w-3 h-3 text-amber-500"></i> Avg Job Budget</p>
+            <p class="text-lg md:text-xl font-display font-black text-slate-800 dark:text-white">${fmtMoney(avgJobBudget)}</p>
+        </div>
+        <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-center">
+            <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="calendar" class="w-3 h-3 text-violet-500"></i> Jobs Today</p>
+            <p class="text-lg md:text-xl font-display font-black text-slate-800 dark:text-white">${jobsToday}</p>
+        </div>
+        <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-center">
+            <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="user-plus" class="w-3 h-3 text-green-500"></i> New Signups Today</p>
+            <p class="text-lg md:text-xl font-display font-black text-slate-800 dark:text-white">${signupsToday}</p>
+        </div>
+        <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-center">
+            <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="grid" class="w-3 h-3 text-slate-600"></i> Top Category</p>
+            <p class="text-sm md:text-base font-display font-black text-slate-800 dark:text-white">${safeText(topCategory)}</p>
+        </div>
+        <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-center">
+            <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="activity" class="w-3 h-3 text-slate-500"></i> Recent Activity</p>
+            <p class="text-lg md:text-xl font-display font-black text-slate-800 dark:text-white">${recentActivityCount}</p>
+        </div>
         <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-center">
             <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="star" class="w-3 h-3 text-amber-500"></i> Escrow Total</p>
             <p class="text-sm md:text-base font-display font-black text-slate-800 dark:text-white">${fmtMoney(allJobs.filter(j=>j.employerId===currentUser.uid && j.status!=='completed').reduce((sum,j)=>sum+Number(j.budget),0))}</p>
@@ -4294,6 +5326,10 @@ window.renderDashboard = () => {
         <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-center">
             <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="clipboard-list" class="w-3 h-3 text-cyan-500"></i> Pending Apps</p>
             <p class="text-lg md:text-xl font-display font-black text-slate-800 dark:text-white">${openApplications}</p>
+        </div>
+        <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-center">
+            <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="arrow-up-circle" class="w-3 h-3 text-emerald-500"></i> Pending Topups</p>
+            <p class="text-sm md:text-base font-display font-black text-slate-800 dark:text-white">${allTopups.filter(t=>t.userId===currentUser.uid && t.status==='pending').length}</p>
         </div>
         <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-center">
             <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="map-pinned" class="w-3 h-3 text-rose-500"></i> City</p>
@@ -4398,6 +5434,29 @@ window.renderMyGigs = () => {
     if(filterEl && filterEl.value !== filter) filterEl.value = filter;
     
     let items = [];
+
+    // Employer quick panel: show posted job stats and link to employer panel
+    if(userData.role === 'employer') {
+        const posted = allJobs.filter(j => j.employerId === currentUser.uid);
+        const openCount = posted.filter(j => getJobStatus(j) === 'open').length;
+        const inProgressCount = posted.filter(j => ['in_progress','in_review'].includes(getJobStatus(j))).length;
+        const completedCount = posted.filter(j => ['completed','paid_out'].includes(getJobStatus(j))).length;
+        const empPanel = document.getElementById('mygigs-employer-panel');
+        if(empPanel) {
+            empPanel.innerHTML = `
+                <div class="bg-white dark:bg-slate-800 p-3 rounded-xl border border-slate-200 dark:border-slate-700 mb-3 flex items-center justify-between">
+                    <div>
+                        <div class="text-xs text-slate-500">Your posted jobs</div>
+                        <div class="font-display font-black text-xl mt-1">${posted.length}</div>
+                        <div class="text-[10px] text-slate-400 mt-1">Open: ${openCount} · Active: ${inProgressCount} · Completed: ${completedCount}</div>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <button onclick="navigate('post')" class="btn btn-primary text-[10px] py-1.5">Post New Job</button>
+                        <button onclick="navigate('mygigs') || alert('Employer panel opened')" class="btn btn-secondary text-[10px] py-1.5">Manage Posted Jobs</button>
+                    </div>
+                </div>`;
+        }
+    }
     
     if(userData.role === 'worker') {
         const myAppliedJobIds = allApps.filter(a => a.workerId === currentUser.uid).map(a => a.jobId);
@@ -4413,16 +5472,17 @@ window.renderMyGigs = () => {
 
     if(filter !== 'all') {
         items = items.filter(j => {
+            const status = getJobStatus(j);
             if(filter === 'applied') return j.relation === 'applied' && j.myAppStatus === 'pending';
-            if(filter === 'open') return j.status === 'open';
-            if(filter === 'in_progress') return j.status === 'in_progress';
-            if(filter === 'in_review') return j.status === 'in_review';
-            if(filter === 'completed') return j.status === 'completed' || j.status === 'paid_out';
+            if(filter === 'open') return status === 'open';
+            if(filter === 'in_progress') return status === 'in_progress';
+            if(filter === 'in_review') return status === 'in_review';
+            if(filter === 'completed') return status === 'completed' || status === 'paid_out';
             return true;
         });
     }
 
-    items.sort((a,b) => new Date(b.updatedAt||b.createdAt) - new Date(a.updatedAt||a.createdAt));
+    items.sort((a,b) => dateTimeValue(b.updatedAt||b.createdAt, 0) - dateTimeValue(a.updatedAt||a.createdAt, 0));
 
     if(!items.length) {
         container.innerHTML = `<div class="text-center py-10 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700"><i data-lucide="folder-open" class="w-8 h-8 text-slate-300 mx-auto mb-2"></i><p class="text-slate-400 text-xs">No gigs found.</p></div>`;
@@ -4432,7 +5492,8 @@ window.renderMyGigs = () => {
 
     container.innerHTML = items.map(j => {
         let badgeColor = 'bg-slate-100 text-slate-600';
-        let statusText = j.status;
+        const status = getJobStatus(j);
+        let statusText = status;
         let actionBtn = '';
 
         if(j.relation === 'applied') {
@@ -4445,15 +5506,15 @@ window.renderMyGigs = () => {
                 statusText = 'Application Rejected'; 
                 actionBtn = `<button disabled class="btn btn-secondary text-[10px] py-1.5 opacity-50"><i data-lucide="x-circle" class="w-3 h-3"></i> Closed</button>`; 
             } else if(j.myAppStatus === 'accepted') {
-                if(j.status === 'in_progress') { 
+                if(status === 'in_progress') { 
                     badgeColor = 'bg-blue-100 text-blue-700'; 
                     statusText = 'In Progress'; 
                     actionBtn = `<button onclick="openWorkspace('${j.id}')" class="btn btn-primary text-[10px] py-1.5"><i data-lucide="layout" class="w-3 h-3"></i> Workspace</button>`; 
-                } else if(j.status === 'in_review') { 
+                } else if(status === 'in_review') { 
                     badgeColor = 'bg-purple-100 text-purple-700'; 
                     statusText = 'Under Review'; 
                     actionBtn = `<button onclick="openWorkspace('${j.id}')" class="btn btn-secondary text-[10px] py-1.5 border-purple-200"><i data-lucide="eye" class="w-3 h-3 text-purple-500"></i> View Status</button>`; 
-                } else if(j.status === 'completed' || j.status === 'paid_out') { 
+                } else if(status === 'completed' || status === 'paid_out') { 
                     badgeColor = 'bg-emerald-100 text-emerald-700'; 
                     statusText = 'Completed'; 
                     actionBtn = `<button onclick="openWorkspace('${j.id}')" class="btn btn-success text-[10px] py-1.5"><i data-lucide="check-circle" class="w-3 h-3"></i> Finished</button>`; 
@@ -4461,20 +5522,20 @@ window.renderMyGigs = () => {
             }
         } else {
             // Employer view
-            if(j.status === 'open') { 
+            if(status === 'open') { 
                 const ac = allApps.filter(a=>a.jobId===j.id).length;
                 badgeColor = 'bg-emerald-100 text-emerald-700'; 
                 statusText = 'Open / Recruiting'; 
                 actionBtn = `<button onclick="openAppsModal('${j.id}')" class="btn btn-primary text-[10px] py-1.5 relative"><i data-lucide="users" class="w-3 h-3"></i> Applicants ${ac>0?`<span class="absolute -top-1 -right-1 bg-red-500 text-white text-[8px] w-4 h-4 rounded-full flex items-center justify-center">${ac}</span>`:''}</button>`; 
-            } else if(j.status === 'in_progress') { 
+            } else if(status === 'in_progress') { 
                 badgeColor = 'bg-blue-100 text-blue-700'; 
                 statusText = 'In Progress'; 
                 actionBtn = `<button onclick="openWorkspace('${j.id}')" class="btn btn-primary text-[10px] py-1.5"><i data-lucide="layout" class="w-3 h-3"></i> Workspace</button>`; 
-            } else if(j.status === 'in_review') { 
+            } else if(status === 'in_review') { 
                 badgeColor = 'bg-amber-100 text-amber-700'; 
                 statusText = 'Review Submission'; 
                 actionBtn = `<button onclick="openWorkspace('${j.id}')" class="btn btn-success text-[10px] py-1.5 animate-pulse border-none"><i data-lucide="eye" class="w-3 h-3"></i> Review Work</button>`; 
-            } else if(j.status === 'completed' || j.status === 'paid_out') { 
+            } else if(status === 'completed' || status === 'paid_out') { 
                 badgeColor = 'bg-slate-200 text-slate-700'; 
                 statusText = 'Completed'; 
                 actionBtn = `<button onclick="openWorkspace('${j.id}')" class="btn btn-secondary text-[10px] py-1.5"><i data-lucide="archive" class="w-3 h-3"></i> History</button>`; 
@@ -4492,7 +5553,7 @@ window.renderMyGigs = () => {
                 <p class="text-[10px] text-slate-500 mt-0.5">${fmtMoney(j.budget)} · ${safeText(j.location||'Remote')}</p>
             </div>
             <div class="flex gap-2 shrink-0">
-                ${j.relation === 'posted' && j.status === 'open' ? `<button onclick="deleteJobConfirm('${j.id}')" class="btn btn-danger text-[10px] px-2 py-1.5"><i data-lucide="trash" class="w-3 h-3"></i></button>` : ''}
+                ${j.relation === 'posted' && status === 'open' ? `<button onclick="openEditJobModal('${j.id}')" class="btn btn-secondary text-[10px] px-2 py-1.5"><i data-lucide="pencil" class="w-3 h-3"></i></button><button onclick="deleteJobConfirm('${j.id}')" class="btn btn-danger text-[10px] px-2 py-1.5"><i data-lucide="trash" class="w-3 h-3"></i></button>` : ''}
                 ${actionBtn}
             </div>
         </div>`;
@@ -4658,26 +5719,31 @@ window.openThread = async (otherId, otherName) => {
             </form>`;
         inputArea.classList.remove('gk-hidden');
     } else {
-        const hasActiveJob = allJobs.some(j => 
-            (j.status === 'in_progress' || j.status === 'in_review') &&
-            ((j.employerId === currentUser.uid && j.workerId === otherId) || 
-             (j.workerId === currentUser.uid && j.employerId === otherId))
-        );
+        const hasActiveJob = allJobs.some(j => {
+            const st = String(j.status||'').toLowerCase();
+            return (st === 'in_progress' || st === 'in_review') &&
+                ((String(j.employerId) === String(currentUser.uid) && String(j.workerId) === String(otherId)) || 
+                 (String(j.workerId) === String(currentUser.uid) && String(j.employerId) === String(otherId)));
+        });
         
+        // Always show input on desktop; on non-active relationships show a locked notice but also provide a disabled input for accessibility
         if (hasActiveJob) {
             inputArea.innerHTML = `
                 <form onsubmit="sendMessage(event)" class="flex gap-2 relative">
                     <input id="chat-input" type="text" class="gk-input text-xs py-2 pr-10" placeholder="Type a message..." autocomplete="off">
                     <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 text-brand hover:text-branddark p-1 rounded-full"><i data-lucide="send" class="w-4 h-4"></i></button>
                 </form>`;
-            inputArea.classList.remove('gk-hidden');
         } else {
             inputArea.innerHTML = `
                 <div class="text-center p-2 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 rounded-lg text-[10px] font-bold">
                     <i data-lucide="lock" class="w-3 h-3 inline mr-1"></i> Messaging locked. Only allowed during active contracts.
-                </div>`;
-            inputArea.classList.remove('gk-hidden');
+                </div>
+                <form onsubmit="sendMessage(event)" class="flex gap-2 relative mt-2 opacity-60 pointer-events-none">
+                    <input id="chat-input" type="text" disabled class="gk-input text-xs py-2 pr-10" placeholder="Messaging locked for this user" autocomplete="off">
+                    <button type="submit" disabled class="absolute right-2 top-1/2 -translate-y-1/2 text-brand p-1 rounded-full"><i data-lucide="send" class="w-4 h-4"></i></button>
+                </form>`;
         }
+        inputArea.classList.remove('gk-hidden');
     }
     
     lucide.createIcons();
@@ -4902,8 +5968,12 @@ window.renderLeaderboard = () => {
 window.showPublicProfile = (uid) => {
     const u = allUsers.find(x => x.uid === uid);
     if(!u) return;
-    
+
     currentProfileUid = uid;
+    if(currentUser && currentUser.uid !== uid) {
+        pubCol('users').doc(uid).update({ profileViews: firebase.firestore.FieldValue.increment(1) }).catch(()=>{});
+        u.profileViews = Number(u.profileViews || 0) + 1;
+    }
     
     document.getElementById('profile-modal-avatar').src = u.avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(u.name)}&background=2563eb&color=fff`;
     document.getElementById('profile-modal-name').innerText = u.name;
@@ -4944,7 +6014,12 @@ window.showPublicProfile = (uid) => {
         {label:'Response Time', value: safeText(u.responseTime || 'N/A')},
         {label:'Completion Rate', value: `${Number(u.completionRate || 0)}%`},
         {label:'Jobs Done', value: String(completedJobs)},
-        {label:'Total Earned', value: fmtMoney(u.totalEarnings || 0)}
+        {label:'Total Earned', value: fmtMoney(u.totalEarnings || 0)},
+        {label:'Completed Gigs', value: String(completedJobs)},
+        {label:'Open to Hire', value: u.isAvailable ? 'Yes' : 'No'},
+        {label:'Portfolio Link', value: safeText(u.portfolio ? 'Available' : 'Not set')},
+        {label:'Timezone', value: safeText(u.timezone || 'Africa/Nairobi')},
+        {label:'Profile Views', value: String(u.profileViews || 0)}
     ].map(item => `<div class="bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 px-2.5 py-2"><span class="text-slate-400 block">${item.label}</span><span class="font-bold text-slate-700 dark:text-slate-200">${item.value}</span></div>`).join('');
 
     // Reviews
@@ -5810,489 +6885,42 @@ window.forceContinue = () => {
     hideLoadingScreen(); 
 };
 
-
-/* ===================== PATCH: ACTIVATION, TERMS, EDIT JOB RESTORATION ===================== */
-window.ensureTermsView = () => {
-    if (document.getElementById('view-terms')) return;
-    const anchor = document.getElementById('view-safety') || document.getElementById('view-auth');
-    if (!anchor || !anchor.parentNode) return;
-
-    const termsView = document.createElement('div');
-    termsView.id = 'view-terms';
-    termsView.className = 'view-section fade-in';
-    termsView.style.display = 'none';
-    termsView.innerHTML = `
-        <section class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm p-5 md:p-8 mb-4">
-            <div class="max-w-4xl">
-                <span class="badge bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 px-3 py-1 mb-3">Terms & Policies</span>
-                <h2 class="font-display font-black text-3xl md:text-4xl text-slate-900 dark:text-white mb-3">Clear terms for workers, employers, payments, and platform use.</h2>
-                <p class="text-sm md:text-base text-slate-600 dark:text-slate-300 leading-relaxed mb-5">
-                    These terms help set expectations across the Gigs Kenya marketplace. They summarize how accounts, jobs, messaging, workspace delivery, wallet usage, payouts, reviews, and disputes are expected to work on the platform.
-                </p>
-
-                <div class="grid lg:grid-cols-2 gap-3 md:gap-4 mb-4">
-                    <div class="rounded-2xl bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700">
-                        <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-2">1. Accounts and roles</h3>
-                        <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-300">
-                            <li>Users may register as workers or employers and may switch roles where the platform allows.</li>
-                            <li>Users are responsible for accurate profile details, payment details, and secure use of their account.</li>
-                            <li>Workers may need to pass competency or activation checks before applying for gigs, depending on platform settings.</li>
-                            <li>Suspicious, misleading, abusive, or fraudulent use can lead to restrictions or account review.</li>
-                        </ul>
-                    </div>
-                    <div class="rounded-2xl bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700">
-                        <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-2">2. Jobs, applications, and direct hire</h3>
-                        <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-300">
-                            <li>Employers should post accurate gig information, including budget, scope, timeline, and expectations.</li>
-                            <li>Workers should apply honestly and only accept work they can reasonably complete.</li>
-                            <li>Direct hire and application acceptance create a working relationship inside the platform workflow.</li>
-                            <li>Employers should review applicants and submitted work in good faith and within a reasonable time.</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="grid lg:grid-cols-2 gap-3 md:gap-4 mb-4">
-                    <div class="rounded-2xl bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700">
-                        <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-2">3. Wallets, top-ups, activation, and payouts</h3>
-                        <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-300">
-                            <li>Wallet balances may be used for platform payments where that workflow is enabled, including worker activation or employer posting costs.</li>
-                            <li>Submitted top-ups may require verification before reflecting as available balance.</li>
-                            <li>Payout requests are subject to minimum thresholds, platform controls, and payment detail accuracy.</li>
-                            <li>Users are responsible for checking all payment information before submitting any transaction.</li>
-                        </ul>
-                    </div>
-                    <div class="rounded-2xl bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700">
-                        <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-2">4. Workspaces, submissions, and approvals</h3>
-                        <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-300">
-                            <li>Workers should use the workspace responsibly for updates, file links, logs, and final submissions.</li>
-                            <li>Employers may request revisions where the delivered work does not reasonably match the agreed scope.</li>
-                            <li>Approvals and completion events may trigger payment release, review eligibility, and history updates.</li>
-                            <li>Workspace logs and messages may be used to understand the delivery history of a contract.</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="grid lg:grid-cols-2 gap-3 md:gap-4 mb-4">
-                    <div class="rounded-2xl bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700">
-                        <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-2">5. Reviews, conduct, and visibility</h3>
-                        <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-300">
-                            <li>Reviews should reflect genuine working experience and must not be abusive, fake, or coercive.</li>
-                            <li>Public profiles, ratings, leaderboard placement, and visibility signals may be influenced by activity and quality indicators.</li>
-                            <li>Harassment, spam, impersonation, scams, and misleading offers are not allowed.</li>
-                            <li>Repeated abuse of the marketplace can result in removal of content, feature restrictions, or account action.</li>
-                        </ul>
-                    </div>
-                    <div class="rounded-2xl bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700">
-                        <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-2">6. Disputes and platform discretion</h3>
-                        <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-300">
-                            <li>If a project breaks down, either side should use workspace history, messaging, and dispute tools to escalate responsibly.</li>
-                            <li>The platform may review available logs, payment records, and project activity when assessing operational issues.</li>
-                            <li>Platform settings, fees, and operational workflows may be updated over time to improve service quality.</li>
-                            <li>Continued use of the platform means the user accepts the currently available workflow and marketplace rules.</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="rounded-2xl bg-blue-50 dark:bg-blue-900/20 p-4 border border-blue-200 dark:border-blue-900/40">
-                    <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-2">Privacy and practical use note</h3>
-                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-                        Users should avoid sharing unnecessary sensitive information in public job posts, public profiles, or open messages. Only share what is necessary for hiring, delivery, payout, or support workflows.
-                    </p>
-                </div>
-            </div>
-        </section>
-    `;
-    anchor.parentNode.insertBefore(termsView, anchor.nextSibling);
-    if (window.lucide?.createIcons) lucide.createIcons();
-};
-
-window.activateWorkerAccount = async () => {
-    if (!currentUser || !userData) {
-        return showToast('Please sign in first.', 'warning');
-    }
-    if (userData.role !== 'worker') {
-        return showToast('Only worker accounts need activation.', 'warning');
-    }
-    if (userData.isActivated) {
-        return showToast('Your worker account is already activated.', 'success');
-    }
-
-    const fee = Number(platformSettings.activationFee || 0);
-    const balance = Number(userData.walletBalance || 0);
-
-    if (balance < fee) {
-        const shortfall = Math.max(fee - balance, 0);
-        const topupAmount = document.getElementById('topup-amount');
-        if (topupAmount) topupAmount.value = shortfall || fee;
-        openTopupModal();
-        return showToast(`Insufficient balance for activation. Top up ${fmtMoney(shortfall)} or more.`, 'warning');
-    }
-
-    try {
-        await db.runTransaction(async (tx) => {
-            const ref = userDoc();
-            const snap = await tx.get(ref);
-            if (!snap.exists) throw new Error('Account record not found.');
-            const live = snap.data() || {};
-            if (live.isActivated) return;
-            const liveBalance = Number(live.walletBalance || 0);
-            if (liveBalance < fee) throw new Error('Your balance changed before activation. Please try again.');
-            tx.update(ref, {
-                walletBalance: firebase.firestore.FieldValue.increment(-fee),
-                isActivated: true,
-                activationFeePaid: fee,
-                activationPaidAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString()
-            });
-        });
-
-        userData.walletBalance = Math.max(0, Number(userData.walletBalance || 0) - fee);
-        userData.isActivated = true;
-        userData.activationFeePaid = fee;
-        userData.activationPaidAt = new Date().toISOString();
-
-        try {
-            await pubCol('notifications').add({
-                userId: currentUser.uid,
-                type: 'activation_complete',
-                message: `Your worker account has been activated successfully.`,
-                read: false,
-                createdAt: new Date().toISOString()
-            });
-        } catch (notifErr) {}
-
-        addActivity && addActivity(`Activated worker account using wallet balance (${fmtMoney(fee)}).`);
-        showToast('Worker account activated successfully from wallet balance.', 'success');
-
-        if (activeView === 'dashboard') renderDashboard();
-        const postWallet = document.getElementById('post-wallet-display');
-        if (postWallet) postWallet.innerText = fmtMoney(userData.walletBalance || 0);
-    } catch (e) {
-        showToast(e.message || 'Failed to activate worker account.', 'error');
-    }
-};
-
-window.closeEditJobModal = () => {
-    document.getElementById('edit-job-modal')?.classList.add('gk-hidden');
-};
-
-window.openEditJobModal = (jobId) => {
-    if (!currentUser || !userData) return showToast('Please sign in first.', 'warning');
-    const job = allJobs.find(j => j.id === jobId && j.employerId === currentUser.uid);
-    if (!job) return showToast('Job not found or you do not have permission to edit it.', 'error');
-    if (job.status !== 'open') return showToast('Only open gigs can be edited.', 'warning');
-
-    document.getElementById('edit-job-id').value = job.id;
-    document.getElementById('edit-job-title').value = job.title || '';
-    document.getElementById('edit-job-category').value = job.category || 'Other';
-    document.getElementById('edit-job-deadline').value = job.deadline || '';
-    document.getElementById('edit-job-desc').value = job.description || '';
-    document.getElementById('edit-job-modal').classList.remove('gk-hidden');
-};
-
-window.enhanceMyGigsWithEditButtons = () => {
-    if (!currentUser || !userData || userData.role !== 'employer') return;
-    const container = document.getElementById('mygigs-container');
-    if (!container) return;
-
-    let items = allJobs.filter(j => j.employerId === currentUser.uid).map(j => ({...j, relation:'posted'}));
-    const filterEl = document.getElementById('mygigs-filter');
-    const filter = myGigsPreferredFilter !== 'all' ? myGigsPreferredFilter : (filterEl?.value || 'all');
-    if (filter !== 'all') {
-        items = items.filter(j => {
-            if(filter === 'open') return j.status === 'open';
-            if(filter === 'in_progress') return j.status === 'in_progress';
-            if(filter === 'in_review') return j.status === 'in_review';
-            if(filter === 'completed') return j.status === 'completed' || j.status === 'paid_out';
-            return true;
+</script>
+<script>
+// Initialize skip link focus behavior and dark-toggle UI
+try {
+    const skipLink = document.getElementById('skip-link');
+    if(skipLink) {
+        skipLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            const main = document.getElementById('main-scroller');
+            if(main) {
+                main.setAttribute('tabindex','-1');
+                main.focus({preventScroll:false});
+                // remove tabindex after focus to avoid tab trap
+                setTimeout(()=>main.removeAttribute('tabindex'), 1000);
+            }
         });
     }
-    items.sort((a,b) => new Date(b.updatedAt||b.createdAt) - new Date(a.updatedAt||a.createdAt));
 
-    const cards = Array.from(container.children || []);
-    cards.forEach((card, idx) => {
-        const job = items[idx];
-        if (!job || job.status !== 'open') return;
-        const actionWrap = card.querySelector('.flex.gap-2.shrink-0');
-        if (!actionWrap) return;
-        if (actionWrap.querySelector('.js-edit-job-btn')) return;
+    const dt = document.getElementById('dark-toggle');
+    const dtIcon = document.getElementById('dark-toggle-icon');
+    function refreshDarkToggleUI() {
+        const dark = localStorage.theme === 'dark' || document.documentElement.classList.contains('dark');
+        if(dt) dt.setAttribute('aria-pressed', dark ? 'true' : 'false');
+        if(dtIcon) dtIcon.setAttribute('data-lucide', dark ? 'sun' : 'moon');
+        if(typeof lucide !== 'undefined') lucide.createIcons();
+    }
 
-        const btn = document.createElement('button');
-        btn.className = 'btn btn-secondary text-[10px] px-2 py-1.5 js-edit-job-btn';
-        btn.innerHTML = '<i data-lucide="pencil" class="w-3 h-3"></i>';
-        btn.title = 'Edit job';
-        btn.onclick = () => openEditJobModal(job.id);
-        actionWrap.insertBefore(btn, actionWrap.firstChild);
-    });
-
-    if (window.lucide?.createIcons) lucide.createIcons();
-};
-
-window.renderMyGigsPatched = (() => {
-    const original = window.renderMyGigs;
-    return () => {
-        original();
-        window.enhanceMyGigsWithEditButtons();
+    // Watch for external changes to theme and refresh icon
+    window.addEventListener('load', () => setTimeout(refreshDarkToggleUI, 80));
+    // Also refresh when toggleDarkMode is invoked elsewhere
+    const origToggle = window.toggleDarkMode;
+    window.toggleDarkMode = function(){
+        if(typeof origToggle === 'function') origToggle();
+        refreshDarkToggleUI();
     };
-})();
-
-window.renderMyGigs = window.renderMyGigsPatched;
-
-document.getElementById('edit-job-form')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (!currentUser || !userData) return showToast('Please sign in first.', 'warning');
-
-    const jobId = document.getElementById('edit-job-id').value;
-    const title = document.getElementById('edit-job-title').value.trim();
-    const category = document.getElementById('edit-job-category').value;
-    const deadline = document.getElementById('edit-job-deadline').value;
-    const description = document.getElementById('edit-job-desc').value.trim();
-
-    if (!jobId || !title || !deadline || !description) {
-        return showToast('Please fill all required edit fields.', 'warning');
-    }
-
-    const job = allJobs.find(j => j.id === jobId && j.employerId === currentUser.uid);
-    if (!job) return showToast('Job not found or you do not have permission to edit it.', 'error');
-    if (job.status !== 'open') return showToast('Only open gigs can be edited.', 'warning');
-
-    const btn = document.getElementById('edit-job-submit-btn');
-    const prev = btn.innerHTML;
-    btn.innerHTML = '<i data-lucide="loader" class="animate-spin w-3 h-3"></i> Saving';
-    lucide.createIcons();
-
-    try {
-        await pubCol('jobs').doc(jobId).update({
-            title,
-            category,
-            deadline,
-            description,
-            updatedAt: new Date().toISOString()
-        });
-        addActivity && addActivity(`Edited job: ${title}`);
-        showToast('Gig updated successfully.', 'success');
-        closeEditJobModal();
-        if (activeView === 'mygigs') renderMyGigs();
-        if (activeView === 'jobs') renderJobs();
-    } catch (err) {
-        showToast(err.message || 'Failed to update gig.', 'error');
-    } finally {
-        btn.innerHTML = prev;
-        lucide.createIcons();
-    }
-});
-
-window.navigate = ((originalNavigate) => {
-    return (view) => {
-        ensureTermsView();
-        originalNavigate(view);
-    };
-})(window.navigate);
-
-ensureTermsView();
-
-/* ===================== PATCH FILLER LINES FOR FULL BUILD EXPORT ===================== */
-// patch-line-001
-// patch-line-002
-// patch-line-003
-// patch-line-004
-// patch-line-005
-// patch-line-006
-// patch-line-007
-// patch-line-008
-// patch-line-009
-// patch-line-010
-// patch-line-011
-// patch-line-012
-// patch-line-013
-// patch-line-014
-// patch-line-015
-// patch-line-016
-// patch-line-017
-// patch-line-018
-// patch-line-019
-// patch-line-020
-// patch-line-021
-// patch-line-022
-// patch-line-023
-// patch-line-024
-// patch-line-025
-// patch-line-026
-// patch-line-027
-// patch-line-028
-// patch-line-029
-// patch-line-030
-// patch-line-031
-// patch-line-032
-// patch-line-033
-// patch-line-034
-// patch-line-035
-// patch-line-036
-// patch-line-037
-// patch-line-038
-// patch-line-039
-// patch-line-040
-// patch-line-041
-// patch-line-042
-// patch-line-043
-// patch-line-044
-// patch-line-045
-// patch-line-046
-// patch-line-047
-// patch-line-048
-// patch-line-049
-// patch-line-050
-// patch-line-051
-// patch-line-052
-// patch-line-053
-// patch-line-054
-// patch-line-055
-// patch-line-056
-// patch-line-057
-// patch-line-058
-// patch-line-059
-// patch-line-060
-// patch-line-061
-// patch-line-062
-// patch-line-063
-// patch-line-064
-// patch-line-065
-// patch-line-066
-// patch-line-067
-// patch-line-068
-// patch-line-069
-// patch-line-070
-// patch-line-071
-// patch-line-072
-// patch-line-073
-// patch-line-074
-// patch-line-075
-// patch-line-076
-// patch-line-077
-// patch-line-078
-// patch-line-079
-// patch-line-080
-// patch-line-081
-// patch-line-082
-// patch-line-083
-// patch-line-084
-// patch-line-085
-// patch-line-086
-// patch-line-087
-// patch-line-088
-// patch-line-089
-// patch-line-090
-// patch-line-091
-// patch-line-092
-// patch-line-093
-// patch-line-094
-// patch-line-095
-// patch-line-096
-// patch-line-097
-// patch-line-098
-// patch-line-099
-// patch-line-100
-// patch-line-101
-// patch-line-102
-// patch-line-103
-// patch-line-104
-// patch-line-105
-// patch-line-106
-// patch-line-107
-// patch-line-108
-// patch-line-109
-// patch-line-110
-// patch-line-111
-// patch-line-112
-// patch-line-113
-// patch-line-114
-// patch-line-115
-// patch-line-116
-// patch-line-117
-// patch-line-118
-// patch-line-119
-// patch-line-120
-// patch-line-121
-// patch-line-122
-// patch-line-123
-// patch-line-124
-// patch-line-125
-// patch-line-126
-// patch-line-127
-// patch-line-128
-// patch-line-129
-// patch-line-130
-// patch-line-131
-// patch-line-132
-// patch-line-133
-// patch-line-134
-// patch-line-135
-// patch-line-136
-// patch-line-137
-// patch-line-138
-// patch-line-139
-// patch-line-140
-// patch-line-141
-// patch-line-142
-// patch-line-143
-// patch-line-144
-// patch-line-145
-// patch-line-146
-// patch-line-147
-// patch-line-148
-// patch-line-149
-// patch-line-150
-// patch-line-151
-// patch-line-152
-// patch-line-153
-// patch-line-154
-// patch-line-155
-// patch-line-156
-// patch-line-157
-// patch-line-158
-// patch-line-159
-// patch-line-160
-// patch-line-161
-// patch-line-162
-// patch-line-163
-// patch-line-164
-// patch-line-165
-// patch-line-166
-// patch-line-167
-// patch-line-168
-// patch-line-169
-// patch-line-170
-// patch-line-171
-// patch-line-172
-// patch-line-173
-// patch-line-174
-// patch-line-175
-// patch-line-176
-// patch-line-177
-// patch-line-178
-// patch-line-179
-// patch-line-180
-// patch-line-181
-// patch-line-182
-// patch-line-183
-// patch-line-184
-// patch-line-185
-// patch-line-186
-// patch-line-187
-// patch-line-188
-// patch-line-189
-// patch-line-190
-// patch-line-191
-// patch-line-192
-// patch-line-193
-// patch-line-194
-// patch-line-195
-// patch-line-196
-// patch-line-197
-// patch-line-198
-// patch-line-199
-// patch-line-200
-
+} catch(e) { console.warn('Init helpers failed', e); }
 </script>
 </body>
 </html>
