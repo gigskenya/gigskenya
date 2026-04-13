@@ -593,39 +593,12 @@
             outline: 3px solid rgba(37,99,235,.95);
         }
 
-        /* Small persistent dark-mode toggle */
-        .dark-toggle {
-            position: fixed;
-            top: 1rem;
-            right: 1rem;
-            z-index: 99999;
-            background: #fff;
-            color: #0f172a;
-            border-radius: 9999px;
-            padding: .35rem;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 6px 18px rgba(2,6,23,.12);
-            border: 1px solid rgba(2,6,23,.06);
-        }
-
-        .dark .dark-toggle {
-            background: #0f172a;
-            color: #e6eef8;
-            border-color: rgba(99,102,241,.06);
-        }
     </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 flex flex-col w-full h-[100dvh]">
 
     <!-- Accessibility: Skip to main content -->
     <a href="#main-scroller" class="skip-link" id="skip-link">Skip to main content</a>
-
-    <!-- Dark mode toggle (persistent) -->
-    <button id="dark-toggle" class="dark-toggle" aria-label="Toggle dark mode" aria-pressed="false" onclick="window.toggleDarkMode && window.toggleDarkMode()">
-        <i data-lucide="moon" id="dark-toggle-icon" class="w-5 h-5"></i>
-    </button>
 
 <!-- ===================== LOADING SCREEN ===================== -->
 <div id="loading-screen" class="fixed inset-0 bg-gradient-to-br from-slate-900 to-slate-800 z-[9999] flex flex-col items-center justify-center">
@@ -725,8 +698,9 @@
                 <input id="topup-amount" type="number" required class="gk-input" placeholder="e.g. 500">
             </div>
             <div>
-                <label class="block text-left text-[10px] font-bold mb-1 text-slate-700 dark:text-slate-300">M-Pesa Code</label>
-                <input id="topup-code" required class="gk-input uppercase" placeholder="e.g. QKZ12ABC34">
+                <label class="block text-left text-[10px] font-bold mb-1 text-slate-700 dark:text-slate-300">M-Pesa code or paying phone number</label>
+                <input id="topup-code" required class="gk-input uppercase" minlength="10" maxlength="10" pattern="[A-Za-z0-9]{10}" inputmode="text" autocomplete="off" placeholder="10 letters/numbers" title="Enter exactly 10 letters or numbers">
+                <p class="mt-1 text-[9px] text-slate-500 dark:text-slate-400">Use the M-Pesa code or phone number used to pay. It must be exactly 10 letters/numbers.</p>
             </div>
             <button type="submit" class="btn btn-primary w-full py-2.5 mt-2">Submit for Verification</button>
         </form>
@@ -893,8 +867,8 @@
                     </div>
              </div>
              <div class="flex items-center gap-1.5 md:gap-2">
-                     <button onclick="exportWorkspacePDF()" class="btn btn-secondary text-[10px] md:text-xs px-2 py-1.5 hidden sm:flex" title="Export Contract/Summary">
-                             <i data-lucide="download" class="w-3.5 h-3.5"></i> Export
+                     <button onclick="exportWorkspacePDF()" class="btn btn-secondary text-[10px] md:text-xs px-2 py-1.5 hidden sm:flex" title="Export Workspace PDF">
+                             <i data-lucide="download" class="w-3.5 h-3.5"></i> Export PDF
                      </button>
                      <button id="ws-history-btn" class="btn btn-secondary text-[10px] md:text-xs px-2 md:px-3 py-1.5 hidden" onclick="openHistoryFromMenu()">
                              <i data-lucide="history" class="w-3.5 h-3.5"></i> <span class="hidden sm:inline">History</span>
@@ -1304,6 +1278,16 @@
                                         <div class="flex flex-wrap gap-1.5" id="ws-toolkit-macro-buttons"></div>
                                 </div>
                         </div>
+                        <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
+                                        <div>
+                                                <h4 class="font-bold text-xs mb-1 flex items-center gap-1.5"><i data-lucide="layers-3" class="w-4 h-4 text-brand"></i> 60 Workplace Boosters</h4>
+                                                <p class="text-[10px] text-slate-500 dark:text-slate-400">One-click notes for QA, delivery, approvals, communication, safety and handover.</p>
+                                        </div>
+                                        <span class="badge bg-blue-50 dark:bg-blue-900/30 text-brand">60 new tools</span>
+                                </div>
+                                <div id="ws-feature-boosters" class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2"></div>
+                        </div>
                 </div>
 
                 </div>
@@ -1355,6 +1339,27 @@
     </div>
 </div>
 
+<!-- ===================== MODAL: COMPLETE PROFILE PROMPT ===================== -->
+<div id="complete-profile-modal" class="modal-overlay gk-hidden" style="z-index:420" onclick="closeCompleteProfilePrompt()">
+    <div class="modal-box p-5 md:p-6 text-center" style="max-width:430px" onclick="event.stopPropagation()">
+        <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 text-brand rounded-xl flex items-center justify-center mx-auto mb-3">
+            <i data-lucide="user-round-check" class="w-6 h-6"></i>
+        </div>
+        <h3 class="font-display font-black text-xl text-slate-900 dark:text-white mb-1">Complete Your Profile</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">Add your bio, education, payment details, skills and portfolio so your account is ready for work and payouts.</p>
+        <div class="grid grid-cols-2 gap-2 text-left mb-4 text-[10px]">
+            <div class="bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 p-2"><i data-lucide="badge-check" class="w-3 h-3 inline text-brand mr-1"></i> Skills</div>
+            <div class="bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 p-2"><i data-lucide="graduation-cap" class="w-3 h-3 inline text-brand mr-1"></i> Education</div>
+            <div class="bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 p-2"><i data-lucide="wallet" class="w-3 h-3 inline text-brand mr-1"></i> Payout</div>
+            <div class="bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 p-2"><i data-lucide="link" class="w-3 h-3 inline text-brand mr-1"></i> Portfolio</div>
+        </div>
+        <div class="flex gap-2">
+            <button onclick="closeCompleteProfilePrompt()" class="btn btn-secondary flex-1 py-2 text-xs">Later</button>
+            <button onclick="completeProfileNow()" class="btn btn-primary flex-1 py-2 text-xs">Complete Now</button>
+        </div>
+    </div>
+</div>
+
 <!-- ===================== MODAL: PAYOUT REQUEST ===================== -->
 <div id="payout-modal" class="modal-overlay gk-hidden" style="z-index:300" onclick="closePayoutModal()">
     <div class="modal-box p-4 md:p-6" onclick="event.stopPropagation()">
@@ -1373,13 +1378,14 @@
             </div>
             <div>
                 <label class="block text-[10px] font-bold mb-1 text-slate-700 dark:text-slate-300">Payment Method</label>
-                <select id="payout-method" class="gk-input">
-                    <option>M-Pesa</option><option>PayPal</option><option>Bank Transfer</option>
+                <select id="payout-method" class="gk-input" onchange="updatePayoutMethodUI()">
+                    <option value="M-Pesa">M-Pesa</option><option value="PayPal">PayPal</option>
                 </select>
             </div>
             <div>
-                <label class="block text-[10px] font-bold mb-1 text-slate-700 dark:text-slate-300">Account Details</label>
+                <label id="payout-account-label" class="block text-[10px] font-bold mb-1 text-slate-700 dark:text-slate-300">M-Pesa Number</label>
                 <input id="payout-account" class="gk-input" placeholder="07XXXXXXXX">
+                <p id="payout-account-help" class="text-[9px] text-slate-500 mt-1">Enter the M-Pesa phone number that should receive the withdrawal.</p>
             </div>
             <button onclick="submitPayout()" class="btn btn-primary w-full py-2.5"><i data-lucide="send" class="w-3 h-3"></i> Request Withdrawal</button>
         </div>
@@ -1534,6 +1540,44 @@
     </div>
 </div>
 
+<!-- ===================== MODAL: DETAILED TRANSACTIONS & STATS ===================== -->
+<div id="stats-modal" class="modal-overlay gk-hidden" style="z-index:360" onclick="closeStatsModal()">
+    <div class="modal-box p-4 md:p-6" style="max-width:1050px;max-height:92dvh" onclick="event.stopPropagation()">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
+            <div>
+                <h3 class="font-display font-black text-lg md:text-xl text-slate-900 dark:text-white flex items-center gap-2"><i data-lucide="bar-chart-3" class="text-brand w-5 h-5"></i> Transactions & Stats</h3>
+                <p class="text-[10px] md:text-xs text-slate-500 dark:text-slate-400">Detailed wallet movement, escrow, applications, jobs and profile metrics.</p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+                <button onclick="exportStatsCSV()" class="btn btn-secondary text-[10px] px-2 py-1.5"><i data-lucide="file-down" class="w-3.5 h-3.5"></i> CSV</button>
+                <button onclick="exportStatsJSON()" class="btn btn-secondary text-[10px] px-2 py-1.5"><i data-lucide="braces" class="w-3.5 h-3.5"></i> JSON</button>
+                <button onclick="printStatsReport()" class="btn btn-secondary text-[10px] px-2 py-1.5"><i data-lucide="printer" class="w-3.5 h-3.5"></i> PDF</button>
+                <button onclick="closeStatsModal()" class="p-1.5 text-slate-400 hover:text-red-500 dark:hover:text-red-400 transition bg-slate-100 dark:bg-slate-700 rounded-full"><i data-lucide="x" class="w-4 h-4"></i></button>
+            </div>
+        </div>
+        <div id="stats-summary-grid" class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4"></div>
+        <div class="grid lg:grid-cols-3 gap-3">
+            <div class="lg:col-span-2 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 p-3">
+                <div class="flex items-center justify-between gap-2 mb-2">
+                    <h4 class="font-bold text-xs text-slate-800 dark:text-white">All Transactions</h4>
+                    <select id="stats-transaction-filter" onchange="renderStatsModal()" class="gk-input text-[10px] py-1.5 max-w-[170px]">
+                        <option value="all">All Types</option>
+                        <option value="topup">Top-ups</option>
+                        <option value="payout">Withdrawals</option>
+                        <option value="escrow">Escrow</option>
+                        <option value="app">Applications</option>
+                    </select>
+                </div>
+                <div id="stats-transaction-list" class="space-y-2 max-h-[52vh] overflow-y-auto pr-1"></div>
+            </div>
+            <div class="bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 p-3">
+                <h4 class="font-bold text-xs text-slate-800 dark:text-white mb-2">Detailed Stats</h4>
+                <div id="stats-detail-list" class="space-y-2 max-h-[52vh] overflow-y-auto pr-1"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- ===================== MODAL: SETTINGS ===================== -->
 <div id="settings-panel" class="modal-overlay gk-hidden" style="z-index:300" onclick="closeSettings()">
     <div class="modal-box p-4 md:p-6" style="max-width:750px;max-height:90dvh" onclick="event.stopPropagation()">
@@ -1589,7 +1633,7 @@
                 <div style="grid-column:1/-1"><label class="block text-[10px] font-bold mb-0.5 text-slate-700 dark:text-slate-300">Bio</label><textarea id="set-bio" rows="2" class="gk-input"></textarea></div>
                 <div><label class="block text-[10px] font-bold mb-0.5 text-slate-700 dark:text-slate-300">Hourly Rate (KSh)</label><input id="set-rate" type="number" class="gk-input"></div>
                 <div><label class="block text-[10px] font-bold mb-0.5 text-slate-700 dark:text-slate-300">Availability</label><select id="set-availability" class="gk-input"><option>Full-Time</option><option>Part-Time</option><option>Weekends Only</option><option>Unavailable</option></select></div>
-                <div><label class="block text-[10px] font-bold mb-0.5 text-slate-700 dark:text-slate-300">Education</label><select id="set-edu" class="gk-input"><option>High School</option><option>Diploma</option><option>Bachelor's</option><option>Master's</option><option>PhD</option></select></div>
+                <div><label class="block text-[10px] font-bold mb-0.5 text-slate-700 dark:text-slate-300">Education</label><select id="set-edu" class="gk-input"><option value="None">None</option><option>High School</option><option>Diploma</option><option>Bachelor's</option><option>Master's</option><option>PhD</option></select></div>
                 <div><label class="block text-[10px] font-bold mb-0.5 text-slate-700 dark:text-slate-300">Years of Experience</label><input id="set-exp" type="number" class="gk-input"></div>
                 <div><label class="block text-[10px] font-bold mb-0.5 text-slate-700 dark:text-slate-300">Language 1</label><input id="set-lang1" class="gk-input"></div>
                 <div><label class="block text-[10px] font-bold mb-0.5 text-slate-700 dark:text-slate-300">Language 2</label><input id="set-lang2" class="gk-input"></div>
@@ -2051,6 +2095,58 @@
             </section>
         </div>
 
+        <!-- ===== TERMS VIEW ===== -->
+        <div id="view-terms" class="view-section fade-in" style="display:none">
+            <section class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm p-5 md:p-8">
+                <span class="badge bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1 mb-3">Terms</span>
+                <h2 class="font-display font-black text-3xl md:text-4xl text-slate-900 dark:text-white mb-3">Clear working rules for better gigs.</h2>
+                <p class="text-sm text-slate-600 dark:text-slate-300 max-w-3xl mb-5">Use Gigs Kenya for genuine, lawful work. Keep payments, approvals, workspace updates and important decisions inside the platform so both sides have a useful record.</p>
+                <div class="grid md:grid-cols-2 gap-3">
+                    <div class="rounded-2xl bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700">
+                        <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-2">For employers</h3>
+                        <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-300">
+                            <li>Post accurate titles, categories, budgets, locations and deadlines.</li>
+                            <li>Fund escrow before work begins and review submissions promptly.</li>
+                            <li>Use written revision notes when changes are needed.</li>
+                            <li>Release payment after accepted work is complete.</li>
+                        </ul>
+                    </div>
+                    <div class="rounded-2xl bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700">
+                        <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-2">For workers</h3>
+                        <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-300">
+                            <li>Apply only when you can meet the scope and deadline.</li>
+                            <li>Keep deliverable links, notes and progress updates in the workspace.</li>
+                            <li>Do not submit copied, unsafe, unlawful or misleading work.</li>
+                            <li>Use the dispute flow when a job cannot be resolved in chat.</li>
+                        </ul>
+                    </div>
+                    <div class="rounded-2xl bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700">
+                        <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-2">Payments and records</h3>
+                        <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-300">
+                            <li>Top-ups require a valid 10-character M-Pesa code or paying phone number.</li>
+                            <li>Pending deposits, withdrawals, escrow and applications appear in the ledger.</li>
+                            <li>Workspace exports and invoice statements are user-generated records.</li>
+                            <li>Admin review may be required for disputed or suspicious transactions.</li>
+                        </ul>
+                    </div>
+                    <div class="rounded-2xl bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700">
+                        <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-2">Location and conduct</h3>
+                        <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-300">
+                            <li>Location tags indicate where work happens or is coordinated.</li>
+                            <li>Do not post scams, illegal services, harassment or private data requests.</li>
+                            <li>Report profiles or jobs that look unsafe or misleading.</li>
+                            <li>Account access, wallet actions and profile information should stay accurate.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-5 flex flex-wrap gap-2">
+                    <button onclick="navigate('jobs')" class="btn btn-primary text-xs"><i data-lucide="search" class="w-3.5 h-3.5"></i> Browse Jobs</button>
+                    <button onclick="openLedgerModal()" class="btn btn-secondary text-xs"><i data-lucide="list" class="w-3.5 h-3.5"></i> View Ledger</button>
+                    <button onclick="navigate('safety')" class="btn btn-secondary text-xs"><i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Trust & Safety</button>
+                </div>
+            </section>
+        </div>
+
         <!-- ===== AUTH VIEW ===== -->
         <div id="view-auth" class="view-section" style="display:none;align-items:center;justify-content:center;min-height:65vh">
             <div class="w-full max-w-sm md:max-w-md">
@@ -2254,11 +2350,12 @@ What tools will you use?"></textarea>
                         <h2 id="dash-name" class="font-display font-black text-xl md:text-3xl">Welcome!</h2>
                         <p class="text-slate-300 text-xs md:text-sm mt-0.5">Here's what's happening</p>
                     </div>
-                    <div class="flex flex-row sm:flex-col gap-2 w-full sm:w-auto mt-3 sm:mt-0">
-                        <button onclick="openTopupModal()" class="btn btn-success text-[10px] shadow-lg flex-1"><i data-lucide="arrow-up-circle" class="w-3.5 h-3.5"></i> Top Up</button>
-                        <button onclick="toggleAvailability()" id="avail-toggle-btn" class="btn text-[10px] bg-white/10 text-white border-white/20 hover:bg-white/20 flex-1">
-                            <i data-lucide="circle-dot" class="w-3 h-3 text-emerald-400"></i> Available
-                        </button>
+            <div class="flex flex-row sm:flex-col gap-2 w-full sm:w-auto mt-3 sm:mt-0">
+                <button onclick="openTopupModal()" class="btn btn-success text-[10px] shadow-lg flex-1"><i data-lucide="arrow-up-circle" class="w-3.5 h-3.5"></i> Top Up</button>
+                <button onclick="openStatsModal()" class="btn btn-secondary text-[10px] bg-white/10 text-white border-white/20 hover:bg-white/20 flex-1"><i data-lucide="bar-chart-3" class="w-3.5 h-3.5"></i> Stats</button>
+                <button onclick="toggleAvailability()" id="avail-toggle-btn" class="btn text-[10px] bg-white/10 text-white border-white/20 hover:bg-white/20 flex-1">
+                    <i data-lucide="circle-dot" class="w-3 h-3 text-emerald-400"></i> Available
+                </button>
                     </div>
                 </div>
             </div>
@@ -2296,6 +2393,8 @@ What tools will you use?"></textarea>
                         <span id="referral-code" class="font-mono font-black tracking-widest text-sm">GK-XXXXX</span>
                         <button onclick="copyReferralCode()" class="btn bg-white text-indigo-600 text-[10px] font-bold hover:bg-indigo-50 px-2 py-1">Copy</button>
                     </div>
+                    <div id="referral-data" class="mt-3 grid grid-cols-2 gap-2 text-[10px]"></div>
+                    <div id="referral-list" class="mt-2 max-h-20 overflow-y-auto text-[10px] space-y-1"></div>
                 </div>
             </div>
 
@@ -2386,6 +2485,11 @@ What tools will you use?"></textarea>
 </div>
 <!-- ===================== END MAIN SCROLLER ===================== -->
 
+<!-- Desktop floating My Gigs shortcut -->
+<button id="desktop-mygigs-float" onclick="currentUser ? navigate('mygigs') : navigate('auth')" class="hidden md:flex no-print fixed right-5 bottom-6 z-[120] items-center gap-2 bg-brand text-white shadow-2xl hover:bg-branddark transition rounded-lg px-4 py-3 text-xs font-black">
+    <i data-lucide="folder-check" class="w-4 h-4"></i> My Gigs
+</button>
+
 <!-- ===================== MOBILE BOTTOM NAV ===================== -->
 <nav class="bottom-nav md:hidden no-print w-full shrink-0">
     <button class="bottom-nav-btn flex-1" onclick="closeTopRightMenus(); navigate('dashboard')" id="bnav-dashboard">
@@ -2469,6 +2573,8 @@ let soundPromptDismissed = false;
 let soundsEnabled = false;
 let soundCtx = null;
 let lastUnreadNotifCount = null;
+let lastNewestNotifId = null;
+let notifSnapshotPrimed = false;
 let lastUnreadMsgCount = null;
 
 try {
@@ -2946,10 +3052,13 @@ window.updateNotificationsUI = (notifs) => {
     if(!list || !dot) return;
     
     const unread = notifs.filter(n => !n.read);
-    
-    if (lastUnreadNotifCount !== null && unread.length > lastUnreadNotifCount && unread.length > 0) {
+    const newestUnread = unread[0];
+    if (notifSnapshotPrimed && newestUnread?.id && newestUnread.id !== lastNewestNotifId) {
         playSystemSound('notif');
+        if(newestUnread.message) showToast(newestUnread.message, 'info', 5000);
     }
+    lastNewestNotifId = newestUnread?.id || null;
+    notifSnapshotPrimed = true;
     lastUnreadNotifCount = unread.length;
 
     if(unread.length > 0) {
@@ -2988,6 +3097,7 @@ window.handleNotifClick = async (notifId, type, jobId) => {
     else if (type === 'review_received') showPublicProfile(currentUser.uid);
     else if (type === 'job_match' && jobId) { navigate('jobs'); openJobDetail(jobId); }
     else if (type === 'deposit_pending' || type === 'withdrawal_pending') { openLedgerModal(); }
+    else if (type === 'referral_joined' || type === 'referral_used') { navigate('dashboard'); setTimeout(renderReferralData, 80); }
 };
 
 window.clearNotifications = async () => {
@@ -3174,22 +3284,65 @@ document.getElementById('auth-form').addEventListener('submit', async e => {
             const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
             if(!passRegex.test(pass)) { showToast('Password needs 8+ chars, uppercase, lowercase & number','error'); return; }
             
+            let referrer = null;
+            const cleanRefUsed = refUsed.toUpperCase();
+            if(cleanRefUsed) {
+                try {
+                    const refSnap = await db.collection('artifacts').doc(appId).collection('users')
+                        .where('referralCode', '==', cleanRefUsed)
+                        .limit(1)
+                        .get();
+                    if(!refSnap.empty) {
+                        referrer = { uid: refSnap.docs[0].id, ...refSnap.docs[0].data() };
+                    }
+                } catch(refErr) {
+                    console.warn('Referral lookup failed:', refErr);
+                }
+            }
+
             const cred = await auth.createUserWithEmailAndPassword(email, pass);
             const myRefCode = 'GK-' + Math.random().toString(36).substr(2,5).toUpperCase();
             
             await userDoc(cred.user.uid).set({
                 uid: cred.user.uid, name, role, phone, email,
                 bookmarks:[], skills:[], testPassed:false, isActivated:false, createdAt:new Date().toISOString(),
-                headline:'', bio:'', rate:0, availability:'Full-Time', education:"Bachelor's", experience:0,
+                headline:'', bio:'', rate:0, availability:'Full-Time', education:'None', experience:0,
                 lang1:'English', lang2:'Swahili', paymentMethod:'M-Pesa', mpesa:phone,
                 paypal:'', bankName:'', bankAccName:'', bankAccNo:'', bankBranch:'',
                 portfolio:'', linkedin:'', github:'', instagram:'', telegram:'',
                 secQ:"What was your childhood pet's name?", secA:'', twoFA:false,
                 completionRate:0, responseTime:'N/A', isAvailable:true,
-                referralCode:myRefCode, referredBy: refUsed, avatarUrl:'', 
+                referralCode:myRefCode, referredBy: referrer ? cleanRefUsed : '', referredByUid: referrer?.uid || '', referredByName: referrer?.name || '', referrals:[], referralCount:0, avatarUrl:'', 
                 totalEarnings:0, totalSpent:0, walletBalance:0, profileViews:0,
                 notifPrefs:{jobs:true,apps:true,msgs:true,pay:true,weekly:false}
             });
+
+            if(referrer?.uid && referrer.uid !== cred.user.uid) {
+                await userDoc(referrer.uid).update({
+                    referralCount: firebase.firestore.FieldValue.increment(1),
+                    referrals: firebase.firestore.FieldValue.arrayUnion({
+                        uid: cred.user.uid,
+                        name,
+                        email,
+                        referralCode: myRefCode,
+                        joinedAt: new Date().toISOString()
+                    })
+                }).catch(()=>{});
+                await pubCol('notifications').add({
+                    userId: referrer.uid,
+                    type: 'referral_joined',
+                    message: `${name} joined using your referral code ${cleanRefUsed}.`,
+                    read: false,
+                    createdAt: new Date().toISOString()
+                });
+                await pubCol('notifications').add({
+                    userId: cred.user.uid,
+                    type: 'referral_used',
+                    message: `Referral applied. You were referred by ${referrer.name || cleanRefUsed}.`,
+                    read: false,
+                    createdAt: new Date().toISOString()
+                });
+            }
             
             try {
                 await emailjs.send("service_y8po9tx", "template_ut0ep5w", {
@@ -3200,7 +3353,8 @@ document.getElementById('auth-form').addEventListener('submit', async e => {
                 console.error('EmailJS Error:', emErr);
             }
             
-            showToast('Account created! Welcome to Gigs Kenya 🎉','success');
+            showToast('Account created! Welcome to Gigs Kenya','success');
+            setTimeout(openCompleteProfilePrompt, 700);
         } else {
             await auth.signInWithEmailAndPassword(email, pass);
             showToast('Signed in successfully!', 'success');
@@ -4073,6 +4227,65 @@ window.startWorkspaceChat = () => {
     }
 };
 
+function isWorkerLockedAfterCompletion(job) {
+    return userData?.role === 'worker' && ['completed','paid_out'].includes(getJobStatus(job));
+}
+
+function guardWorkerWorkspaceWrite(job, action = 'change this workspace') {
+    if(!job) {
+        showToast('Workspace not open', 'error');
+        return false;
+    }
+    if(isWorkerLockedAfterCompletion(job)) {
+        showToast(`No permission to ${action} after work is completed.`, 'error');
+        return false;
+    }
+    return true;
+}
+
+function applyCompletedWorkerWorkspaceLock(job) {
+    if(!isWorkerLockedAfterCompletion(job)) return;
+
+    const actionArea = document.getElementById('ws-action-area');
+    if(actionArea) {
+        actionArea.innerHTML = `
+            <div class="flex-1 flex flex-col items-center justify-center text-center p-4 h-full">
+                <i data-lucide="lock" class="w-8 h-8 text-slate-400 mb-3"></i>
+                <h4 class="font-bold text-sm dark:text-white mb-1">Workspace Locked</h4>
+                <p class="text-[10px] text-slate-500 max-w-sm">This job is completed. Workers can view the record, but cannot add, edit, delete, log time, request changes, submit work, or update notes.</p>
+            </div>
+        `;
+    }
+
+    ['ws-todo-input-area','ws-time-input-area','ws-extension-area'].forEach(id => {
+        const el = document.getElementById(id);
+        if(el) {
+            el.innerHTML = '<div class="text-[10px] text-slate-400 italic bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-2 text-center">Locked after completion.</div>';
+        }
+    });
+
+    const vaultInput = document.querySelector('#ws-new-file-link')?.closest('.flex.gap-2');
+    if(vaultInput) {
+        vaultInput.innerHTML = '<div class="text-[10px] text-slate-400 italic bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-2 text-center w-full">File changes are locked after completion.</div>';
+    }
+
+    const macroArea = document.getElementById('ws-macros-area');
+    if(macroArea) macroArea.innerHTML = '<span class="text-[10px] text-slate-400 italic">Quick actions locked after completion.</span>';
+
+    document.querySelectorAll('#workspace-modal textarea, #workspace-modal input:not([type="hidden"])').forEach(el => {
+        el.disabled = true;
+        el.classList.add('opacity-60', 'cursor-not-allowed');
+    });
+    document.querySelectorAll('#workspace-modal button').forEach(btn => {
+        const allowed = btn.closest('#ws-activity-log') || btn.closest('#ws-past-jobs-list') || btn.getAttribute('onclick')?.includes('closeWorkspace') || btn.closest('.ws-tab-btn');
+        if(!allowed) {
+            btn.disabled = true;
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+        }
+    });
+    lucide.createIcons();
+}
+
 window.openWorkspace = async (jobId) => {
     const job = allJobs.find(j => j.id === jobId);
     if(!job) return;
@@ -4152,6 +4365,7 @@ window.openWorkspace = async (jobId) => {
                     <i data-lucide="check-circle" class="w-8 h-8 text-emerald-500 mb-3"></i>
                     <h4 class="font-bold text-sm dark:text-white mb-1">Job Completed</h4>
                     <p class="text-[10px] text-slate-500">Funds released to your wallet. Great job!</p>
+                    <button onclick="exportDoneWorkPDF()" class="btn btn-secondary text-[10px] mt-3 py-2 px-3"><i data-lucide="file-down" class="w-3.5 h-3.5"></i> Export Done Work PDF</button>
                 </div>
             `;
         } else if (job.status === 'disputed') {
@@ -4185,6 +4399,7 @@ window.openWorkspace = async (jobId) => {
                         
                         <!-- NEW EXPAND WORK FEATURE -->
                         <button onclick="openExpandWork('${encodeURIComponent(job.submission?.text || '')}')" class="btn btn-secondary w-full py-1.5 text-[10px] mt-1"><i data-lucide="maximize-2" class="w-3 h-3"></i> Expand / Download Work</button>
+                        <button onclick="exportDoneWorkPDF()" class="btn btn-secondary w-full py-1.5 text-[10px] mt-1"><i data-lucide="file-down" class="w-3 h-3"></i> Export Done Work PDF</button>
                     </div>
                     
                     <p class="text-[10px] text-slate-500 mt-1">Approve to release funds. Optionally add a bonus for exceptional work.</p>
@@ -4205,6 +4420,7 @@ window.openWorkspace = async (jobId) => {
                     <i data-lucide="check-circle" class="w-8 h-8 text-emerald-500 mb-3"></i>
                     <h4 class="font-bold text-sm dark:text-white mb-1">Job Completed</h4>
                     <p class="text-[10px] text-slate-500">Escrow has been released successfully.</p>
+                    <button onclick="exportDoneWorkPDF()" class="btn btn-secondary text-[10px] mt-3 py-2 px-3"><i data-lucide="file-down" class="w-3.5 h-3.5"></i> Export Done Work PDF</button>
                 </div>
             `;
         } else if (job.status === 'disputed') {
@@ -4259,6 +4475,7 @@ window.openWorkspace = async (jobId) => {
         }
     }
 
+    applyCompletedWorkerWorkspaceLock(job);
     document.getElementById('workspace-modal').classList.remove('gk-hidden');
     lucide.createIcons();
 };
@@ -4266,6 +4483,7 @@ window.openWorkspace = async (jobId) => {
 window.handleExtension = async (isApproved) => {
     const job = allJobs.find(j => j.id === currentWorkspaceJobId);
     if(!job || !job.extension) return;
+    if(!guardWorkerWorkspaceWrite(job, 'handle deadline extensions')) return;
 
     try {
         const updates = {
@@ -4324,11 +4542,13 @@ function renderWorkspaceTodos(job) {
 }
 
 window.addWorkspaceTodo = async () => {
+    const job = allJobs.find(j => j.id === currentWorkspaceJobId);
+    if(!guardWorkerWorkspaceWrite(job, 'add tasks')) return;
     const input = document.getElementById('ws-new-todo');
+    if(!input) return showToast('Task input is locked', 'error');
     const text = input.value.trim();
     if(!text) return;
     
-    const job = allJobs.find(j => j.id === currentWorkspaceJobId);
     try {
         const newTodo = { text, done: false, addedBy: currentUser.uid, date: new Date().toISOString() };
         await pubCol('jobs').doc(job.id).update({
@@ -4349,6 +4569,7 @@ window.addWorkspaceTodo = async () => {
 window.toggleWorkspaceTodo = async (idx) => {
     const job = allJobs.find(j => j.id === currentWorkspaceJobId);
     if(!job || !job.todos || !job.todos[idx]) return;
+    if(!guardWorkerWorkspaceWrite(job, 'edit tasks')) return;
     
     try {
         const todos = [...job.todos];
@@ -4389,14 +4610,16 @@ function renderWorkspaceVault(job) {
 }
 
 window.addWorkspaceFile = async () => {
+    const job = allJobs.find(j => j.id === currentWorkspaceJobId);
+    if(!guardWorkerWorkspaceWrite(job, 'add files')) return;
     const linkInput = document.getElementById('ws-new-file-link');
     const nameInput = document.getElementById('ws-new-file-name');
+    if(!linkInput || !nameInput) return showToast('File inputs are locked', 'error');
     const link = linkInput.value.trim();
     const name = nameInput.value.trim() || 'Untitled Document';
     
     if(!link) return showToast('Please enter a valid link', 'error');
     
-    const job = allJobs.find(j => j.id === currentWorkspaceJobId);
     try {
         const fileObj = { name, link, addedByRole: userData.role, date: new Date().toISOString() };
         await pubCol('jobs').doc(job.id).update({
@@ -4444,6 +4667,8 @@ function renderWorkspaceTime(job) {
 
 window.logWorkspaceTime = async () => {
     if(userData.role !== 'worker') return showToast('Only workers can log time.', 'error');
+    const job = allJobs.find(j => j.id === currentWorkspaceJobId);
+    if(!guardWorkerWorkspaceWrite(job, 'log time')) return;
     
     const hInput = document.getElementById('ws-time-hours').value;
     const mInput = document.getElementById('ws-time-mins').value;
@@ -4455,7 +4680,6 @@ window.logWorkspaceTime = async () => {
     
     if(totalMins <= 0) return showToast('Enter valid time', 'error');
     
-    const job = allJobs.find(j => j.id === currentWorkspaceJobId);
     try {
         const logObj = { minutes: totalMins, desc, date: new Date().toISOString() };
         await pubCol('jobs').doc(job.id).update({
@@ -4476,6 +4700,7 @@ window.logWorkspaceTime = async () => {
 
 window.raiseWorkspaceDispute = async () => {
     const job = allJobs.find(j => j.id === currentWorkspaceJobId);
+    if(!guardWorkerWorkspaceWrite(job, 'raise disputes')) return;
     if(job.status === 'completed' || job.status === 'paid_out') return showToast('Job already completed', 'error');
     
     const reason = prompt('Please explain the reason for the dispute. Escrow will be frozen and Admin will mediate:');
@@ -4528,6 +4753,7 @@ function renderWorkspaceLogs(job) {
 window.sendWorkspaceMacro = async (text) => {
     const job = allJobs.find(j => j.id === currentWorkspaceJobId);
     if(!job) return;
+    if(!guardWorkerWorkspaceWrite(job, 'record actions')) return;
     try {
         const payload = { type: 'system', text: `${userData.role === 'employer' ? 'Client' : 'Worker'}: ${text}`, date: new Date().toISOString() };
         await pubCol('jobs').doc(job.id).update({ workspaceLog: firebase.firestore.FieldValue.arrayUnion(payload) });
@@ -4540,13 +4766,13 @@ window.sendWorkspaceMacro = async (text) => {
 };
 
 window.requestDeadlineExtension = async () => {
+    const job = allJobs.find(j => j.id === currentWorkspaceJobId);
+    if(!guardWorkerWorkspaceWrite(job, 'request deadline changes')) return;
     const dateInput = document.getElementById('ws-ext-date').value;
     
     if(!dateInput) {
         return showToast('Select a new deadline date', 'warning');
     }
-    
-    const job = allJobs.find(j => j.id === currentWorkspaceJobId);
     
     try {
         await pubCol('jobs').doc(job.id).update({
@@ -4575,9 +4801,10 @@ window.requestDeadlineExtension = async () => {
 };
 
 window.saveWorkspaceDraft = async () => {
+    const job = allJobs.find(j => j.id === currentWorkspaceJobId);
+    if(!guardWorkerWorkspaceWrite(job, 'save drafts')) return;
     const text = document.getElementById('ws-submit-text').value;
     const link = document.getElementById('ws-submit-link').value;
-    const job = allJobs.find(j => j.id === currentWorkspaceJobId);
     
     try {
         const drafts = job.drafts || {};
@@ -4592,14 +4819,14 @@ window.saveWorkspaceDraft = async () => {
 };
 
 window.submitWorkspaceWork = async () => {
+    const job = allJobs.find(j => j.id === currentWorkspaceJobId);
+    if(!guardWorkerWorkspaceWrite(job, 'submit work')) return;
     const text = document.getElementById('ws-submit-text').value.trim();
     const link = document.getElementById('ws-submit-link').value.trim();
     
     if(!text && !link) {
         return showToast('Please provide a message or a link', 'warning');
     }
-    
-    const job = allJobs.find(j => j.id === currentWorkspaceJobId);
     
     try {
         await pubCol('jobs').doc(job.id).update({
@@ -4759,6 +4986,75 @@ window.exportWorkspacePDF = () => {
     w.document.close();
 };
 
+window.exportDoneWorkPDF = () => {
+    const job = allJobs.find(j => j.id === currentWorkspaceJobId);
+    if(!job) return showToast('Workspace not open', 'error');
+    const toolkit = getWorkspaceToolkit(job);
+    const todos = job.todos || [];
+    const vault = job.vault || job.workspaceFiles || [];
+    const logs = job.workspaceLog || [];
+    const timeLogs = job.timeLogs || job.workspaceTime || [];
+    const submissionText = job.submission?.text || 'No final work note recorded yet.';
+    const submissionLink = job.submission?.link || '';
+    const completed = todos.filter(t => t.done);
+    const pending = todos.filter(t => !t.done);
+    const totalMinutes = timeLogs.reduce((sum, item) => sum + Number(item.minutes || 0), 0);
+    const w = window.open('', '_blank');
+    if(!w) return showToast('Allow popups to export the PDF', 'warning');
+
+    w.document.write(`
+        <html><head><title>Done Work PDF - ${safeText(job.title || 'Workspace')}</title>
+        <style>
+            body{font-family:Arial,sans-serif;color:#172033;padding:28px;line-height:1.45}
+            h1,h2,h3{color:#1d4ed8;margin-bottom:8px}
+            h1{font-size:24px} h2{font-size:18px;margin-top:22px} h3{font-size:14px}
+            .meta,.box{border:1px solid #dbe4f0;border-radius:10px;padding:12px;margin:10px 0;background:#f8fafc}
+            .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+            .item{border-bottom:1px solid #e5edf6;padding:7px 0;font-size:12px}
+            .muted{color:#64748b;font-size:12px}.badge{display:inline-block;background:#dbeafe;color:#1d4ed8;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:700}
+            a{color:#2563eb}.pre{white-space:pre-wrap;font-size:12px}
+            @media print{body{padding:12px}.no-print{display:none}}
+        </style>
+        </head><body>
+            <button class="no-print" onclick="window.print()" style="float:right;padding:8px 12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;font-weight:700">Print / Save PDF</button>
+            <h1>Gigs Kenya Done Work Record</h1>
+            <div class="meta">
+                <h2>${safeText(job.title || 'Untitled Job')} <span class="badge">${safeText(getJobStatus(job).replace('_',' '))}</span></h2>
+                <div class="grid">
+                    <div><strong>Employer:</strong> ${safeText(job.employerName || 'Employer')}</div>
+                    <div><strong>Worker:</strong> ${safeText(job.workerName || job.workerId || 'Worker')}</div>
+                    <div><strong>Budget:</strong> ${fmtMoney(job.budget)}</div>
+                    <div><strong>Deadline:</strong> ${safeText(job.deadline || job.expiry || 'Flexible')}</div>
+                    <div><strong>Generated:</strong> ${new Date().toLocaleString()}</div>
+                    <div><strong>Total Logged:</strong> ${(totalMinutes/60).toFixed(1)}h</div>
+                </div>
+            </div>
+            <h2>Final Submission</h2>
+            <div class="box pre">${safeText(submissionText)}</div>
+            ${submissionLink ? `<p><strong>Deliverable Link:</strong> <a href="${safeText(submissionLink)}">${safeText(submissionLink)}</a></p>` : '<p class="muted">No deliverable link recorded.</p>'}
+            <h2>Completion Proof</h2>
+            <div class="grid">
+                <div class="box"><h3>Completed Tasks (${completed.length})</h3>${completed.length ? completed.map(t => `<div class="item">${safeText(t.text)}</div>`).join('') : '<p class="muted">No completed tasks recorded.</p>'}</div>
+                <div class="box"><h3>Pending / Follow-up (${pending.length})</h3>${pending.length ? pending.map(t => `<div class="item">${safeText(t.text)}</div>`).join('') : '<p class="muted">No pending tasks recorded.</p>'}</div>
+            </div>
+            <h2>Files & Evidence</h2>
+            <div class="box">${vault.length ? vault.map(v => `<div class="item"><strong>${safeText(v.name || v.label || 'File')}</strong>${v.link || v.url ? ` - <a href="${safeText(v.link || v.url)}">${safeText(v.link || v.url)}</a>` : ''}</div>`).join('') : '<p class="muted">No vault files recorded.</p>'}</div>
+            <h2>Quality Notes</h2>
+            <div class="grid">
+                <div class="box"><h3>Testing Notes</h3><div class="pre">${safeText(toolkit.testingNotes || 'No testing notes saved.')}</div></div>
+                <div class="box"><h3>Release Notes</h3><div class="pre">${safeText(toolkit.releaseNotes || 'No release notes saved.')}</div></div>
+                <div class="box"><h3>Acceptance Criteria</h3><div class="pre">${safeText(toolkit.acceptanceCriteria || 'No acceptance criteria saved.')}</div></div>
+                <div class="box"><h3>Handover Checklist</h3><div class="pre">${safeText(toolkit.handoverChecklist || 'No handover checklist saved.')}</div></div>
+            </div>
+            <h2>Activity History</h2>
+            <div class="box">${logs.length ? logs.slice(-30).map(l => `<div class="item"><strong>${safeText(toDateValue(l.date)?.toLocaleString() || '')}</strong>: ${safeText(l.text || '')}</div>`).join('') : '<p class="muted">No activity log recorded.</p>'}</div>
+            <p class="muted" style="text-align:center;margin-top:24px">Generated by Gigs Kenya workspace export.</p>
+            <script>setTimeout(()=>window.print(),250);<\/script>
+        </body></html>
+    `);
+    w.document.close();
+};
+
 window.closeWorkspace = () => {
     document.getElementById('workspace-modal').classList.add('gk-hidden');
     currentWorkspaceJobId = null;
@@ -4878,6 +5174,71 @@ const WORKSPACE_TEMPLATES = {
     assetReminder: "- Upload source files\n- Check permissions\n- Verify links"
 };
 
+const WORKSPACE_FEATURE_BOOSTERS = [
+    { title:'Scope Snapshot', target:'scopeBoundary', text:'- Scope confirmed:\n- Out of scope:\n- Assumption to verify:' },
+    { title:'Definition of Done', target:'acceptanceCriteria', text:'- Required output:\n- Quality bar:\n- Approval signal:' },
+    { title:'Out-of-Scope Guard', target:'scopeBoundary', text:'- Request outside scope:\n- Suggested follow-up:\n- Approval needed before work starts:' },
+    { title:'Revision Rule', target:'commsRule', text:'- Revision requests stay in workspace chat.\n- Each revision names the exact file, issue and expected change.' },
+    { title:'Link Permission Check', target:'testingNotes', text:'- Opened link in private window.\n- Download permission checked.\n- Correct version linked.' },
+    { title:'Mobile QA', target:'testingNotes', text:'- Checked on small screen.\n- Text readable.\n- Key action reachable.' },
+    { title:'Desktop QA', target:'testingNotes', text:'- Checked desktop layout.\n- No overlap.\n- Main flow completed.' },
+    { title:'Browser QA', target:'testingNotes', text:'- Checked Chrome.\n- Checked alternate browser.\n- Console reviewed.' },
+    { title:'Accessibility Check', target:'testingNotes', text:'- Keyboard path checked.\n- Labels visible.\n- Contrast reviewed.' },
+    { title:'Backup Check', target:'archiveNote', text:'- Final file backed up.\n- Source files retained.\n- Retrieval path:' },
+    { title:'Handover Summary', target:'releaseNotes', text:'- Delivered:\n- How to use:\n- Support note:' },
+    { title:'Release Risk Note', target:'releaseNotes', text:'- Known risk:\n- Impact:\n- Mitigation:' },
+    { title:'Approval Script', target:'followupNote', text:'Please review the final deliverable and confirm approval or share one clear revision list.' },
+    { title:'Payment Release Note', target:'payoutNote', text:'- Work approved:\n- Bonus/tip:\n- Payment release status:' },
+    { title:'Invoice Clarifier', target:'invoiceNote', text:'- Invoice amount:\n- Included work:\n- Due/paid status:' },
+    { title:'Naming Audit', target:'namingRule', text:'- Files use agreed naming.\n- Final version clearly marked.\n- Old drafts separated.' },
+    { title:'Asset Ownership', target:'assetReminder', text:'- Source ownership confirmed.\n- License checked.\n- Client usage rights noted.' },
+    { title:'Dependency Owner', target:'dependenciesNote', text:'- Dependency:\n- Owner:\n- Needed by:\n- Impact if delayed:' },
+    { title:'Blocker Escalation', target:'blocker', text:'- Blocker:\n- Since:\n- Needed decision:\n- Escalate by:' },
+    { title:'Next 30 Minutes', target:'nextAction', text:'- One action now:\n- Expected result:\n- Stop condition:' },
+    { title:'Daily Closeout', target:'dailyPlan', text:'- Done today:\n- Still pending:\n- Tomorrow first step:' },
+    { title:'Morning Reset', target:'dailyPlan', text:'- Review deadline.\n- Pick top task.\n- Check messages.\n- Update blocker note.' },
+    { title:'Meeting Decisions', target:'meetingNotes', text:'- Decision:\n- Owner:\n- Deadline:\n- Evidence/link:' },
+    { title:'Change Request Format', target:'changeLog', text:'- Requested change:\n- Reason:\n- Scope/cost impact:\n- Approved by:' },
+    { title:'Preference Capture', target:'clientPrefs', text:'- Tone/style:\n- Format:\n- Must avoid:\n- Example reference:' },
+    { title:'Issue Severity', target:'issues', text:'- Issue:\n- Severity:\n- Repro/trigger:\n- Fix owner:' },
+    { title:'Bug Repro Steps', target:'issues', text:'1. Open:\n2. Click:\n3. Expected:\n4. Actual:' },
+    { title:'Acceptance Test', target:'acceptanceCriteria', text:'- Test case:\n- Expected outcome:\n- Pass evidence:' },
+    { title:'Worker Self Review', target:'readinessNote', text:'- I checked scope.\n- I checked links.\n- I checked final note.\n- Ready for review:' },
+    { title:'Employer Review Checklist', target:'approvalChecklist', text:'- Open deliverable.\n- Compare against brief.\n- Check revision notes.\n- Approve or list changes.' },
+    { title:'Delivery Link Checklist', target:'deliveryChecklist', text:'- Primary link added.\n- Backup link added.\n- Permissions checked.\n- Expiry risk noted.' },
+    { title:'Handover QA', target:'handoverChecklist', text:'- Client can access files.\n- Usage note included.\n- Maintenance note included.\n- Archive complete.' },
+    { title:'Backup Contact Rule', target:'commsRule', text:'- Primary contact:\n- Backup contact:\n- Response window:\n- Escalation path:' },
+    { title:'Response SLA', target:'commsRule', text:'- Reply target:\n- Urgent channel:\n- Non-urgent update cadence:' },
+    { title:'Fallback Trigger', target:'fallbackPlan', text:'- If blocked by:\n- Switch to:\n- Notify:\n- Resume condition:' },
+    { title:'Archive Index', target:'archiveNote', text:'- Folder:\n- Final file:\n- Source file:\n- Notes file:' },
+    { title:'Important Decision Pin', target:'pinnedNote', text:'Decision to remember:\nReason:\nWho confirmed:\nDate:' },
+    { title:'Handoff Owner', target:'handoffNote', text:'- Current owner:\n- Next owner:\n- Transfer status:\n- Open questions:' },
+    { title:'Proof Pack', target:'deliveryChecklist', text:'- Screenshot/video proof.\n- Source file link.\n- Final file link.\n- Test notes link.' },
+    { title:'Regression Check', target:'testingNotes', text:'- Previous behavior still works.\n- New behavior works.\n- Edge case checked.' },
+    { title:'Client-Facing Release', target:'releaseNotes', text:'- What changed:\n- What to review:\n- What is not included:' },
+    { title:'Style Preference', target:'clientPrefs', text:'- Preferred wording:\n- Preferred visual style:\n- Avoid:' },
+    { title:'Change Decision Log', target:'changeLog', text:'- Decision:\n- Alternatives rejected:\n- Approved by:\n- Date:' },
+    { title:'Open Risk Register', target:'issues', text:'- Risk:\n- Likelihood:\n- Impact:\n- Preventive action:' },
+    { title:'External Dependency', target:'dependenciesNote', text:'- External party:\n- Needed item:\n- Follow-up date:\n- Backup option:' },
+    { title:'Risk Owner', target:'blocker', text:'- Risk owner:\n- Monitoring signal:\n- Escalation threshold:' },
+    { title:'Next Approval Ask', target:'nextAction', text:'- Ask:\n- Why it matters:\n- Exact response needed:' },
+    { title:'Work Session Plan', target:'dailyPlan', text:'- Session goal:\n- Time box:\n- Deliverable by end:' },
+    { title:'Follow-up Timer', target:'followupNote', text:'- Follow up on:\n- Reminder date:\n- Message draft:' },
+    { title:'Payout Evidence', target:'payoutNote', text:'- Approved amount:\n- Release trigger:\n- Wallet note:' },
+    { title:'Invoice Evidence', target:'invoiceNote', text:'- Work item:\n- Amount:\n- Evidence link:\n- Payment note:' },
+    { title:'Asset Permission Audit', target:'assetReminder', text:'- Link opens.\n- File owner correct.\n- Reuse rights documented.' },
+    { title:'Version Naming', target:'namingRule', text:'- Draft version:\n- Final version:\n- Archive version:' },
+    { title:'Recovery Plan', target:'fallbackPlan', text:'- Failure mode:\n- Recovery step:\n- Owner:\n- Deadline:' },
+    { title:'Submission Readiness', target:'readinessNote', text:'- Deliverable ready:\n- Proof ready:\n- Message ready:\n- Submit now:' },
+    { title:'Approval Evidence', target:'approvalChecklist', text:'- Approved file:\n- Approval comment:\n- Payment action:' },
+    { title:'Client Handover Note', target:'handoverChecklist', text:'- Here is the final link:\n- Key usage note:\n- Backup/support step:' },
+    { title:'Meeting Follow-up', target:'meetingNotes', text:'- Attendees:\n- Decisions:\n- Actions:\n- Next check-in:' },
+    { title:'Scope Change Guard', target:'scopeBoundary', text:'- New request captured.\n- Cost/time impact reviewed.\n- Approval required before execution.' },
+    { title:'Pin Final Truth', target:'pinnedNote', text:'Final agreed direction:\nNon-negotiable requirement:\nLast confirmed by:' }
+];
+
+const WORKSPACE_NOTE_FIELD_LABELS = Object.fromEntries(WORKSPACE_NOTE_FIELDS);
+
 function getWorkspaceToolkit(job) {
     return job.workspaceToolkit || {};
 }
@@ -4931,6 +5292,8 @@ function getWorkspaceKpiData(job) {
 }
 
 window.insertWorkspaceTemplate = (key) => {
+    const job = allJobs.find(j => j.id === currentWorkspaceJobId);
+    if(!guardWorkerWorkspaceWrite(job, 'edit toolkit notes')) return;
     const el = document.getElementById(`ws-tool-${key}`);
     if(!el || !WORKSPACE_TEMPLATES[key]) return;
     if(el.value.trim()) el.value += "\n";
@@ -4940,6 +5303,7 @@ window.insertWorkspaceTemplate = (key) => {
 window.saveWorkspaceToolkitField = async (key) => {
     const job = allJobs.find(j => j.id === currentWorkspaceJobId);
     if(!job) return;
+    if(!guardWorkerWorkspaceWrite(job, 'save toolkit notes')) return;
     const el = document.getElementById(`ws-tool-${key}`);
     if(!el) return;
     const value = el.value.trim();
@@ -5019,13 +5383,38 @@ function buildWorkspaceToolkitButtons() {
     wrap.innerHTML = btns.map(([key,label]) => `<button onclick="document.getElementById('ws-tool-${key}').focus(); insertWorkspaceTemplate('${['deliveryChecklist','approvalChecklist','handoverChecklist'].includes(key) ? key : 'deliveryChecklist'}')" class="badge bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-brand hover:text-white cursor-pointer transition border border-transparent">${label}</button>`).join('');
 }
 
+function buildWorkspaceFeatureBoosters() {
+    const wrap = document.getElementById('ws-feature-boosters');
+    if(!wrap) return;
+    wrap.innerHTML = WORKSPACE_FEATURE_BOOSTERS.map((item, idx) => `
+        <button onclick="applyWorkspaceBooster(${idx})" class="text-left p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 hover:border-brand hover:bg-blue-50 dark:hover:bg-blue-900/20 transition min-h-[74px]">
+            <span class="block text-[10px] font-black text-slate-800 dark:text-slate-200 leading-snug">${idx + 1}. ${safeText(item.title)}</span>
+            <span class="block text-[9px] text-slate-500 dark:text-slate-400 mt-1">${safeText(WORKSPACE_NOTE_FIELD_LABELS[item.target] || item.target)}</span>
+        </button>
+    `).join('');
+}
+
+window.applyWorkspaceBooster = async (idx) => {
+    const item = WORKSPACE_FEATURE_BOOSTERS[idx];
+    if(!item) return;
+    const job = allJobs.find(j => j.id === currentWorkspaceJobId);
+    if(!guardWorkerWorkspaceWrite(job, 'apply workplace boosters')) return;
+    const el = document.getElementById(`ws-tool-${item.target}`);
+    if(!el) return showToast('Open the Ops Toolkit first', 'warning');
+    const block = `${item.title}\n${item.text}`;
+    if(el.value.trim()) el.value += "\n\n";
+    el.value += block;
+    await saveWorkspaceToolkitField(item.target);
+};
+
 // ---------------- Workspace enhancements (real-time sync helpers) ----------------
 window.addWorkspaceMilestone = async () => {
+    const job = allJobs.find(j => j.id === currentWorkspaceJobId);
+    if(!guardWorkerWorkspaceWrite(job, 'add milestones')) return;
     const input = document.getElementById('ws-new-milestone');
     if(!input) return showToast('Milestone input not found', 'error');
     const text = input.value.trim();
     if(!text) return showToast('Enter milestone text', 'warning');
-    const job = allJobs.find(j => j.id === currentWorkspaceJobId);
     if(!job) return showToast('Workspace not open', 'error');
     try {
         const m = { text, done: false, addedBy: currentUser.uid, date: new Date().toISOString() };
@@ -5044,6 +5433,7 @@ window.addWorkspaceMilestone = async () => {
 window.toggleWorkspaceMilestone = async (idx) => {
     const job = allJobs.find(j => j.id === currentWorkspaceJobId);
     if(!job || !job.milestones || !job.milestones[idx]) return;
+    if(!guardWorkerWorkspaceWrite(job, 'edit milestones')) return;
     try {
         const ms = [...job.milestones];
         ms[idx].done = !ms[idx].done;
@@ -5055,10 +5445,11 @@ window.toggleWorkspaceMilestone = async (idx) => {
 };
 
 window.addWorkspaceCollaborator = async () => {
-    const email = prompt('Enter collaborator email to add:');
-    if(!email) return;
     const job = allJobs.find(j => j.id === currentWorkspaceJobId);
     if(!job) return showToast('Workspace not open', 'error');
+    if(!guardWorkerWorkspaceWrite(job, 'add collaborators')) return;
+    const email = prompt('Enter collaborator email to add:');
+    if(!email) return;
     try {
         const coll = { email, addedBy: currentUser.uid, date: new Date().toISOString() };
         await pubCol('jobs').doc(job.id).update({ collaborators: firebase.firestore.FieldValue.arrayUnion(coll), updatedAt: new Date().toISOString() });
@@ -5071,6 +5462,7 @@ window.addWorkspaceCollaborator = async () => {
 window.setWorkspacePriority = async (level) => {
     const job = allJobs.find(j => j.id === currentWorkspaceJobId);
     if(!job) return showToast('Workspace not open', 'error');
+    if(!guardWorkerWorkspaceWrite(job, 'set priority')) return;
     try {
         await pubCol('jobs').doc(job.id).update({ priority: level, updatedAt: new Date().toISOString() });
         job.priority = level;
@@ -5079,11 +5471,12 @@ window.setWorkspacePriority = async (level) => {
 };
 
 window.createWorkspaceInvoice = async () => {
+    const job = allJobs.find(j => j.id === currentWorkspaceJobId);
+    if(!job) return showToast('Workspace not open', 'error');
+    if(!guardWorkerWorkspaceWrite(job, 'create invoices')) return;
     const amount = parseFloat(prompt('Invoice amount (KSh):')||0);
     const note = prompt('Invoice note (optional):')||'';
     if(!amount || amount <= 0) return showToast('Enter a valid amount', 'warning');
-    const job = allJobs.find(j => j.id === currentWorkspaceJobId);
-    if(!job) return showToast('Workspace not open', 'error');
     try {
         const inv = { id: 'inv_' + Date.now(), amount, note, status: 'pending', createdAt: new Date().toISOString(), createdBy: currentUser.uid };
         await pubCol('jobs').doc(job.id).update({ invoices: firebase.firestore.FieldValue.arrayUnion(inv), updatedAt: new Date().toISOString() });
@@ -5097,6 +5490,7 @@ window.createWorkspaceInvoice = async () => {
 window.startWorkspaceTimer = async () => {
     const job = allJobs.find(j => j.id === currentWorkspaceJobId);
     if(!job) return showToast('Workspace not open', 'error');
+    if(!guardWorkerWorkspaceWrite(job, 'start timers')) return;
     if(job.currentTimer && job.currentTimer.startedAt) return showToast('Timer already running', 'warning');
     try {
         const timer = { startedAt: new Date().toISOString(), startedBy: currentUser.uid };
@@ -5109,6 +5503,7 @@ window.startWorkspaceTimer = async () => {
 window.stopWorkspaceTimer = async (desc) => {
     const job = allJobs.find(j => j.id === currentWorkspaceJobId);
     if(!job || !job.currentTimer || !job.currentTimer.startedAt) return showToast('No running timer', 'warning');
+    if(!guardWorkerWorkspaceWrite(job, 'stop timers')) return;
     try {
         const started = new Date(job.currentTimer.startedAt);
         const stopped = new Date();
@@ -5146,6 +5541,7 @@ window.renderWorkspaceToolkit = (job) => {
     buildWorkspacePastJobs(job);
     buildWorkspaceNoteBank(job);
     buildWorkspaceToolkitButtons();
+    buildWorkspaceFeatureBoosters();
     lucide.createIcons();
 };
 
@@ -5214,7 +5610,12 @@ window.renderDashboard = () => {
     const completionRate = userData.completionRate || (completedJobsCount + activeJobsCount ? Math.round((completedJobsCount / Math.max(completedJobsCount + activeJobsCount, 1)) * 100) : 0);
     const responseTime = userData.responseTime || 'N/A';
     const memberSince = userData.createdAt ? new Date(userData.createdAt).toLocaleDateString() : '—';
-    const openApplications = allApps.filter(a => (userData.role === 'worker' ? a.workerId === currentUser.uid : a.employerId === currentUser.uid) && a.status === 'pending').length;
+    const openApplications = allApps.filter(a => {
+        if(a.status !== 'pending') return false;
+        if(userData.role === 'worker') return a.workerId === currentUser.uid;
+        const job = allJobs.find(j => j.id === a.jobId);
+        return a.employerId === currentUser.uid || job?.employerId === currentUser.uid;
+    }).length;
     const totalUsers = allUsers.length;
     const totalJobs = allJobs.length;
     const openJobsCount = allJobs.filter(j => String(j.status||'').toLowerCase() === 'open').length;
@@ -5392,6 +5793,10 @@ window.renderDashboard = () => {
                         <i data-lucide="user" class="w-5 h-5 text-indigo-500 group-hover:scale-110 transition"></i>
                         <span class="text-[10px] font-bold">Edit Profile</span>
                     </button>
+                    <button onclick="openStatsModal()" class="flex flex-col items-center justify-center gap-2 p-3 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-brand transition group">
+                        <i data-lucide="bar-chart-3" class="w-5 h-5 text-amber-500 group-hover:scale-110 transition"></i>
+                        <span class="text-[10px] font-bold">Stats & Transactions</span>
+                    </button>
                     <button onclick="navigate('messages')" class="flex flex-col items-center justify-center gap-2 p-3 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-brand transition group">
                         <i data-lucide="message-square" class="w-5 h-5 text-purple-500 group-hover:scale-110 transition"></i>
                         <span class="text-[10px] font-bold">Support Chat</span>
@@ -5404,9 +5809,126 @@ window.renderDashboard = () => {
     document.getElementById('nav-wallet').classList.remove('gk-hidden');
     document.getElementById('nav-wallet-balance').innerText = fmtMoney(userData.walletBalance);
 
+    renderReferralData();
+    makeDashboardClickable();
     lucide.createIcons();
     generateChartCurve();
 };
+
+function renderReferralData() {
+    const dataBox = document.getElementById('referral-data');
+    const listBox = document.getElementById('referral-list');
+    if(!dataBox || !listBox || !currentUser || !userData) return;
+    const code = userData.referralCode || '';
+    const referredByUser = userData.referredByUid ? allUsers.find(u => u.uid === userData.referredByUid) : allUsers.find(u => u.referralCode && u.referralCode === userData.referredBy);
+    const referredBy = userData.referredByName || referredByUser?.name || userData.referredBy || 'None';
+    const cloudReferrals = Array.isArray(userData.referrals) ? userData.referrals : [];
+    const usersByReferral = allUsers
+        .filter(u => u.uid !== currentUser.uid && (u.referredByUid === currentUser.uid || (code && u.referredBy === code)))
+        .map(u => ({ uid:u.uid, name:u.name, email:u.email, joinedAt:u.createdAt }));
+    const merged = [...usersByReferral];
+    cloudReferrals.forEach(r => {
+        if(!merged.some(x => x.uid === r.uid || (x.email && x.email === r.email))) merged.push(r);
+    });
+    dataBox.innerHTML = `
+        <div class="bg-white/20 rounded-xl border border-white/20 p-2">
+            <span class="block text-indigo-100">Referrals</span>
+            <span class="font-black text-sm">${merged.length}</span>
+        </div>
+        <div class="bg-white/20 rounded-xl border border-white/20 p-2">
+            <span class="block text-indigo-100">Referred By</span>
+            <span class="font-black text-sm truncate block">${safeText(referredBy)}</span>
+        </div>
+    `;
+    listBox.innerHTML = merged.length ? merged.slice(0, 6).map(r => `
+        <div class="bg-white/15 border border-white/15 rounded-lg px-2 py-1 flex justify-between gap-2">
+            <span class="font-bold truncate">${safeText(r.name || r.email || 'Referral')}</span>
+            <span class="text-indigo-100 shrink-0">${timeAgo(r.joinedAt) || 'Joined'}</span>
+        </div>
+    `).join('') : `<div class="bg-white/15 border border-white/15 rounded-lg px-2 py-1 text-indigo-100">No referrals yet.</div>`;
+}
+
+function bindDashboardClick(el, action, label = 'Open') {
+    if(!el || el.dataset.clickBound === 'true') return;
+    el.dataset.clickBound = 'true';
+    el.classList.add('cursor-pointer', 'hover:border-brand', 'transition');
+    el.setAttribute('role', 'button');
+    el.setAttribute('tabindex', '0');
+    el.setAttribute('title', label);
+    el.addEventListener('click', e => {
+        if(e.target.closest('button,a,input,select,textarea')) return;
+        action();
+    });
+    el.addEventListener('keydown', e => {
+        if(e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            action();
+        }
+    });
+}
+
+function makeDashboardClickable() {
+    const metricCards = Array.from(document.getElementById('dashboard-metrics-grid')?.children || []);
+    const role = userData?.role || 'worker';
+    const workerActions = [
+        () => openStatsModal(),
+        () => navigate('mygigs'),
+        () => navigate('mygigs'),
+        () => navigate('messages'),
+        () => openSettings(),
+        () => openStatsModal(),
+        () => navigate('mygigs'),
+        () => currentUser && showPublicProfile(currentUser.uid),
+        () => openSettings(),
+        () => initTest(),
+        () => openSettings()
+    ];
+    const employerActions = [
+        () => openStatsModal(),
+        () => navigate('mygigs'),
+        () => navigate('mygigs'),
+        () => navigate('messages'),
+        () => openSettings(),
+        () => openStatsModal(),
+        () => navigate('leaderboard'),
+        () => openStatsModal(),
+        () => navigate('mygigs'),
+        () => navigate('jobs'),
+        () => openLedgerModal(),
+        () => openLedgerModal(),
+        () => openStatsModal(),
+        () => navigate('mygigs'),
+        () => navigate('leaderboard'),
+        () => openStatsModal(),
+        () => openStatsModal(),
+        () => openStatsModal(),
+        () => openLedgerModal(),
+        () => openSettings(),
+        () => openSettings()
+    ];
+    const actions = role === 'employer' ? employerActions : workerActions;
+    metricCards.forEach((card, idx) => bindDashboardClick(card, actions[idx] || (() => openStatsModal()), 'Open related dashboard detail'));
+
+    const chartCard = document.getElementById('earnings-total')?.closest('.bg-white');
+    bindDashboardClick(chartCard, () => openStatsModal(), 'Open transactions and stats');
+
+    const referralCard = document.getElementById('referral-code')?.closest('.bg-gradient-to-r');
+    bindDashboardClick(referralCard, () => copyReferralCode(), 'Copy referral code');
+
+    document.querySelectorAll('#dashboard-bottom-content .grid.grid-cols-2.gap-2.text-\\[10px\\] > div').forEach(field => {
+        bindDashboardClick(field, () => openSettings(), 'Edit account field');
+    });
+
+    document.querySelectorAll('#dashboard-bottom-content .space-y-3.flex-1 > div').forEach(row => {
+        const title = row.querySelector('p')?.textContent?.trim();
+        const job = title ? allJobs.find(j => (j.employerId === currentUser.uid || j.workerId === currentUser.uid) && j.title === title) : null;
+        bindDashboardClick(row, () => job ? openJobDetail(job.id) : navigate('mygigs'), 'Open gig detail');
+    });
+
+    const avatar = document.getElementById('dash-avatar');
+    bindDashboardClick(avatar?.parentElement, () => openSettings(), 'Edit profile');
+    bindDashboardClick(document.getElementById('dash-name')?.parentElement, () => openSettings(), 'Edit profile');
+}
 
 function generateChartCurve() {
     const line = document.getElementById('chart-line');
@@ -6183,13 +6705,13 @@ window.submitTopup = async (e) => {
     if(amt < minTopup) {
         return showToast(`Minimum deposit is KSh ${minTopup}`, 'error');
     }
-    if(!code || code.length < 8) {
-        return showToast('Enter valid transaction code', 'error');
+    if(!/^[A-Z0-9]{10}$/.test(code)) {
+        return showToast('Enter a 10-character M-Pesa code or paying phone number using letters/numbers only', 'error');
     }
     
     const exists = allTopups.some(t => t.code === code);
     if(exists) {
-        return showToast('Code already submitted', 'error');
+        return showToast('M-Pesa code or phone number already submitted', 'error');
     }
     
     try {
@@ -6197,7 +6719,8 @@ window.submitTopup = async (e) => {
             userId: currentUser.uid, 
             userName: userData.name,
             amount: amt, 
-            code, 
+            code,
+            paymentReference: code,
             status: 'pending', 
             date: new Date().toISOString()
         });
@@ -6225,7 +6748,8 @@ window.openPayoutModal = () => {
     if(!currentUser) return;
     
     document.getElementById('payout-modal-balance').innerText = fmtMoney(userData.walletBalance);
-    document.getElementById('payout-account').value = userData.mpesa || userData.phone || '';
+    document.getElementById('payout-method').value = userData.paymentMethod === 'PayPal' ? 'PayPal' : 'M-Pesa';
+    updatePayoutMethodUI();
     
     syncPaymentInstructionUI();
     
@@ -6234,6 +6758,42 @@ window.openPayoutModal = () => {
 
 window.closePayoutModal = () => {
     document.getElementById('payout-modal').classList.add('gk-hidden');
+};
+
+window.openCompleteProfilePrompt = () => {
+    document.getElementById('complete-profile-modal')?.classList.remove('gk-hidden');
+    lucide.createIcons();
+};
+
+window.closeCompleteProfilePrompt = () => {
+    document.getElementById('complete-profile-modal')?.classList.add('gk-hidden');
+};
+
+window.completeProfileNow = () => {
+    closeCompleteProfilePrompt();
+    openSettings();
+    switchSettingsTab('professional');
+};
+
+window.updatePayoutMethodUI = () => {
+    const method = document.getElementById('payout-method')?.value || 'M-Pesa';
+    const account = document.getElementById('payout-account');
+    const label = document.getElementById('payout-account-label');
+    const help = document.getElementById('payout-account-help');
+    if(!account || !label || !help) return;
+    if(method === 'PayPal') {
+        label.innerText = 'PayPal Email';
+        account.type = 'email';
+        account.placeholder = 'name@example.com';
+        account.value = userData?.paypal || '';
+        help.innerText = 'Enter the PayPal email that should receive the withdrawal.';
+    } else {
+        label.innerText = 'M-Pesa Number';
+        account.type = 'tel';
+        account.placeholder = '07XXXXXXXX';
+        account.value = userData?.mpesa || userData?.phone || '';
+        help.innerText = 'Enter the M-Pesa phone number that should receive the withdrawal.';
+    }
 };
 
 window.submitPayout = async () => {
@@ -6245,6 +6805,9 @@ window.submitPayout = async () => {
     if(amt < minPayout) return showToast(`Minimum withdrawal is KSh ${minPayout}`, 'error');
     if(amt > userData.walletBalance) return showToast('Insufficient balance', 'error');
     if(!acc) return showToast('Enter account details', 'error');
+    if(!['M-Pesa','PayPal'].includes(method)) return showToast('Withdrawals are only available through M-Pesa or PayPal', 'error');
+    if(method === 'PayPal' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(acc)) return showToast('Enter a valid PayPal email', 'error');
+    if(method === 'M-Pesa' && !/^(?:\+?254|0)?7\d{8}$/.test(acc.replace(/\s+/g,''))) return showToast('Enter a valid M-Pesa number', 'error');
     
     try {
         await userDoc().update({ 
@@ -6294,67 +6857,91 @@ window.closeLedgerModal = () => {
     document.getElementById('ledger-modal').classList.add('gk-hidden');
 };
 
+function buildLedgerItems() {
+    if(!currentUser || !userData) return [];
+    const items = [];
+    allTopups.filter(t => t.userId === currentUser.uid).forEach(t => {
+        items.push({
+            type: 'topup',
+            title: `Deposit - ${t.code || t.paymentReference || 'Reference'}`,
+            amount: Number(t.amount) || 0,
+            status: t.status || 'pending',
+            date: t.date || t.createdAt,
+            reference: t.code || t.paymentReference || '',
+            detail: `Top-up via ${t.code || t.paymentReference || 'submitted reference'}`
+        });
+    });
+    allPayouts.filter(p => p.userId === currentUser.uid).forEach(p => {
+        items.push({
+            type: 'payout',
+            title: `Withdrawal - ${p.method || 'Payout'}`,
+            amount: -(Number(p.amount) || 0),
+            status: p.status || 'pending',
+            date: p.date || p.createdAt,
+            reference: p.account || p.method || '',
+            detail: `Withdrawal to ${p.account || p.method || 'saved payout account'}`
+        });
+    });
+    if(userData.role === 'employer') {
+        allJobs.filter(j => j.employerId === currentUser.uid && getJobStatus(j) !== 'completed' && getJobStatus(j) !== 'paid_out').forEach(j => {
+            items.push({
+                type: 'escrow',
+                title: `Escrow: ${j.title}`,
+                amount: -(Number(j.budget) || 0),
+                status: 'locked',
+                date: j.createdAt,
+                reference: j.id,
+                detail: `${safeText(j.category || 'Job')} / ${safeText(j.location || 'Remote')}`
+            });
+        });
+        allApps.filter(a => {
+            const j = allJobs.find(x => x.id === a.jobId);
+            return j?.employerId === currentUser.uid && a.status === 'pending';
+        }).forEach(a => {
+            const j = allJobs.find(x => x.id === a.jobId);
+            items.push({
+                type: 'app',
+                title: `Applicant: ${a.workerName || 'Worker'} for ${j?.title || 'Job'}`,
+                amount: Number(a.rate) || 0,
+                status: 'pending',
+                date: a.createdAt,
+                reference: a.id,
+                detail: a.pitch ? String(a.pitch).slice(0, 120) : 'Pending applicant review'
+            });
+        });
+    } else {
+        allJobs.filter(j => j.workerId === currentUser.uid && getJobStatus(j) !== 'completed' && getJobStatus(j) !== 'paid_out').forEach(j => {
+            items.push({
+                type: 'escrow',
+                title: `Pending Earnings: ${j.title}`,
+                amount: Number(j.budget) || 0,
+                status: 'locked',
+                date: j.updatedAt || j.createdAt,
+                reference: j.id,
+                detail: `${safeText(j.category || 'Job')} / ${safeText(j.location || 'Remote')}`
+            });
+        });
+        allApps.filter(a => a.workerId === currentUser.uid && a.status === 'pending').forEach(a => {
+            const j = allJobs.find(x => x.id === a.jobId);
+            items.push({
+                type: 'app',
+                title: `Application: ${j?.title || 'Job'}`,
+                amount: Number(a.rate) || 0,
+                status: 'pending',
+                date: a.createdAt,
+                reference: a.id,
+                detail: a.cover ? String(a.cover).slice(0, 120) : 'Pending application'
+            });
+        });
+    }
+    return items.sort((a,b) => dateTimeValue(b.date, 0) - dateTimeValue(a.date, 0));
+}
+
 window.renderLedger = () => {
     const list = document.getElementById('ledger-list');
     const filter = document.getElementById('ledger-filter').value;
     
-    let items = [];
-    
-    // Topups
-    allTopups.filter(t => t.userId === currentUser.uid).forEach(t => {
-        items.push({ 
-            type: 'topup', 
-            title: `Deposit - ${t.code}`, 
-            amount: t.amount, 
-            status: t.status, 
-            date: t.date 
-        });
-    });
-    
-    // Payouts
-    allPayouts.filter(p => p.userId === currentUser.uid).forEach(p => {
-        items.push({ 
-            type: 'payout', 
-            title: `Withdrawal - ${p.method}`, 
-            amount: -p.amount, 
-            status: p.status, 
-            date: p.date 
-        });
-    });
-    
-    // Escrow
-    if(userData.role === 'employer') {
-        allJobs.filter(j => j.employerId === currentUser.uid && j.status !== 'completed' && j.status !== 'paid_out').forEach(j => {
-            items.push({ 
-                type: 'escrow', 
-                title: `Escrow: ${j.title}`, 
-                amount: -j.budget, 
-                status: 'locked', 
-                date: j.createdAt 
-            });
-        });
-    } else {
-        allJobs.filter(j => j.workerId === currentUser.uid && j.status !== 'completed' && j.status !== 'paid_out').forEach(j => {
-            items.push({ 
-                type: 'escrow', 
-                title: `Pending Earnings: ${j.title}`, 
-                amount: j.budget, 
-                status: 'locked', 
-                date: j.updatedAt || j.createdAt 
-            });
-        });
-        
-        allApps.filter(a => a.workerId === currentUser.uid && a.status === 'pending').forEach(a => {
-            const j = allJobs.find(x => x.id === a.jobId);
-            items.push({ 
-                type: 'app', 
-                title: `Application: ${j?.title || 'Job'}`, 
-                amount: a.rate, 
-                status: 'pending', 
-                date: a.createdAt 
-            });
-        });
-    }
+    let items = buildLedgerItems();
 
     if(filter !== 'all') {
         items = items.filter(i => {
@@ -6365,8 +6952,6 @@ window.renderLedger = () => {
             return true;
         });
     }
-
-    items.sort((a,b) => new Date(b.date) - new Date(a.date));
 
     if(!items.length) {
         list.innerHTML = '<p class="text-center text-xs text-slate-400 py-6">No records found.</p>';
@@ -6394,7 +6979,7 @@ window.renderLedger = () => {
                 </div>
                 <div class="min-w-0">
                     <p class="font-bold text-xs text-slate-800 dark:text-white truncate">${safeText(i.title)}</p>
-                    <p class="text-[9px] text-slate-500">${new Date(i.date).toLocaleDateString()}</p>
+                    <p class="text-[9px] text-slate-500">${toDateValue(i.date)?.toLocaleDateString() || 'No date'}${i.reference ? ` · ${safeText(i.reference)}` : ''}</p>
                 </div>
             </div>
             <div class="text-right shrink-0 ml-2">
@@ -6405,6 +6990,165 @@ window.renderLedger = () => {
     }).join('');
     
     lucide.createIcons();
+};
+
+function buildDetailedStatsData() {
+    const myJobs = allJobs.filter(j => j.employerId === currentUser?.uid || j.workerId === currentUser?.uid);
+    const myApps = allApps.filter(a => {
+        if(a.workerId === currentUser?.uid || a.employerId === currentUser?.uid) return true;
+        const job = allJobs.find(j => j.id === a.jobId);
+        return job?.employerId === currentUser?.uid;
+    });
+    const myReviews = allReviews.filter(r => r.reviewerId === currentUser?.uid || r.targetId === currentUser?.uid);
+    const ledger = buildLedgerItems();
+    const incoming = ledger.filter(i => i.amount > 0).reduce((s,i)=>s + Number(i.amount||0),0);
+    const outgoing = ledger.filter(i => i.amount < 0).reduce((s,i)=>s + Math.abs(Number(i.amount||0)),0);
+    const completed = myJobs.filter(j => ['completed','paid_out'].includes(getJobStatus(j)));
+    const active = myJobs.filter(j => ['open','in_progress','in_review'].includes(getJobStatus(j)));
+    const pending = ledger.filter(i => String(i.status || '').toLowerCase() === 'pending');
+    const escrow = ledger.filter(i => i.type === 'escrow');
+    const avgRating = myReviews.length ? (myReviews.reduce((s,r)=>s+Number(r.rating||0),0)/myReviews.length).toFixed(1) : '0.0';
+    const referralMatches = allUsers.filter(u => u.uid !== currentUser?.uid && (u.referredByUid === currentUser?.uid || (userData?.referralCode && u.referredBy === userData.referralCode)));
+    const referralCount = Math.max(Number(userData?.referralCount || 0), referralMatches.length, Array.isArray(userData?.referrals) ? userData.referrals.length : 0);
+    const referredByUser = userData?.referredByUid ? allUsers.find(u => u.uid === userData.referredByUid) : allUsers.find(u => u.referralCode && u.referralCode === userData?.referredBy);
+    const referredBy = userData?.referredByName || referredByUser?.name || userData?.referredBy || 'None';
+    const stats = [
+        ['Wallet Balance', fmtMoney(userData?.walletBalance || 0)],
+        ['Total Incoming', fmtMoney(incoming)],
+        ['Total Outgoing', fmtMoney(outgoing)],
+        ['Net Movement', fmtMoney(incoming - outgoing)],
+        ['Escrow Exposure', fmtMoney(escrow.reduce((s,i)=>s + Math.abs(Number(i.amount||0)),0))],
+        ['Pending Transactions', String(pending.length)],
+        ['Top-ups Submitted', String(allTopups.filter(t => t.userId === currentUser?.uid).length)],
+        ['Withdrawals Submitted', String(allPayouts.filter(p => p.userId === currentUser?.uid).length)],
+        ['My Jobs / Gigs', String(myJobs.length)],
+        ['Active Jobs / Gigs', String(active.length)],
+        ['Completed Jobs / Gigs', String(completed.length)],
+        ['Applications Linked', String(myApps.length)],
+        ['Reviews Linked', String(myReviews.length)],
+        ['Average Rating', avgRating],
+        ['Profile Views', String(userData?.profileViews || 0)],
+        ['Member Since', userData?.createdAt ? (toDateValue(userData.createdAt)?.toLocaleDateString() || 'Unknown') : 'Unknown'],
+        ['Payment Method', userData?.paymentMethod || 'Not set'],
+        ['Account Status', userData?.isActivated ? 'Activated' : 'Pending activation'],
+        ['Referral Code', userData?.referralCode || 'Not set'],
+        ['Referral Count', String(referralCount)],
+        ['Referred By', referredBy]
+    ];
+    return { ledger, stats, incoming, outgoing, completed, active, pending, escrow };
+}
+
+window.openStatsModal = () => {
+    if(!currentUser || !userData) return showToast('Sign in first', 'warning');
+    const filter = document.getElementById('stats-transaction-filter');
+    if(filter) filter.value = 'all';
+    renderStatsModal();
+    document.getElementById('stats-modal')?.classList.remove('gk-hidden');
+};
+
+window.closeStatsModal = () => {
+    document.getElementById('stats-modal')?.classList.add('gk-hidden');
+};
+
+window.renderStatsModal = () => {
+    const summary = document.getElementById('stats-summary-grid');
+    const txList = document.getElementById('stats-transaction-list');
+    const detailList = document.getElementById('stats-detail-list');
+    if(!summary || !txList || !detailList) return;
+    const data = buildDetailedStatsData();
+    const filter = document.getElementById('stats-transaction-filter')?.value || 'all';
+    const filteredLedger = filter === 'all' ? data.ledger : data.ledger.filter(i => i.type === filter);
+    const summaryItems = [
+        ['Wallet', fmtMoney(userData.walletBalance || 0), 'wallet'],
+        ['Incoming', fmtMoney(data.incoming), 'arrow-down-left'],
+        ['Outgoing', fmtMoney(data.outgoing), 'arrow-up-right'],
+        ['Pending', String(data.pending.length), 'clock-3'],
+        ['Escrow', fmtMoney(data.escrow.reduce((s,i)=>s + Math.abs(Number(i.amount||0)),0)), 'lock'],
+        ['Active Gigs', String(data.active.length), 'briefcase'],
+        ['Completed', String(data.completed.length), 'check-circle'],
+        ['Net', fmtMoney(data.incoming - data.outgoing), 'bar-chart-3']
+    ];
+    summary.innerHTML = summaryItems.map(([label,value,icon]) => `
+        <button onclick="openLedgerModal()" class="text-left bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 p-3 hover:border-brand transition">
+            <div class="flex items-center gap-2 text-slate-400 mb-1"><i data-lucide="${icon}" class="w-4 h-4"></i><span class="text-[9px] font-black uppercase">${label}</span></div>
+            <div class="font-display font-black text-sm md:text-base text-slate-800 dark:text-white">${safeText(value)}</div>
+        </button>
+    `).join('');
+    txList.innerHTML = filteredLedger.length ? filteredLedger.map(i => `
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3">
+            <div class="flex items-start justify-between gap-3">
+                <div class="min-w-0">
+                    <p class="font-bold text-xs text-slate-800 dark:text-white truncate">${safeText(i.title)}</p>
+                    <p class="text-[10px] text-slate-500 mt-0.5">${safeText(i.type.toUpperCase())} · ${safeText(i.status || 'pending')} · ${toDateValue(i.date)?.toLocaleString() || 'No date'}</p>
+                    <p class="text-[10px] text-slate-500 mt-1 whitespace-pre-wrap">${safeText(i.detail || '')}</p>
+                    ${i.reference ? `<p class="text-[9px] text-slate-400 mt-1">Ref: ${safeText(i.reference)}</p>` : ''}
+                </div>
+                <div class="font-black text-xs ${i.amount >= 0 ? 'text-emerald-600' : 'text-red-500'}">${i.amount >= 0 ? '+' : ''}${fmtMoney(i.amount)}</div>
+            </div>
+        </div>
+    `).join('') : '<p class="text-center text-xs text-slate-400 py-8">No transactions for this filter.</p>';
+    detailList.innerHTML = data.stats.map(([label,value]) => `
+        <button onclick="openStatsModal()" class="w-full text-left bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 px-3 py-2 hover:border-brand transition">
+            <span class="block text-[9px] font-black uppercase text-slate-400">${safeText(label)}</span>
+            <span class="block text-xs font-bold text-slate-800 dark:text-slate-100 mt-0.5">${safeText(value)}</span>
+        </button>
+    `).join('');
+    lucide.createIcons();
+};
+
+function downloadTextFile(filename, text, type = 'text/plain') {
+    const blob = new Blob([text], { type });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+function csvCell(value) {
+    return `"${String(value ?? '').replace(/"/g, '""')}"`;
+}
+
+window.exportStatsCSV = () => {
+    const data = buildDetailedStatsData();
+    const rows = [['Type','Title','Amount','Status','Date','Reference','Detail'], ...data.ledger.map(i => [
+        i.type, i.title, i.amount, i.status, toDateValue(i.date)?.toISOString() || '', i.reference || '', i.detail || ''
+    ])];
+    rows.push([]);
+    rows.push(['Metric','Value']);
+    data.stats.forEach(s => rows.push(s));
+    downloadTextFile(`GigsKenya_Transactions_${Date.now()}.csv`, rows.map(r => r.map(csvCell).join(',')).join('\n'), 'text/csv');
+    showToast('Stats CSV exported', 'success');
+};
+
+window.exportStatsJSON = () => {
+    const data = buildDetailedStatsData();
+    downloadTextFile(`GigsKenya_Transactions_${Date.now()}.json`, JSON.stringify(data, null, 2), 'application/json');
+    showToast('Stats JSON exported', 'success');
+};
+
+window.printStatsReport = () => {
+    const data = buildDetailedStatsData();
+    const w = window.open('', '_blank');
+    if(!w) return showToast('Allow popups to print the report', 'warning');
+    w.document.write(`
+        <html><head><title>Gigs Kenya Transactions & Stats</title>
+        <style>body{font-family:Arial,sans-serif;color:#172033;padding:28px;line-height:1.4}h1,h2{color:#1d4ed8}.box{border:1px solid #dbe4f0;border-radius:10px;padding:10px;margin:8px 0}.row{display:flex;justify-content:space-between;border-bottom:1px solid #e5edf6;padding:6px 0;font-size:12px}.muted{color:#64748b;font-size:11px}@media print{button{display:none}}</style>
+        </head><body>
+            <button onclick="window.print()" style="float:right;padding:8px 12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;font-weight:700">Print / Save PDF</button>
+            <h1>Gigs Kenya Transactions & Stats</h1>
+            <p class="muted">Generated ${new Date().toLocaleString()} for ${safeText(userData?.name || 'User')}</p>
+            <h2>Stats</h2>
+            <div class="box">${data.stats.map(([k,v]) => `<div class="row"><strong>${safeText(k)}</strong><span>${safeText(v)}</span></div>`).join('')}</div>
+            <h2>Transactions</h2>
+            <div class="box">${data.ledger.length ? data.ledger.map(i => `<div class="row"><span>${safeText(i.type.toUpperCase())} - ${safeText(i.title)}<br><span class="muted">${toDateValue(i.date)?.toLocaleString() || ''} ${i.reference ? ' / Ref: '+safeText(i.reference) : ''}</span></span><strong>${i.amount >= 0 ? '+' : ''}${fmtMoney(i.amount)}</strong></div>`).join('') : '<p class="muted">No transactions.</p>'}</div>
+            <script>setTimeout(()=>window.print(),250);<\/script>
+        </body></html>
+    `);
+    w.document.close();
 };
 
 // ===================== SETTINGS =====================
@@ -6428,7 +7172,7 @@ window.openSettings = () => {
     document.getElementById('set-bio').value = userData.bio || '';
     document.getElementById('set-rate').value = userData.rate || 0;
     document.getElementById('set-availability').value = userData.availability || 'Full-Time';
-    document.getElementById('set-edu').value = userData.education || "Bachelor's";
+    document.getElementById('set-edu').value = userData.education || 'None';
     document.getElementById('set-exp').value = userData.experience || 0;
     document.getElementById('set-lang1').value = userData.lang1 || 'English';
     document.getElementById('set-lang2').value = userData.lang2 || 'Swahili';
@@ -6744,7 +7488,7 @@ function setupPublicListeners() {
         allUsers = snap.docs.map(d => ({uid: d.id, ...d.data()}));
         
         if(activeView === 'leaderboard') renderLeaderboard();
-        if(activeView === 'dashboard' && userData?.role === 'employer') renderDashboard();
+        if(activeView === 'dashboard') renderDashboard();
         if(['home','about','howitworks','safety'].includes(activeView)) renderPublicPageStats();
     });
     
@@ -6887,7 +7631,7 @@ window.forceContinue = () => {
 
 </script>
 <script>
-// Initialize skip link focus behavior and dark-toggle UI
+// Initialize skip link focus behavior
 try {
     const skipLink = document.getElementById('skip-link');
     if(skipLink) {
@@ -6902,24 +7646,6 @@ try {
             }
         });
     }
-
-    const dt = document.getElementById('dark-toggle');
-    const dtIcon = document.getElementById('dark-toggle-icon');
-    function refreshDarkToggleUI() {
-        const dark = localStorage.theme === 'dark' || document.documentElement.classList.contains('dark');
-        if(dt) dt.setAttribute('aria-pressed', dark ? 'true' : 'false');
-        if(dtIcon) dtIcon.setAttribute('data-lucide', dark ? 'sun' : 'moon');
-        if(typeof lucide !== 'undefined') lucide.createIcons();
-    }
-
-    // Watch for external changes to theme and refresh icon
-    window.addEventListener('load', () => setTimeout(refreshDarkToggleUI, 80));
-    // Also refresh when toggleDarkMode is invoked elsewhere
-    const origToggle = window.toggleDarkMode;
-    window.toggleDarkMode = function(){
-        if(typeof origToggle === 'function') origToggle();
-        refreshDarkToggleUI();
-    };
 } catch(e) { console.warn('Init helpers failed', e); }
 </script>
 </body>
