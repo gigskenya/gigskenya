@@ -593,6 +593,217 @@
             outline: 3px solid rgba(37,99,235,.95);
         }
 
+        @media (max-width: 767px) {
+            .modal-overlay {
+                align-items: flex-end;
+                padding: .35rem;
+            }
+
+            .modal-box {
+                border-radius: .85rem .85rem 0 0;
+                max-height: calc(100dvh - 1rem);
+                max-width: 100%;
+            }
+
+            #main-scroller > main {
+                padding: .65rem .55rem 1rem;
+            }
+
+            #top-nav {
+                min-height: 3.25rem;
+            }
+
+            #top-nav .max-w-7xl {
+                gap: .35rem;
+                padding-left: .45rem;
+                padding-right: .45rem;
+            }
+
+            #nav-wallet {
+                padding: .2rem .45rem;
+                max-width: 7.4rem;
+            }
+
+            #nav-wallet-balance {
+                max-width: 5.3rem;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            #nav-auth-links {
+                gap: .2rem;
+            }
+
+            #notif-panel,
+            #profile-dropdown {
+                position: fixed;
+                right: .5rem;
+                top: 3.25rem;
+                width: min(92vw, 20rem);
+                max-height: calc(100dvh - 7rem);
+                overflow-y: auto;
+            }
+
+            .gradient-hero {
+                border-radius: .85rem;
+            }
+
+            .btn {
+                border-radius: .5rem;
+                padding: .45rem .6rem;
+                line-height: 1.1;
+            }
+
+            .gk-input {
+                border-radius: .5rem;
+                padding: .45rem .6rem;
+                font-size: .76rem;
+            }
+
+            #view-dashboard {
+                gap: .55rem;
+            }
+
+            #view-dashboard > .gradient-hero {
+                padding: .85rem;
+            }
+
+            #dash-avatar {
+                width: 3.2rem;
+                height: 3.2rem;
+                border-radius: .75rem;
+            }
+
+            #dash-name {
+                font-size: 1.1rem;
+                line-height: 1.15;
+            }
+
+            #dashboard-metrics-grid {
+                gap: .45rem;
+            }
+
+            #dashboard-metrics-grid > div,
+            #dashboard-bottom-content > div,
+            #view-dashboard .bg-white,
+            #view-dashboard .dark\:bg-slate-800 {
+                border-radius: .75rem;
+                padding: .65rem;
+            }
+
+            #dashboard-metrics-grid p.text-lg,
+            #dashboard-metrics-grid p.text-xl {
+                font-size: .95rem;
+                line-height: 1.15;
+            }
+
+            #referral-list {
+                max-height: 4.5rem;
+            }
+
+            #workspace-modal {
+                align-items: stretch;
+                padding: 0;
+            }
+
+            #workspace-modal .modal-box {
+                width: 100vw;
+                height: 100dvh;
+                max-height: 100dvh;
+                border-radius: 0;
+            }
+
+            #workspace-modal .sticky {
+                padding: .65rem;
+            }
+
+            #workspace-modal .ws-tab-btn {
+                padding: .7rem .75rem;
+                font-size: .62rem;
+            }
+
+            #workspace-modal .overflow-y-auto.bg-slate-50 {
+                padding: .65rem;
+            }
+
+            #workspace-modal .grid {
+                gap: .65rem;
+            }
+
+            #workspace-modal textarea {
+                min-height: 4.8rem;
+            }
+
+            #settings-panel .modal-box {
+                max-height: calc(100dvh - .7rem);
+            }
+
+            #settings-panel .settings-tab.active {
+                grid-template-columns: 1fr !important;
+            }
+
+            #settings-panel .settings-tab > div,
+            #settings-panel .settings-tab > label {
+                grid-column: 1 / -1 !important;
+            }
+
+            #skill-entry-row {
+                flex-direction: column;
+            }
+
+            #stats-modal .modal-box,
+            #ledger-modal .modal-box,
+            #apps-modal .modal-box,
+            #job-detail-modal .modal-box {
+                max-height: calc(100dvh - .7rem);
+            }
+
+            .bottom-nav {
+                height: 56px;
+                padding: .28rem .35rem;
+                padding-bottom: calc(env(safe-area-inset-bottom) + .28rem);
+            }
+
+            .bottom-nav-btn {
+                font-size: .58rem;
+                min-width: 0;
+                gap: .08rem;
+            }
+
+            .bottom-nav-btn i {
+                width: 1.05rem;
+                height: 1.05rem;
+            }
+
+            .center-job-btn {
+                width: 48px;
+                height: 48px;
+                top: -10px;
+                border-width: 2px;
+                font-size: .5rem;
+                letter-spacing: 0;
+            }
+
+            #mobile-top-workers-btn {
+                bottom: calc(env(safe-area-inset-bottom) + 3.8rem);
+                left: .55rem;
+                padding: .45rem .55rem;
+            }
+
+            #scrollTopBtn {
+                bottom: calc(env(safe-area-inset-bottom) + 3.8rem);
+                right: .55rem;
+            }
+
+            #toast {
+                top: .5rem;
+                left: .5rem;
+                right: .5rem;
+                max-width: none;
+            }
+        }
+
     </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 flex flex-col w-full h-[100dvh]">
@@ -1023,6 +1234,7 @@
 
                                 </div>
                         </div>
+                </div>
                 <!-- TAB 5: OPS TOOLKIT -->
                 <div id="ws-tab-toolkit" class="ws-tab hidden space-y-4">
                         <div class="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-2 gap-3" id="ws-toolkit-kpis"></div>
@@ -1360,6 +1572,61 @@
     </div>
 </div>
 
+<!-- ===================== MODAL: REFERRAL RULES ===================== -->
+<div id="referral-rules-modal" class="modal-overlay gk-hidden" style="z-index:420" onclick="closeReferralRules()">
+    <div class="modal-box p-5 md:p-6" style="max-width:520px" onclick="event.stopPropagation()">
+        <div class="flex items-center justify-between mb-3">
+            <h3 class="font-display font-black text-lg text-slate-900 dark:text-white flex items-center gap-2"><i data-lucide="gift" class="text-indigo-500 w-5 h-5"></i> Referral Rules</h3>
+            <button onclick="closeReferralRules()" class="p-1 text-slate-400 hover:text-slate-700 dark:hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+        </div>
+        <div class="space-y-3 text-xs text-slate-600 dark:text-slate-300">
+            <p class="font-bold text-slate-800 dark:text-white">KSh 50 is paid only after the referred worker activates their account and completes one approved job.</p>
+            <ol class="list-decimal pl-4 space-y-2">
+                <li>Share your referral code with a new user.</li>
+                <li>The new user must enter your code while creating the account.</li>
+                <li>The referred user must activate their worker account from the wallet.</li>
+                <li>The referred user must complete one job and the employer must approve the work.</li>
+                <li>Gigs Kenya pays KSh 50 once to your wallet. Self-referrals and duplicate phone accounts do not qualify.</li>
+            </ol>
+            <div class="rounded-xl bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 p-3 text-indigo-700 dark:text-indigo-200">
+                You will receive notifications when someone joins with your code and when the bonus becomes payable.
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== MODAL: WORK SUBMISSION INSTRUCTIONS ===================== -->
+<div id="task-instructions-modal" class="modal-overlay gk-hidden" style="z-index:420" onclick="closeTaskInstructions()">
+    <div class="modal-box p-5 md:p-6" style="max-width:560px" onclick="event.stopPropagation()">
+        <div class="flex items-center justify-between mb-3">
+            <h3 class="font-display font-black text-lg text-slate-900 dark:text-white flex items-center gap-2"><i data-lucide="file-question" class="text-brand w-5 h-5"></i> Submit Work Guide</h3>
+            <button onclick="closeTaskInstructions()" class="p-1 text-slate-400 hover:text-slate-700 dark:hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+        </div>
+        <div class="space-y-4 text-xs text-slate-600 dark:text-slate-300">
+            <div>
+                <h4 class="font-bold text-slate-800 dark:text-white mb-1">Google Docs</h4>
+                <ol class="list-decimal pl-4 space-y-1.5">
+                    <li>Open Google Docs and create the work document.</li>
+                    <li>Paste your final answer, attach images or tables if required, and name the file clearly.</li>
+                    <li>Click Share, change access to Anyone with the link can view, then copy the link.</li>
+                    <li>Open the workspace File Vault, add that link with a clear label, then submit in Action Center.</li>
+                </ol>
+            </div>
+            <div>
+                <h4 class="font-bold text-slate-800 dark:text-white mb-1">Word Online</h4>
+                <ol class="list-decimal pl-4 space-y-1.5">
+                    <li>Create or upload the document in OneDrive or Word Online.</li>
+                    <li>Use Share, choose Anyone with the link can view, then copy the link.</li>
+                    <li>Add the Word link to the File Vault first. The final submission will be blocked until the vault has a file.</li>
+                </ol>
+            </div>
+            <div class="rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 p-3 text-amber-700 dark:text-amber-200">
+                Always test the link in a private browser window before submitting so the employer can open it.
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- ===================== MODAL: PAYOUT REQUEST ===================== -->
 <div id="payout-modal" class="modal-overlay gk-hidden" style="z-index:300" onclick="closePayoutModal()">
     <div class="modal-box p-4 md:p-6" onclick="event.stopPropagation()">
@@ -1639,10 +1906,88 @@
                 <div><label class="block text-[10px] font-bold mb-0.5 text-slate-700 dark:text-slate-300">Language 2</label><input id="set-lang2" class="gk-input"></div>
                 <div style="grid-column:1/-1">
                     <label class="block text-[10px] font-bold mb-0.5 text-slate-700 dark:text-slate-300">Skills (up to 8)</label>
-                    <div class="flex gap-2">
+                    <div id="skill-entry-row" class="flex gap-2">
                         <input list="skill-suggestions" id="skill-input" class="gk-input flex-1" placeholder="Type to search...">
                         <button onclick="addSkill()" class="btn btn-primary text-xs py-1.5 px-3">Add</button>
                     </div>
+                    <select id="skill-bank" class="gk-input mt-2" onchange="if(this.value){document.getElementById('skill-input').value=this.value; addSkill(); this.value='';}">
+                        <option value="">Choose from 75+ skill bank</option>
+                        <option value="Virtual Assistance">Virtual Assistance</option>
+                        <option value="Social Media Management">Social Media Management</option>
+                        <option value="Community Management">Community Management</option>
+                        <option value="Email Marketing">Email Marketing</option>
+                        <option value="Lead Generation">Lead Generation</option>
+                        <option value="Customer Support">Customer Support</option>
+                        <option value="Chat Support">Chat Support</option>
+                        <option value="Transcription">Transcription</option>
+                        <option value="Subtitling">Subtitling</option>
+                        <option value="Proofreading">Proofreading</option>
+                        <option value="Technical Writing">Technical Writing</option>
+                        <option value="Grant Writing">Grant Writing</option>
+                        <option value="Resume Writing">Resume Writing</option>
+                        <option value="Academic Research">Academic Research</option>
+                        <option value="Market Research">Market Research</option>
+                        <option value="Data Analysis">Data Analysis</option>
+                        <option value="Power BI">Power BI</option>
+                        <option value="Tableau">Tableau</option>
+                        <option value="Google Sheets">Google Sheets</option>
+                        <option value="QuickBooks">QuickBooks</option>
+                        <option value="Bookkeeping">Bookkeeping</option>
+                        <option value="Tax Preparation">Tax Preparation</option>
+                        <option value="Canva Design">Canva Design</option>
+                        <option value="Adobe Photoshop">Adobe Photoshop</option>
+                        <option value="Adobe Illustrator">Adobe Illustrator</option>
+                        <option value="Figma">Figma</option>
+                        <option value="Logo Design">Logo Design</option>
+                        <option value="Brand Strategy">Brand Strategy</option>
+                        <option value="Motion Graphics">Motion Graphics</option>
+                        <option value="Voice Over">Voice Over</option>
+                        <option value="Podcast Editing">Podcast Editing</option>
+                        <option value="TikTok Editing">TikTok Editing</option>
+                        <option value="YouTube Management">YouTube Management</option>
+                        <option value="Google Ads">Google Ads</option>
+                        <option value="Meta Ads">Meta Ads</option>
+                        <option value="Sales Copywriting">Sales Copywriting</option>
+                        <option value="Landing Page Design">Landing Page Design</option>
+                        <option value="Webflow">Webflow</option>
+                        <option value="Wix">Wix</option>
+                        <option value="Squarespace">Squarespace</option>
+                        <option value="Django">Django</option>
+                        <option value="Flask">Flask</option>
+                        <option value="Java">Java</option>
+                        <option value="C#">C#</option>
+                        <option value="C++">C++</option>
+                        <option value="SQL">SQL</option>
+                        <option value="Firebase">Firebase</option>
+                        <option value="Supabase">Supabase</option>
+                        <option value="API Integration">API Integration</option>
+                        <option value="Automation">Automation</option>
+                        <option value="QA Testing">QA Testing</option>
+                        <option value="Cybersecurity">Cybersecurity</option>
+                        <option value="Cloud Computing">Cloud Computing</option>
+                        <option value="AWS">AWS</option>
+                        <option value="Azure">Azure</option>
+                        <option value="DevOps">DevOps</option>
+                        <option value="Docker">Docker</option>
+                        <option value="UI Testing">UI Testing</option>
+                        <option value="Mobile App Testing">Mobile App Testing</option>
+                        <option value="Project Management">Project Management</option>
+                        <option value="Scrum">Scrum</option>
+                        <option value="Legal Research">Legal Research</option>
+                        <option value="Real Estate Support">Real Estate Support</option>
+                        <option value="CRM Management">CRM Management</option>
+                        <option value="HubSpot">HubSpot</option>
+                        <option value="Salesforce">Salesforce</option>
+                        <option value="E-commerce Support">E-commerce Support</option>
+                        <option value="Product Listing">Product Listing</option>
+                        <option value="Inventory Management">Inventory Management</option>
+                        <option value="Swahili Translation">Swahili Translation</option>
+                        <option value="French Translation">French Translation</option>
+                        <option value="German Translation">German Translation</option>
+                        <option value="Online Tutoring">Online Tutoring</option>
+                        <option value="Math Tutoring">Math Tutoring</option>
+                        <option value="Data Cleaning">Data Cleaning</option>
+                    </select>
                     <datalist id="skill-suggestions">
                         <option value="JavaScript"></option>
                         <option value="React"></option>
@@ -1669,6 +2014,81 @@
                         <option value="Photography"></option>
                         <option value="3D Modeling"></option>
                         <option value="Accounting"></option>
+                        <option value="Virtual Assistance"></option>
+                        <option value="Social Media Management"></option>
+                        <option value="Community Management"></option>
+                        <option value="Email Marketing"></option>
+                        <option value="Lead Generation"></option>
+                        <option value="Customer Support"></option>
+                        <option value="Chat Support"></option>
+                        <option value="Transcription"></option>
+                        <option value="Subtitling"></option>
+                        <option value="Proofreading"></option>
+                        <option value="Technical Writing"></option>
+                        <option value="Grant Writing"></option>
+                        <option value="Resume Writing"></option>
+                        <option value="Academic Research"></option>
+                        <option value="Market Research"></option>
+                        <option value="Data Analysis"></option>
+                        <option value="Power BI"></option>
+                        <option value="Tableau"></option>
+                        <option value="Google Sheets"></option>
+                        <option value="QuickBooks"></option>
+                        <option value="Bookkeeping"></option>
+                        <option value="Tax Preparation"></option>
+                        <option value="Canva Design"></option>
+                        <option value="Adobe Photoshop"></option>
+                        <option value="Adobe Illustrator"></option>
+                        <option value="Figma"></option>
+                        <option value="Logo Design"></option>
+                        <option value="Brand Strategy"></option>
+                        <option value="Motion Graphics"></option>
+                        <option value="Voice Over"></option>
+                        <option value="Podcast Editing"></option>
+                        <option value="TikTok Editing"></option>
+                        <option value="YouTube Management"></option>
+                        <option value="Google Ads"></option>
+                        <option value="Meta Ads"></option>
+                        <option value="Sales Copywriting"></option>
+                        <option value="Landing Page Design"></option>
+                        <option value="Webflow"></option>
+                        <option value="Wix"></option>
+                        <option value="Squarespace"></option>
+                        <option value="Django"></option>
+                        <option value="Flask"></option>
+                        <option value="Java"></option>
+                        <option value="C#"></option>
+                        <option value="C++"></option>
+                        <option value="SQL"></option>
+                        <option value="Firebase"></option>
+                        <option value="Supabase"></option>
+                        <option value="API Integration"></option>
+                        <option value="Automation"></option>
+                        <option value="QA Testing"></option>
+                        <option value="Cybersecurity"></option>
+                        <option value="Cloud Computing"></option>
+                        <option value="AWS"></option>
+                        <option value="Azure"></option>
+                        <option value="DevOps"></option>
+                        <option value="Docker"></option>
+                        <option value="UI Testing"></option>
+                        <option value="Mobile App Testing"></option>
+                        <option value="Project Management"></option>
+                        <option value="Scrum"></option>
+                        <option value="Legal Research"></option>
+                        <option value="Real Estate Support"></option>
+                        <option value="CRM Management"></option>
+                        <option value="HubSpot"></option>
+                        <option value="Salesforce"></option>
+                        <option value="E-commerce Support"></option>
+                        <option value="Product Listing"></option>
+                        <option value="Inventory Management"></option>
+                        <option value="Swahili Translation"></option>
+                        <option value="French Translation"></option>
+                        <option value="German Translation"></option>
+                        <option value="Online Tutoring"></option>
+                        <option value="Math Tutoring"></option>
+                        <option value="Data Cleaning"></option>
                     </datalist>
                     <div id="skills-container" class="flex flex-wrap mt-2 gap-1"></div>
                 </div>
@@ -1761,6 +2181,9 @@
             <!-- Auth links -->
             <div id="nav-auth-links" class="gk-hidden flex items-center gap-1.5">
                 <button onclick="closeTopRightMenus(); navigate('dashboard')" class="nav-link hidden sm:flex"><i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard</button>
+                <button type="button" id="notif-sound-toggle" aria-label="Toggle notification sounds" onclick="toggleNotificationSoundQuick(event)" class="p-1.5 text-slate-500 hover:text-brand rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="Notification sounds off">
+                    <i id="notif-sound-toggle-icon" data-lucide="bell-off" class="w-4 h-4"></i>
+                </button>
                 <div class="relative">
                     <button type="button" id="notif-trigger" aria-label="Notifications" onclick="toggleNotifications(event)" class="p-1.5 text-slate-500 hover:text-brand relative rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition">
                         <i data-lucide="bell" class="w-4 h-4"></i>
@@ -2168,7 +2591,7 @@
                             <input id="auth-mpesa" class="gk-input" placeholder="M-Pesa / Phone Number">
                             <input id="auth-referral" class="gk-input" placeholder="Referral Code (Optional)">
                         </div>
-                        <input id="auth-email" type="email" class="gk-input" placeholder="Email Address" required>
+                        <input id="auth-email" type="text" class="gk-input" placeholder="Email address or phone number" required>
                         <div class="relative">
                             <input id="auth-password" type="password" class="gk-input pr-10" placeholder="Password" required>
                             <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
@@ -2350,8 +2773,9 @@ What tools will you use?"></textarea>
                         <h2 id="dash-name" class="font-display font-black text-xl md:text-3xl">Welcome!</h2>
                         <p class="text-slate-300 text-xs md:text-sm mt-0.5">Here's what's happening</p>
                     </div>
-            <div class="flex flex-row sm:flex-col gap-2 w-full sm:w-auto mt-3 sm:mt-0">
+            <div class="grid grid-cols-2 sm:flex sm:flex-col gap-2 w-full sm:w-auto mt-3 sm:mt-0">
                 <button onclick="openTopupModal()" class="btn btn-success text-[10px] shadow-lg flex-1"><i data-lucide="arrow-up-circle" class="w-3.5 h-3.5"></i> Top Up</button>
+                <button onclick="openPayoutModal()" class="btn btn-secondary text-[10px] bg-white/10 text-white border-white/20 hover:bg-white/20 flex-1"><i data-lucide="arrow-down-circle" class="w-3.5 h-3.5"></i> Withdraw</button>
                 <button onclick="openStatsModal()" class="btn btn-secondary text-[10px] bg-white/10 text-white border-white/20 hover:bg-white/20 flex-1"><i data-lucide="bar-chart-3" class="w-3.5 h-3.5"></i> Stats</button>
                 <button onclick="toggleAvailability()" id="avail-toggle-btn" class="btn text-[10px] bg-white/10 text-white border-white/20 hover:bg-white/20 flex-1">
                     <i data-lucide="circle-dot" class="w-3 h-3 text-emerald-400"></i> Available
@@ -2388,11 +2812,12 @@ What tools will you use?"></textarea>
 
                 <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-4 rounded-2xl text-white shadow-sm flex flex-col justify-center">
                     <h3 class="font-display font-black text-lg mb-1 flex items-center gap-1.5"><i data-lucide="gift" class="w-4 h-4"></i> Refer & Earn</h3>
-                    <p class="text-indigo-100 text-xs mb-3">Earn KSh 50 for every friend who joins. Share code!</p>
+                    <p class="text-indigo-100 text-xs mb-3">Earn KSh 50 after your referral activates and completes one approved job.</p>
                     <div class="flex items-center gap-2 bg-white/20 rounded-xl px-3 py-2 border border-white/30 justify-between">
                         <span id="referral-code" class="font-mono font-black tracking-widest text-sm">GK-XXXXX</span>
                         <button onclick="copyReferralCode()" class="btn bg-white text-indigo-600 text-[10px] font-bold hover:bg-indigo-50 px-2 py-1">Copy</button>
                     </div>
+                    <button onclick="openReferralRules()" class="mt-2 w-full btn bg-white/15 border border-white/30 text-white hover:bg-white/25 text-[10px] py-1.5"><i data-lucide="info" class="w-3.5 h-3.5"></i> Rules & How It Works</button>
                     <div id="referral-data" class="mt-3 grid grid-cols-2 gap-2 text-[10px]"></div>
                     <div id="referral-list" class="mt-2 max-h-20 overflow-y-auto text-[10px] space-y-1"></div>
                 </div>
@@ -2500,8 +2925,9 @@ What tools will you use?"></textarea>
     </button>
     
     <div class="flex-1 flex justify-center">
-            <button class="center-job-btn" onclick="navigate('jobs')" id="bnav-jobs">
-                <i data-lucide="search" class="w-5 h-5"></i>
+            <button class="center-job-btn flex-col gap-0.5 text-[9px] font-black uppercase" onclick="navigate('jobs')" id="bnav-jobs" aria-label="Browse Jobs">
+                <i data-lucide="briefcase" class="w-4 h-4"></i>
+                <span>Jobs</span>
             </button>
     </div>
 
@@ -2957,9 +3383,23 @@ window.showToast = (msg, type='info', duration=3500) => {
 };
 
 // ===================== NOTIFICATION SETTINGS & SOUNDS =====================
+function updateNotifSoundToggleUI() {
+    const icon = document.getElementById('notif-sound-toggle-icon');
+    const btn = document.getElementById('notif-sound-toggle');
+    const checkbox = document.getElementById('notif-sounds');
+    if(icon) icon.setAttribute('data-lucide', soundsEnabled ? 'bell-ring' : 'bell-off');
+    if(btn) {
+        btn.title = soundsEnabled ? 'Notification sounds on' : 'Notification sounds off';
+        btn.classList.toggle('text-brand', soundsEnabled);
+    }
+    if(checkbox) checkbox.checked = soundsEnabled;
+    lucide.createIcons();
+}
+
 window.toggleNotificationSounds = (checked) => {
     soundsEnabled = checked;
     localStorage.setItem('gk_sounds_enabled', checked ? 'true' : 'false');
+    updateNotifSoundToggleUI();
     if (checked) {
         window.AudioContext = window.AudioContext || window.webkitAudioContext;
         if (!soundCtx) soundCtx = new window.AudioContext();
@@ -2968,6 +3408,11 @@ window.toggleNotificationSounds = (checked) => {
     } else {
         showToast('Notification sounds disabled', 'info');
     }
+};
+
+window.toggleNotificationSoundQuick = (e) => {
+    e?.stopPropagation();
+    toggleNotificationSounds(!soundsEnabled);
 };
 
 window.playSystemSound = (type = 'notif') => {
@@ -3097,7 +3542,7 @@ window.handleNotifClick = async (notifId, type, jobId) => {
     else if (type === 'review_received') showPublicProfile(currentUser.uid);
     else if (type === 'job_match' && jobId) { navigate('jobs'); openJobDetail(jobId); }
     else if (type === 'deposit_pending' || type === 'withdrawal_pending') { openLedgerModal(); }
-    else if (type === 'referral_joined' || type === 'referral_used') { navigate('dashboard'); setTimeout(renderReferralData, 80); }
+    else if (['referral_joined','referral_used','referral_bonus','referral_qualified'].includes(type)) { navigate('dashboard'); setTimeout(renderReferralData, 80); }
 };
 
 window.clearNotifications = async () => {
@@ -3242,6 +3687,7 @@ window.toggleAuthMode = () => {
         : '<span>Sign In</span><i data-lucide="arrow-right" class="w-4 h-4"></i>';
     document.getElementById('auth-toggle-text').innerText = isSignup ? 'Have an account?' : 'New here?';
     document.getElementById('auth-toggle-btn').innerText = isSignup ? 'Sign in' : 'Create account';
+    document.getElementById('auth-email').placeholder = isSignup ? 'Email Address' : 'Email address or phone number';
     document.getElementById('signup-fields').classList.toggle('gk-hidden', !isSignup);
     lucide.createIcons();
 };
@@ -3255,16 +3701,51 @@ window.togglePasswordVisibility = () => {
 
 window.handleForgotPassword = async () => {
     const email = document.getElementById('auth-email')?.value;
-    if(!email) return showToast('Enter your email first','error');
+    if(!email || !email.includes('@')) return showToast('Enter your email address first','error');
     try { 
         await auth.sendPasswordResetEmail(email); 
         showToast('Reset email sent! Check inbox.','success'); 
     } catch(e) { showToast(e.message,'error'); }
 };
 
+function getPhoneLookupValues(value) {
+    const raw = String(value || '').trim();
+    const compact = raw.replace(/\s+/g, '');
+    const digits = compact.replace(/[^\d]/g, '');
+    const variants = new Set([raw, compact]);
+    if(digits) {
+        variants.add(digits);
+        if(digits.startsWith('254') && digits.length === 12) {
+            variants.add('0' + digits.slice(3));
+            variants.add('+' + digits);
+        }
+        if(digits.startsWith('0') && digits.length === 10) {
+            variants.add('254' + digits.slice(1));
+            variants.add('+254' + digits.slice(1));
+        }
+    }
+    return Array.from(variants).filter(Boolean);
+}
+
+async function findUserByPhoneIdentifier(phone) {
+    const values = getPhoneLookupValues(phone);
+    if(!values.length) return null;
+    const usersRef = db.collection('artifacts').doc(appId).collection('users');
+    for(const field of ['phone','mpesa']) {
+        for(const value of values) {
+            const snap = await usersRef.where(field, '==', value).limit(1).get();
+            if(!snap.empty) {
+                const doc = snap.docs[0];
+                return { uid: doc.id, ...doc.data() };
+            }
+        }
+    }
+    return null;
+}
+
 document.getElementById('auth-form').addEventListener('submit', async e => {
     e.preventDefault();
-    const email = document.getElementById('auth-email').value;
+    const loginId = document.getElementById('auth-email').value.trim();
     const pass = document.getElementById('auth-password').value;
     const btn = document.getElementById('auth-submit-btn');
     const orig = btn.innerHTML;
@@ -3283,6 +3764,11 @@ document.getElementById('auth-form').addEventListener('submit', async e => {
             if(!name || !phone) { showToast('Please fill all fields','error'); return; }
             const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
             if(!passRegex.test(pass)) { showToast('Password needs 8+ chars, uppercase, lowercase & number','error'); return; }
+            const existingPhoneUser = await findUserByPhoneIdentifier(phone);
+            if(existingPhoneUser) {
+                showToast('That phone number is already registered. Use another number or sign in.', 'error');
+                return;
+            }
             
             let referrer = null;
             const cleanRefUsed = refUsed.toUpperCase();
@@ -3300,11 +3786,11 @@ document.getElementById('auth-form').addEventListener('submit', async e => {
                 }
             }
 
-            const cred = await auth.createUserWithEmailAndPassword(email, pass);
+            const cred = await auth.createUserWithEmailAndPassword(loginId, pass);
             const myRefCode = 'GK-' + Math.random().toString(36).substr(2,5).toUpperCase();
             
             await userDoc(cred.user.uid).set({
-                uid: cred.user.uid, name, role, phone, email,
+                uid: cred.user.uid, name, role, phone, email: loginId,
                 bookmarks:[], skills:[], testPassed:false, isActivated:false, createdAt:new Date().toISOString(),
                 headline:'', bio:'', rate:0, availability:'Full-Time', education:'None', experience:0,
                 lang1:'English', lang2:'Swahili', paymentMethod:'M-Pesa', mpesa:phone,
@@ -3312,7 +3798,7 @@ document.getElementById('auth-form').addEventListener('submit', async e => {
                 portfolio:'', linkedin:'', github:'', instagram:'', telegram:'',
                 secQ:"What was your childhood pet's name?", secA:'', twoFA:false,
                 completionRate:0, responseTime:'N/A', isAvailable:true,
-                referralCode:myRefCode, referredBy: referrer ? cleanRefUsed : '', referredByUid: referrer?.uid || '', referredByName: referrer?.name || '', referrals:[], referralCount:0, avatarUrl:'', 
+                referralCode:myRefCode, referredBy: referrer ? cleanRefUsed : '', referredByUid: referrer?.uid || '', referredByName: referrer?.name || '', referrals:[], referralCount:0, referralRewardPaid:false, avatarUrl:'', 
                 totalEarnings:0, totalSpent:0, walletBalance:0, profileViews:0,
                 notifPrefs:{jobs:true,apps:true,msgs:true,pay:true,weekly:false}
             });
@@ -3323,15 +3809,16 @@ document.getElementById('auth-form').addEventListener('submit', async e => {
                     referrals: firebase.firestore.FieldValue.arrayUnion({
                         uid: cred.user.uid,
                         name,
-                        email,
+                        email: loginId,
                         referralCode: myRefCode,
+                        rewardStatus: 'pending_activation_and_first_job',
                         joinedAt: new Date().toISOString()
                     })
                 }).catch(()=>{});
                 await pubCol('notifications').add({
                     userId: referrer.uid,
                     type: 'referral_joined',
-                    message: `${name} joined using your referral code ${cleanRefUsed}.`,
+                    message: `${name} joined using your referral code. KSh 50 unlocks after they activate and complete one approved job.`,
                     read: false,
                     createdAt: new Date().toISOString()
                 });
@@ -3347,7 +3834,7 @@ document.getElementById('auth-form').addEventListener('submit', async e => {
             try {
                 await emailjs.send("service_y8po9tx", "template_ut0ep5w", {
                     name: name,
-                    email: email
+                    email: loginId
                 });
             } catch(emErr) {
                 console.error('EmailJS Error:', emErr);
@@ -3356,7 +3843,13 @@ document.getElementById('auth-form').addEventListener('submit', async e => {
             showToast('Account created! Welcome to Gigs Kenya','success');
             setTimeout(openCompleteProfilePrompt, 700);
         } else {
-            await auth.signInWithEmailAndPassword(email, pass);
+            let signInEmail = loginId;
+            if(!loginId.includes('@')) {
+                const account = await findUserByPhoneIdentifier(loginId);
+                if(!account?.email) throw new Error('No account found with that phone number');
+                signInEmail = account.email;
+            }
+            await auth.signInWithEmailAndPassword(signInEmail, pass);
             showToast('Signed in successfully!', 'success');
         }
     } catch(err) {
@@ -3389,6 +3882,14 @@ window.switchRole = async () => {
     } catch(e) { showToast('Error switching roles','error'); }
 };
 
+function syncWalletDisplays() {
+    const balance = fmtMoney(userData?.walletBalance || 0);
+    ['nav-wallet-balance','post-wallet-display','payout-modal-balance'].forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.innerText = balance;
+    });
+}
+
 function updateNavUI() {
     const role = (userData?.role || 'worker').toUpperCase();
     const dropdownRole = document.getElementById('dropdown-role');
@@ -3405,6 +3906,8 @@ function updateNavUI() {
     
     notifTrigger?.classList.remove('gk-hidden');
     profileTrigger?.classList.remove('gk-hidden');
+    syncWalletDisplays();
+    updateNotifSoundToggleUI();
     lucide.createIcons();
 }
 
@@ -4088,6 +4591,7 @@ window.submitApplication = async () => {
             workerName: userData.name,
             workerPhone: userData.phone||'', 
             pitch, 
+            coverLetter: pitch,
             rate: Number(rate), 
             delivery,
             customAnswers,
@@ -4342,6 +4846,7 @@ window.openWorkspace = async (jobId) => {
                 <p class="text-[9px] text-amber-600 mb-2 font-bold bg-amber-50 dark:bg-amber-900/20 p-1.5 rounded border border-amber-200 dark:border-amber-800">
                    <i data-lucide="alert-triangle" class="w-3 h-3 inline mr-1"></i> Ensure all files are uploaded to the Vault before submitting.
                 </p>
+                <button onclick="openTaskInstructions()" class="btn btn-secondary text-[10px] py-1.5 mb-2 self-start"><i data-lucide="file-question" class="w-3.5 h-3.5"></i> Instructions for Docs / Word links</button>
                 <div class="flex-1 flex flex-col gap-2">
                     <input type="url" id="ws-submit-link" class="gk-input text-xs py-1.5" placeholder="Primary Deliverable Link (Optional)" value="${draftLink}">
                     <textarea id="ws-submit-text" class="gk-input flex-1 resize-none text-xs p-2" placeholder="Message for employer explaining the submission..." rows="4">${draftText}</textarea>
@@ -4827,6 +5332,11 @@ window.submitWorkspaceWork = async () => {
     if(!text && !link) {
         return showToast('Please provide a message or a link', 'warning');
     }
+    const vaultFiles = Array.isArray(job.vault) ? job.vault : [];
+    if(userData.role === 'worker' && !vaultFiles.length) {
+        switchWorkspaceTab('vault');
+        return showToast('Add your final document or file link to the File Vault before submitting.', 'warning');
+    }
     
     try {
         await pubCol('jobs').doc(job.id).update({
@@ -4913,6 +5423,7 @@ window.approveWorkspaceWork = async () => {
             createdAt: new Date().toISOString()
         });
 
+        await maybePayReferralBonusForWorker(job.workerId, job.id);
         showToast('Work approved! Escrow released to worker.', 'success');
         openWorkspace(job.id);
         
@@ -5061,6 +5572,49 @@ window.closeWorkspace = () => {
     if(activeView==='mygigs') renderMyGigs();
 };
 
+async function maybePayReferralBonusForWorker(workerId, sourceJobId = '') {
+    if(!workerId) return;
+    try {
+        const workerSnap = await userDoc(workerId).get();
+        if(!workerSnap.exists) return;
+        const worker = { uid: workerSnap.id, ...workerSnap.data() };
+        if(worker.referralRewardPaid || worker.referralBonusPaidAt || !worker.referredByUid || !worker.isActivated) return;
+        if(worker.referredByUid === workerId) return;
+
+        const completedJobs = allJobs.filter(j => j.workerId === workerId && ['completed','paid_out'].includes(getJobStatus(j)));
+        const sourceQualifies = sourceJobId && allJobs.some(j => j.id === sourceJobId && j.workerId === workerId);
+        const completedCount = completedJobs.length + (sourceQualifies && !completedJobs.some(j => j.id === sourceJobId) ? 1 : 0);
+        if(completedCount < 1) return;
+
+        await userDoc(worker.referredByUid).update({
+            walletBalance: firebase.firestore.FieldValue.increment(50),
+            referralEarnings: firebase.firestore.FieldValue.increment(50),
+            referralPaidCount: firebase.firestore.FieldValue.increment(1)
+        });
+        await userDoc(workerId).update({
+            referralRewardPaid: true,
+            referralBonusPaidAt: new Date().toISOString(),
+            referralBonusJobId: sourceJobId || ''
+        });
+        await pubCol('notifications').add({
+            userId: worker.referredByUid,
+            type: 'referral_bonus',
+            message: `Referral bonus paid: ${worker.name || 'Your referral'} activated and completed one approved job. KSh 50 added to your wallet.`,
+            read: false,
+            createdAt: new Date().toISOString()
+        });
+        await pubCol('notifications').add({
+            userId: workerId,
+            type: 'referral_qualified',
+            message: 'Your referral qualification is complete. Your referrer has received the KSh 50 reward.',
+            read: false,
+            createdAt: new Date().toISOString()
+        });
+    } catch(e) {
+        console.warn('Referral bonus check failed:', e);
+    }
+}
+
 
 
 window.activateWorkerAccount = async () => {
@@ -5095,6 +5649,7 @@ window.activateWorkerAccount = async () => {
         await addActivity('Worker account activated from wallet balance.');
         userData.isActivated = true;
         userData.walletBalance = Math.max(0, balance - fee);
+        await maybePayReferralBonusForWorker(currentUser.uid);
         showToast('Worker account activated successfully', 'success');
         if(activeView === 'dashboard') renderDashboard();
     } catch(e) {
@@ -5161,6 +5716,14 @@ const WORKSPACE_TEMPLATES = {
     deliveryChecklist: "- Final files uploaded\n- All links open correctly\n- Naming convention checked\n- Version clearly labeled\n- Client handover note ready",
     approvalChecklist: "- Scope completed\n- Output matches brief\n- Required files included\n- Revisions resolved\n- Ready for payment release",
     handoverChecklist: "- Final link shared\n- Source files included\n- Backup retained\n- Usage notes added\n- Support next step mentioned",
+    meetingNotes: "- Attendees\n- Decisions\n- Actions\n- Next check-in",
+    changeLog: "- Change requested\n- Reason\n- Approved by\n- Date",
+    clientPrefs: "- Preferred style\n- Format\n- Must avoid\n- Example reference",
+    issues: "- Issue\n- Impact\n- Owner\n- Next step",
+    scopeBoundary: "- In scope\n- Out of scope\n- Assumptions",
+    acceptanceCriteria: "- Required output\n- Acceptance check\n- Approval signal",
+    testingNotes: "- Link opened\n- Permissions checked\n- Output reviewed",
+    releaseNotes: "- Delivered\n- How to use\n- Known notes",
     dailyPlan: "- Priority 1\n- Priority 2\n- Priority 3",
     followupNote: "- Waiting for confirmation\n- Next reminder date:",
     dependenciesNote: "- Dependency\n- Owner\n- Impact",
@@ -5244,22 +5807,22 @@ function getWorkspaceToolkit(job) {
 }
 
 function getWorkspaceHealth(job) {
-    const todos = job.workspaceTodos || [];
+    const todos = job.todos || job.workspaceTodos || [];
     const done = todos.filter(t => t.done).length;
     const progress = todos.length ? Math.round((done / todos.length) * 100) : 0;
-    const vaultCount = (job.workspaceFiles || []).length;
-    const hours = (job.workspaceTime || []).reduce((a,b)=>a+Number(b.minutes||0),0) / 60;
+    const vaultCount = (job.vault || job.workspaceFiles || []).length;
+    const hours = (job.timeLogs || job.workspaceTime || []).reduce((a,b)=>a+Number(b.minutes||0),0) / 60;
     const submissionReady = job.submission ? 100 : (vaultCount > 0 ? 70 : 35);
     return Math.max(0, Math.min(100, Math.round((progress * 0.4) + (submissionReady * 0.4) + (Math.min(hours, 8)/8*20))));
 }
 
 function getWorkspaceKpiData(job) {
-    const todos = job.workspaceTodos || [];
+    const todos = job.todos || job.workspaceTodos || [];
     const done = todos.filter(t => t.done).length;
     const pending = Math.max(0, todos.length - done);
     const logs = job.workspaceLog || [];
-    const files = job.workspaceFiles || [];
-    const times = job.workspaceTime || [];
+    const files = job.vault || job.workspaceFiles || [];
+    const times = job.timeLogs || job.workspaceTime || [];
     const totalMinutes = times.reduce((a,b)=>a+Number(b.minutes||0),0);
     const countdown = job.deadline ? Math.ceil((new Date(job.deadline) - new Date())/86400000) : null;
     const revisionCount = logs.filter(l => String(l.text || '').toLowerCase().includes('revision')).length;
@@ -5380,7 +5943,7 @@ function buildWorkspaceToolkitButtons() {
         ['testingNotes','Testing'],
         ['releaseNotes','Release']
     ];
-    wrap.innerHTML = btns.map(([key,label]) => `<button onclick="document.getElementById('ws-tool-${key}').focus(); insertWorkspaceTemplate('${['deliveryChecklist','approvalChecklist','handoverChecklist'].includes(key) ? key : 'deliveryChecklist'}')" class="badge bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-brand hover:text-white cursor-pointer transition border border-transparent">${label}</button>`).join('');
+    wrap.innerHTML = btns.map(([key,label]) => `<button onclick="document.getElementById('ws-tool-${key}').focus(); insertWorkspaceTemplate('${key}')" class="badge bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-brand hover:text-white cursor-pointer transition border border-transparent">${label}</button>`).join('');
 }
 
 function buildWorkspaceFeatureBoosters() {
@@ -5807,7 +6370,7 @@ window.renderDashboard = () => {
     `;
 
     document.getElementById('nav-wallet').classList.remove('gk-hidden');
-    document.getElementById('nav-wallet-balance').innerText = fmtMoney(userData.walletBalance);
+    syncWalletDisplays();
 
     renderReferralData();
     makeDashboardClickable();
@@ -5836,6 +6399,10 @@ function renderReferralData() {
             <span class="font-black text-sm">${merged.length}</span>
         </div>
         <div class="bg-white/20 rounded-xl border border-white/20 p-2">
+            <span class="block text-indigo-100">Paid Rewards</span>
+            <span class="font-black text-sm truncate block">${fmtMoney(userData.referralEarnings || 0)}</span>
+        </div>
+        <div class="bg-white/20 rounded-xl border border-white/20 p-2 col-span-2">
             <span class="block text-indigo-100">Referred By</span>
             <span class="font-black text-sm truncate block">${safeText(referredBy)}</span>
         </div>
@@ -5986,7 +6553,7 @@ window.renderMyGigs = () => {
         
         items = jobsAppliedTo.map(j => {
             const app = allApps.find(a => a.jobId === j.id && a.workerId === currentUser.uid);
-            return { ...j, relation: 'applied', myAppStatus: app ? app.status : 'pending' };
+            return { ...j, relation: 'applied', myAppStatus: app ? app.status : 'pending', myAppId: app?.id || '', myAppCover: app?.coverLetter || app?.pitch || '' };
         });
     } else {
         items = allJobs.filter(j => j.employerId === currentUser.uid).map(j => ({...j, relation: 'posted'}));
@@ -6073,6 +6640,14 @@ window.renderMyGigs = () => {
                 </div>
                 <h3 class="font-bold text-sm text-slate-800 dark:text-white truncate cursor-pointer hover:text-brand" onclick="openJobDetail('${j.id}')">${safeText(j.title)}</h3>
                 <p class="text-[10px] text-slate-500 mt-0.5">${fmtMoney(j.budget)} · ${safeText(j.location||'Remote')}</p>
+                ${j.relation === 'applied' ? `
+                <div class="mt-2 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-2">
+                    <div class="flex items-center justify-between gap-2 mb-1">
+                        <p class="text-[9px] font-black uppercase text-slate-400">Cover Letter</p>
+                        ${j.myAppStatus === 'pending' ? `<button onclick="editApplicationCover('${j.myAppId}')" class="text-[9px] font-bold text-brand hover:underline">Edit</button>` : ''}
+                    </div>
+                    <p class="text-[10px] text-slate-600 dark:text-slate-300 line-clamp-2">${safeText(j.myAppCover || 'No cover letter saved.')}</p>
+                </div>` : ''}
             </div>
             <div class="flex gap-2 shrink-0">
                 ${j.relation === 'posted' && status === 'open' ? `<button onclick="openEditJobModal('${j.id}')" class="btn btn-secondary text-[10px] px-2 py-1.5"><i data-lucide="pencil" class="w-3 h-3"></i></button><button onclick="deleteJobConfirm('${j.id}')" class="btn btn-danger text-[10px] px-2 py-1.5"><i data-lucide="trash" class="w-3 h-3"></i></button>` : ''}
@@ -6082,6 +6657,29 @@ window.renderMyGigs = () => {
     }).join('');
     
     lucide.createIcons();
+};
+
+window.editApplicationCover = async (appId) => {
+    const app = allApps.find(a => a.id === appId && a.workerId === currentUser?.uid);
+    if(!app) return showToast('Application not found', 'error');
+    if(app.status !== 'pending') return showToast('Cover letters can be edited while the application is pending.', 'warning');
+    const next = prompt('Edit your cover letter', app.coverLetter || app.pitch || '');
+    if(next === null) return;
+    const cover = next.trim();
+    if(cover.length < 20) return showToast('Cover letter must be at least 20 characters', 'error');
+    try {
+        await pubCol('applications').doc(appId).update({
+            pitch: cover,
+            coverLetter: cover,
+            updatedAt: new Date().toISOString()
+        });
+        app.pitch = cover;
+        app.coverLetter = cover;
+        showToast('Cover letter updated', 'success');
+        renderMyGigs();
+    } catch(e) {
+        showToast('Error updating cover letter', 'error');
+    }
 };
 
 window.openHistoryFromMenu = () => {
@@ -6773,6 +7371,24 @@ window.completeProfileNow = () => {
     closeCompleteProfilePrompt();
     openSettings();
     switchSettingsTab('professional');
+};
+
+window.openReferralRules = () => {
+    document.getElementById('referral-rules-modal')?.classList.remove('gk-hidden');
+    lucide.createIcons();
+};
+
+window.closeReferralRules = () => {
+    document.getElementById('referral-rules-modal')?.classList.add('gk-hidden');
+};
+
+window.openTaskInstructions = () => {
+    document.getElementById('task-instructions-modal')?.classList.remove('gk-hidden');
+    lucide.createIcons();
+};
+
+window.closeTaskInstructions = () => {
+    document.getElementById('task-instructions-modal')?.classList.add('gk-hidden');
 };
 
 window.updatePayoutMethodUI = () => {
@@ -7515,12 +8131,7 @@ function setupRealtimeListeners(uid) {
             
             if(activeView === 'dashboard') renderDashboard();
             if(activeView === 'bookmarks') renderBookmarks();
-            if(activeView === 'post') {
-                const pWallet = document.getElementById('post-wallet-display');
-                if(pWallet) {
-                    pWallet.innerText = fmtMoney(userData.walletBalance);
-                }
-            }
+            syncWalletDisplays();
         }
     });
 
