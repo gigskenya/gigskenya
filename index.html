@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" class="light">
 <head>
@@ -759,6 +760,18 @@
                 max-height: calc(100dvh - .7rem);
             }
 
+            #hire-modal .grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            #expand-work-modal .flex.gap-2.pt-3 {
+                flex-wrap: wrap;
+            }
+
+            #expand-work-modal .flex.gap-2.pt-3 > button {
+                min-width: 8rem;
+            }
+
             .bottom-nav {
                 height: 56px;
                 padding: .28rem .35rem;
@@ -830,6 +843,24 @@
 </div>
 <div id="network-toast" class="no-print fixed top-4 left-1/2 -translate-x-1/2 z-[9000] px-3 py-1.5 rounded-full shadow-2xl font-bold text-[10px] flex items-center gap-2 gk-hidden bg-red-600 text-white">
     <i data-lucide="wifi-off" class="w-3 h-3"></i> Offline – reconnecting…
+</div>
+
+<!-- Notification detail modal -->
+<div id="notification-detail-modal" class="modal-overlay gk-hidden" style="z-index:430" onclick="closeNotificationDetail()">
+    <div class="modal-box p-5 md:p-6" style="max-width:520px" onclick="event.stopPropagation()">
+        <div class="flex items-center justify-between mb-3">
+            <h3 class="font-display font-black text-lg text-slate-900 dark:text-white flex items-center gap-2"><i data-lucide="bell" class="w-5 h-5 text-brand"></i> Notification</h3>
+            <button onclick="closeNotificationDetail()" class="p-1 text-slate-400 hover:text-slate-700 dark:hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+        </div>
+        <div class="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 p-3">
+            <p id="notification-detail-message" class="text-sm text-slate-800 dark:text-slate-200 leading-relaxed whitespace-pre-wrap"></p>
+            <p id="notification-detail-meta" class="text-[10px] text-slate-500 mt-3"></p>
+        </div>
+        <div class="flex gap-2 pt-3">
+            <button id="notification-detail-open" class="btn btn-primary flex-1 py-2 text-xs">Open Related</button>
+            <button onclick="closeNotificationDetail()" class="btn btn-secondary flex-1 py-2 text-xs">Close</button>
+        </div>
+    </div>
 </div>
 
 <!-- Scroll to top -->
@@ -1002,6 +1033,7 @@
         </div>
         <div class="flex gap-2 pt-3 shrink-0">
             <button onclick="downloadExpandedWork()" class="btn btn-primary flex-1 py-2 shadow-md"><i data-lucide="download" class="w-4 h-4"></i> Download as .txt</button>
+            <button onclick="downloadExpandedWorkPDF()" class="btn btn-secondary flex-1 py-2"><i data-lucide="file-down" class="w-4 h-4"></i> PDF</button>
             <button onclick="closeExpandWork()" class="btn btn-secondary flex-1 py-2">Close</button>
         </div>
     </div>
@@ -1674,6 +1706,18 @@
             </div>
             <div class="grid grid-cols-2 gap-2">
                 <div>
+                    <label class="block text-[10px] font-bold mb-1 text-slate-700 dark:text-slate-300">Category</label>
+                    <select id="hire-category" class="gk-input">
+                        <option>Direct Hire</option><option>Writing</option><option>Design</option><option>Technology</option><option>Marketing</option><option>Data Entry</option><option>Tutoring</option><option>Research</option><option>Other</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold mb-1 text-slate-700 dark:text-slate-300">Location</label>
+                    <input id="hire-location" class="gk-input" placeholder="Remote / Nairobi">
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+                <div>
                     <label class="block text-[10px] font-bold mb-1 text-slate-700 dark:text-slate-300">Budget (KSh)</label>
                     <input id="hire-budget" type="number" class="gk-input" placeholder="5000">
                 </div>
@@ -1682,9 +1726,29 @@
                     <input id="hire-deadline" type="date" class="gk-input">
                 </div>
             </div>
+            <div class="grid grid-cols-2 gap-2">
+                <div>
+                    <label class="block text-[10px] font-bold mb-1 text-slate-700 dark:text-slate-300">Skills Needed</label>
+                    <input id="hire-skills" class="gk-input" placeholder="e.g. Canva, SEO">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold mb-1 text-slate-700 dark:text-slate-300">Priority</label>
+                    <select id="hire-priority" class="gk-input">
+                        <option value="normal">Normal</option><option value="urgent">Urgent</option><option value="flexible">Flexible</option>
+                    </select>
+                </div>
+            </div>
             <div>
                 <label class="block text-[10px] font-bold mb-1 text-slate-700 dark:text-slate-300">Description</label>
                 <textarea id="hire-desc" rows="3" class="gk-input" placeholder="Describe the work..."></textarea>
+            </div>
+            <div>
+                <label class="block text-[10px] font-bold mb-1 text-slate-700 dark:text-slate-300">Requirements / Deliverables</label>
+                <textarea id="hire-requirements" rows="2" class="gk-input" placeholder="Files needed, format, quality checks, milestones..."></textarea>
+            </div>
+            <div>
+                <label class="block text-[10px] font-bold mb-1 text-slate-700 dark:text-slate-300">Reference Link (Optional)</label>
+                <input id="hire-reference" type="url" class="gk-input" placeholder="https://...">
             </div>
             <input type="hidden" id="hire-worker-uid">
             <button onclick="submitDirectHire()" class="btn btn-primary w-full py-2.5 mt-1"><i data-lucide="briefcase" class="w-3 h-3"></i> Send Offer</button>
@@ -3002,10 +3066,14 @@ let lastUnreadNotifCount = null;
 let lastNewestNotifId = null;
 let notifSnapshotPrimed = false;
 let lastUnreadMsgCount = null;
+let browserNotifPromptDismissed = false;
+let browserNotificationsEnabled = false;
 
 try {
     soundPromptDismissed = localStorage.getItem('gk_sounds_prompted') === 'true';
     soundsEnabled = localStorage.getItem('gk_sounds_enabled') === 'true';
+    browserNotifPromptDismissed = localStorage.getItem('gk_browser_notif_prompted') === 'true';
+    browserNotificationsEnabled = localStorage.getItem('gk_browser_notif_enabled') === 'true';
 } catch(e) {}
 
 const appId = typeof __app_id !== 'undefined' ? __app_id : FIREBASE_CONFIG.projectId;
@@ -3470,9 +3538,88 @@ window.promptForSystemSounds = () => {
     };
 };
 
+function browserNotificationsAvailable() {
+    return typeof window !== 'undefined' && 'Notification' in window;
+}
+
+window.promptForBrowserNotifications = (force = false) => {
+    if(!browserNotificationsAvailable()) return;
+    if(Notification.permission === 'granted') {
+        browserNotificationsEnabled = true;
+        localStorage.setItem('gk_browser_notif_enabled', 'true');
+        localStorage.setItem('gk_browser_notif_prompted', 'true');
+        return;
+    }
+    if(Notification.permission === 'denied') {
+        browserNotificationsEnabled = false;
+        localStorage.setItem('gk_browser_notif_enabled', 'false');
+        localStorage.setItem('gk_browser_notif_prompted', 'true');
+        return;
+    }
+    if(!force && browserNotifPromptDismissed) return;
+    if(document.getElementById('browser-notif-prompt')) return;
+
+    const div = document.createElement('div');
+    div.id = 'browser-notif-prompt';
+    div.className = 'fixed bottom-36 md:bottom-20 left-1/2 -translate-x-1/2 bg-white dark:bg-slate-900 text-slate-800 dark:text-white p-3 rounded-xl shadow-2xl flex items-center gap-3 z-[9999] slide-up border border-slate-200 dark:border-slate-700 text-xs w-[92%] max-w-sm';
+    div.innerHTML = `
+        <div class="flex-1">
+            <p class="font-bold">Allow Device Notifications?</p>
+            <p class="text-[10px] text-slate-500 dark:text-slate-400">Get real-time browser alerts for messages, jobs, applications and payments. Your device controls the notification sound.</p>
+        </div>
+        <button id="btn-browser-notif-no" class="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 font-bold">Not now</button>
+        <button id="btn-browser-notif-yes" class="px-3 py-1.5 rounded-lg bg-brand text-white font-bold">Allow</button>
+    `;
+    document.body.appendChild(div);
+    lucide.createIcons();
+
+    document.getElementById('btn-browser-notif-yes').onclick = async () => {
+        try {
+            const permission = await Notification.requestPermission();
+            browserNotificationsEnabled = permission === 'granted';
+            localStorage.setItem('gk_browser_notif_enabled', browserNotificationsEnabled ? 'true' : 'false');
+            localStorage.setItem('gk_browser_notif_prompted', 'true');
+            browserNotifPromptDismissed = true;
+            showToast(browserNotificationsEnabled ? 'Device notifications enabled' : 'Device notifications were not enabled', browserNotificationsEnabled ? 'success' : 'info');
+        } catch(e) {
+            showToast('Browser notification permission could not be requested', 'warning');
+        } finally {
+            div.remove();
+        }
+    };
+    document.getElementById('btn-browser-notif-no').onclick = () => {
+        browserNotifPromptDismissed = true;
+        browserNotificationsEnabled = false;
+        localStorage.setItem('gk_browser_notif_prompted', 'true');
+        localStorage.setItem('gk_browser_notif_enabled', 'false');
+        div.remove();
+    };
+};
+
+function showBrowserNotification(notif) {
+    if(!browserNotificationsAvailable() || Notification.permission !== 'granted' || !notif?.message) return;
+    try {
+        const nativeNotif = new Notification('Gigs Kenya', {
+            body: String(notif.message).slice(0, 180),
+            tag: `gigskenya-${notif.id || Date.now()}`,
+            silent: false,
+            data: { id: notif.id || '', type: notif.type || '', jobId: notif.jobId || '' }
+        });
+        nativeNotif.onclick = () => {
+            window.focus();
+            const data = nativeNotif.data || {};
+            if(data.id) handleNotifClick(data.id, data.type, data.jobId);
+            nativeNotif.close();
+        };
+    } catch(e) {
+        console.warn('Browser notification failed:', e);
+    }
+}
+
 window.toggleNotifications = e => {
     e.stopPropagation();
     promptForSystemSounds();
+    promptForBrowserNotifications();
     const panel = document.getElementById('notif-panel');
     document.getElementById('profile-dropdown').classList.add('gk-hidden');
     panel.classList.toggle('gk-hidden');
@@ -3500,6 +3647,7 @@ window.updateNotificationsUI = (notifs) => {
     const newestUnread = unread[0];
     if (notifSnapshotPrimed && newestUnread?.id && newestUnread.id !== lastNewestNotifId) {
         playSystemSound('notif');
+        showBrowserNotification(newestUnread);
         if(newestUnread.message) showToast(newestUnread.message, 'info', 5000);
     }
     lastNewestNotifId = newestUnread?.id || null;
@@ -3521,16 +3669,42 @@ window.updateNotificationsUI = (notifs) => {
     }
 
     list.innerHTML = notifs.map(n => `
-        <div class="px-4 py-2.5 text-xs border-b dark:border-slate-700/50 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/30 transition ${n.read?'opacity-60 bg-transparent':'bg-blue-50/50 dark:bg-blue-900/10 font-bold'}" onclick="handleNotifClick('${n.id}', '${n.type}', '${n.jobId||''}')">
+        <div class="px-4 py-2.5 text-xs border-b dark:border-slate-700/50 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/30 transition ${n.read?'opacity-60 bg-transparent':'bg-blue-50/50 dark:bg-blue-900/10 font-bold'}" onclick="openNotificationDetail('${n.id}')">
             <div class="flex gap-2">
                 <div class="w-2 h-2 mt-1 rounded-full shrink-0 ${n.read?'bg-slate-300 dark:bg-slate-600':'bg-brand'}"></div>
-                <div>
+                <div class="min-w-0">
                     <p class="text-slate-800 dark:text-slate-200 line-clamp-2">${safeText(n.message)}</p>
-                    <p class="text-[9px] text-slate-500 mt-1">${timeAgo(n.createdAt)}</p>
+                    <p class="text-[9px] text-slate-500 mt-1">${timeAgo(n.createdAt)} · Tap to read full message</p>
                 </div>
             </div>
         </div>
     `).join('');
+};
+
+window.closeNotificationDetail = () => {
+    document.getElementById('notification-detail-modal')?.classList.add('gk-hidden');
+};
+
+window.openNotificationDetail = async (notifId) => {
+    const notif = (window.allNotifs || []).find(n => n.id === notifId);
+    if(!notif) return showToast('Notification not found', 'error');
+    const msgEl = document.getElementById('notification-detail-message');
+    const metaEl = document.getElementById('notification-detail-meta');
+    const openBtn = document.getElementById('notification-detail-open');
+    if(msgEl) msgEl.innerText = notif.message || 'No message';
+    if(metaEl) metaEl.innerText = `${(notif.type || 'notification').replace(/_/g, ' ')} · ${toDateValue(notif.createdAt)?.toLocaleString() || timeAgo(notif.createdAt) || 'Now'}`;
+    if(openBtn) {
+        openBtn.onclick = () => {
+            closeNotificationDetail();
+            handleNotifClick(notif.id, notif.type || '', notif.jobId || '');
+        };
+    }
+    try { await pubCol('notifications').doc(notifId).update({read: true}); } catch(e){}
+    notif.read = true;
+    updateNotificationsUI(window.allNotifs || []);
+    closeTopRightMenus();
+    document.getElementById('notification-detail-modal')?.classList.remove('gk-hidden');
+    lucide.createIcons();
 };
 
 window.handleNotifClick = async (notifId, type, jobId) => {
@@ -3538,7 +3712,7 @@ window.handleNotifClick = async (notifId, type, jobId) => {
     try { await pubCol('notifications').doc(notifId).update({read: true}); } catch(e){}
     
     if (type === 'new_message') navigate('messages');
-    else if (['application', 'app_accepted', 'revision_requested', 'work_submitted', 'work_approved', 'direct_hire'].includes(type)) navigate('mygigs');
+    else if (['application', 'application_withdrawn', 'app_accepted', 'revision_requested', 'work_submitted', 'work_approved', 'direct_hire'].includes(type)) navigate('mygigs');
     else if (type === 'review_received') showPublicProfile(currentUser.uid);
     else if (type === 'job_match' && jobId) { navigate('jobs'); openJobDetail(jobId); }
     else if (type === 'deposit_pending' || type === 'withdrawal_pending') { openLedgerModal(); }
@@ -3602,6 +3776,28 @@ window.downloadExpandedWork = () => {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
     showToast('Download started', 'success');
+};
+
+window.downloadExpandedWorkPDF = () => {
+    const text = document.getElementById('expand-work-text').value;
+    if (!text) return showToast('No content to export', 'error');
+    const w = window.open('', '_blank');
+    if(!w) return showToast('Allow popups to export PDF', 'warning');
+    w.document.write(`
+        <html><head><title>Submitted Work PDF</title>
+        <style>
+            body{font-family:Arial,sans-serif;color:#172033;padding:28px;line-height:1.45}
+            h1{color:#1d4ed8;font-size:22px}.box{border:1px solid #dbe4f0;border-radius:10px;padding:14px;background:#f8fafc;white-space:pre-wrap;font-size:12px}
+            .muted{color:#64748b;font-size:11px;margin-bottom:14px}@media print{button{display:none}body{padding:12px}}
+        </style></head><body>
+            <button onclick="window.print()" style="float:right;padding:8px 12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;font-weight:700">Print / Save PDF</button>
+            <h1>Gigs Kenya Submitted Work</h1>
+            <p class="muted">Generated ${new Date().toLocaleString()}. The submission message may contain the completed work.</p>
+            <div class="box">${safeText(text)}</div>
+            <script>setTimeout(()=>window.print(),250);<\/script>
+        </body></html>
+    `);
+    w.document.close();
 };
 
 
@@ -4336,15 +4532,27 @@ window.openHireModal = (workerUid) => {
     if(!worker) return;
     
     document.getElementById('hire-worker-uid').value = workerUid;
+    const workerSkillList = Array.isArray(worker.skills) ? worker.skills : String(worker.skills || '').split(',').map(s => s.trim()).filter(Boolean);
     document.getElementById('hire-worker-summary').innerHTML = `
         <div class="flex items-center gap-3">
             <img src="${worker.avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(worker.name)}&background=2563eb&color=fff`}" class="w-10 h-10 rounded-full border border-slate-200">
-            <div>
+            <div class="min-w-0">
                 <p class="font-bold text-xs">${safeText(worker.name)}</p>
                 <p class="text-[10px] text-slate-500">${safeText(worker.headline)}</p>
+                <p class="text-[9px] text-slate-400 mt-0.5">${safeText(workerSkillList.slice(0,4).join(', ') || 'No skills listed')} · ${safeText(worker.availability || 'Availability not set')}</p>
             </div>
         </div>
     `;
+    document.getElementById('hire-title').value = '';
+    document.getElementById('hire-category').value = 'Direct Hire';
+    document.getElementById('hire-location').value = 'Remote';
+    document.getElementById('hire-budget').value = '';
+    document.getElementById('hire-deadline').value = '';
+    document.getElementById('hire-skills').value = workerSkillList.slice(0,3).join(', ');
+    document.getElementById('hire-priority').value = 'normal';
+    document.getElementById('hire-desc').value = '';
+    document.getElementById('hire-requirements').value = '';
+    document.getElementById('hire-reference').value = '';
     document.getElementById('hire-modal').classList.remove('gk-hidden');
 };
 window.closeHireModal = () => document.getElementById('hire-modal').classList.add('gk-hidden');
@@ -4352,9 +4560,15 @@ window.closeHireModal = () => document.getElementById('hire-modal').classList.ad
 window.submitDirectHire = async () => {
     const workerId = document.getElementById('hire-worker-uid').value;
     const title = document.getElementById('hire-title').value.trim();
+    const category = document.getElementById('hire-category').value || 'Direct Hire';
+    const location = document.getElementById('hire-location').value.trim() || 'Remote';
     const budget = Number(document.getElementById('hire-budget').value);
     const deadline = document.getElementById('hire-deadline').value;
+    const skills = document.getElementById('hire-skills').value.trim();
+    const priority = document.getElementById('hire-priority').value || 'normal';
     const desc = document.getElementById('hire-desc').value.trim();
+    const requirements = document.getElementById('hire-requirements').value.trim();
+    const referenceLink = document.getElementById('hire-reference').value.trim();
     
     if(!title || !budget || !deadline || !desc) return showToast('Fill all fields', 'error');
     
@@ -4370,8 +4584,12 @@ window.submitDirectHire = async () => {
         });
         
         const newJob = {
-            title: `Direct Hire: ${title}`, category: 'Direct Hire',
-            budget, deadline, description: desc,
+            title: `Direct Hire: ${title}`, category,
+            budget, deadline, location, skills, priority,
+            urgent: priority === 'urgent',
+            description: `${desc}${requirements ? `\n\nRequirements / Deliverables:\n${requirements}` : ''}${referenceLink ? `\n\nReference Link:\n${referenceLink}` : ''}`,
+            requirements,
+            referenceLink,
             employerId: currentUser.uid, employerName: userData.name,
             workerId, status: 'in_progress', // Starts immediately for direct hire
             createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), views: 0
@@ -6643,7 +6861,7 @@ window.renderMyGigs = () => {
                 ${j.relation === 'applied' ? `
                 <div class="mt-2 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-2">
                     <div class="flex items-center justify-between gap-2 mb-1">
-                        <p class="text-[9px] font-black uppercase text-slate-400">Cover Letter</p>
+                        <p class="text-[9px] font-black uppercase text-slate-400">Cover Letter / Pitch</p>
                         ${j.myAppStatus === 'pending' ? `<button onclick="editApplicationCover('${j.myAppId}')" class="text-[9px] font-bold text-brand hover:underline">Edit</button>` : ''}
                     </div>
                     <p class="text-[10px] text-slate-600 dark:text-slate-300 line-clamp-2">${safeText(j.myAppCover || 'No cover letter saved.')}</p>
@@ -6651,6 +6869,7 @@ window.renderMyGigs = () => {
             </div>
             <div class="flex gap-2 shrink-0">
                 ${j.relation === 'posted' && status === 'open' ? `<button onclick="openEditJobModal('${j.id}')" class="btn btn-secondary text-[10px] px-2 py-1.5"><i data-lucide="pencil" class="w-3 h-3"></i></button><button onclick="deleteJobConfirm('${j.id}')" class="btn btn-danger text-[10px] px-2 py-1.5"><i data-lucide="trash" class="w-3 h-3"></i></button>` : ''}
+                ${j.relation === 'applied' && j.myAppStatus === 'pending' ? `<button onclick="editApplicationCover('${j.myAppId}')" class="btn btn-secondary text-[10px] px-2 py-1.5"><i data-lucide="pencil" class="w-3 h-3"></i> Pitch</button><button onclick="withdrawApplication('${j.myAppId}')" class="btn btn-danger text-[10px] px-2 py-1.5"><i data-lucide="undo-2" class="w-3 h-3"></i> Withdraw</button>` : ''}
                 ${actionBtn}
             </div>
         </div>`;
@@ -6662,11 +6881,11 @@ window.renderMyGigs = () => {
 window.editApplicationCover = async (appId) => {
     const app = allApps.find(a => a.id === appId && a.workerId === currentUser?.uid);
     if(!app) return showToast('Application not found', 'error');
-    if(app.status !== 'pending') return showToast('Cover letters can be edited while the application is pending.', 'warning');
-    const next = prompt('Edit your cover letter', app.coverLetter || app.pitch || '');
+    if(app.status !== 'pending') return showToast('Pitch can be edited while the application is pending.', 'warning');
+    const next = prompt('Edit your cover letter / pitch', app.coverLetter || app.pitch || '');
     if(next === null) return;
     const cover = next.trim();
-    if(cover.length < 20) return showToast('Cover letter must be at least 20 characters', 'error');
+    if(cover.length < 20) return showToast('Cover letter / pitch must be at least 20 characters', 'error');
     try {
         await pubCol('applications').doc(appId).update({
             pitch: cover,
@@ -6679,6 +6898,31 @@ window.editApplicationCover = async (appId) => {
         renderMyGigs();
     } catch(e) {
         showToast('Error updating cover letter', 'error');
+    }
+};
+
+window.withdrawApplication = async (appId) => {
+    const app = allApps.find(a => a.id === appId && a.workerId === currentUser?.uid);
+    if(!app) return showToast('Application not found', 'error');
+    if(app.status !== 'pending') return showToast('Only pending applications can be withdrawn.', 'warning');
+    if(!confirm('Withdraw this application? You can apply again later if the gig is still open.')) return;
+    const job = allJobs.find(j => j.id === app.jobId);
+    try {
+        await pubCol('applications').doc(appId).delete();
+        if(job?.employerId) {
+            await pubCol('notifications').add({
+                userId: job.employerId,
+                type: 'application_withdrawn',
+                message: `${userData.name} withdrew their application for "${job.title}".`,
+                read: false,
+                createdAt: new Date().toISOString()
+            }).catch(()=>{});
+        }
+        allApps = allApps.filter(a => a.id !== appId);
+        showToast('Application withdrawn', 'success');
+        renderMyGigs();
+    } catch(e) {
+        showToast('Error withdrawing application', 'error');
     }
 };
 
@@ -8231,6 +8475,7 @@ window.addEventListener('load', () => {
     if(!params.get('job') && !params.get('profile')) {
         navigate('home');
     }
+    setTimeout(() => promptForBrowserNotifications(false), 1200);
     
     // Fallback if network is stuck
     window.bootTimeout = setTimeout(hideLoadingScreen, 6000);
