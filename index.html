@@ -1251,11 +1251,11 @@
         <div class="flex items-center justify-between mb-3">
             <div class="flex items-center gap-1.5 text-red-500">
                 <i data-lucide="alert-triangle" class="w-5 h-5"></i>
-                <h2 class="font-display font-black text-lg text-slate-900 dark:text-white">Competency Test</h2>
+                <h2 id="test-title" class="font-display font-black text-lg text-slate-900 dark:text-white">Competency Test</h2>
             </div>
             <button onclick="skipTest()" class="text-[10px] font-bold text-slate-500 bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded-full hover:bg-slate-200 dark:hover:bg-slate-600">Skip</button>
         </div>
-        <p class="text-xs text-slate-600 dark:text-slate-300 mb-3 pb-3 border-b dark:border-slate-700">Pass this to apply for jobs. Time: <strong id="test-timer" class="text-brand font-mono text-sm">120</strong>s</p>
+        <p id="test-intro" class="text-xs text-slate-600 dark:text-slate-300 mb-3 pb-3 border-b dark:border-slate-700">Pass this to apply for jobs. Time: <strong id="test-timer" class="text-brand font-mono text-sm">120</strong>s</p>
         <form id="test-form" class="space-y-3">
             <div id="dynamic-test-questions" class="space-y-3"></div>
             <button type="submit" class="btn btn-primary w-full py-2.5">Submit Answers</button>
@@ -1528,6 +1528,21 @@
                 
                 <!-- TAB 1: OVERVIEW & TASKS -->
                 <div id="ws-tab-overview" class="ws-tab active space-y-4">
+                        <div class="bg-white dark:bg-slate-800 p-3 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-2">
+                                        <div>
+                                                <h4 class="font-bold text-xs text-slate-800 dark:text-white flex items-center gap-1.5"><i data-lucide="compass" class="w-4 h-4 text-brand"></i> Workspace Shortcuts</h4>
+                                                <p class="text-[10px] text-slate-500 dark:text-slate-400">Use these for Google Docs, Word links, submissions, edits, activity and messages.</p>
+                                        </div>
+                                        <button onclick="openTaskInstructions()" class="btn btn-primary text-[10px] py-1.5 px-2"><i data-lucide="play-circle" class="w-3.5 h-3.5"></i> Tutorial</button>
+                                </div>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                        <button onclick="switchWorkspaceTab('vault')" class="btn btn-secondary text-[10px] py-2"><i data-lucide="folder-archive" class="w-3.5 h-3.5"></i> View/Edit Work Links</button>
+                                        <button onclick="switchWorkspaceTab('action')" class="btn btn-secondary text-[10px] py-2"><i data-lucide="send" class="w-3.5 h-3.5"></i> Submit / Review Work</button>
+                                        <button onclick="switchWorkspaceTab('activity')" class="btn btn-secondary text-[10px] py-2"><i data-lucide="activity" class="w-3.5 h-3.5"></i> Activity</button>
+                                        <button onclick="startWorkspaceChat()" class="btn btn-secondary text-[10px] py-2"><i data-lucide="message-square" class="w-3.5 h-3.5"></i> Message</button>
+                                </div>
+                        </div>
                         <div class="grid md:grid-cols-3 gap-4">
                                 <!-- Job Details -->
                                 <div class="md:col-span-1 bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col">
@@ -2022,7 +2037,7 @@
                     <span class="w-7 h-7 rounded-lg bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 flex items-center justify-center font-black text-xs">2</span>
                     <h4 class="font-bold text-xs text-slate-900 dark:text-white">Pass competency checks</h4>
                 </div>
-                <p class="text-[10px] text-slate-600 dark:text-slate-300 leading-relaxed">The competency test and job-specific screening answers help employers trust that you can deliver before they approve your application.</p>
+                <p class="text-[10px] text-slate-600 dark:text-slate-300 leading-relaxed">Use the Starter test for low budget jobs, Standard 3000+ for KSh 3,000+ jobs and Premium 5000+ for KSh 5,000+ jobs. Each level is stricter.</p>
             </div>
             <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3">
                 <div class="flex items-center gap-2 mb-2">
@@ -2042,12 +2057,17 @@
 
         <div class="mt-4 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 p-3">
             <h4 class="font-bold text-xs text-slate-900 dark:text-white mb-2 flex items-center gap-1.5"><i data-lucide="target" class="w-4 h-4 text-brand"></i> Quick target</h4>
-            <p class="text-[10px] text-slate-600 dark:text-slate-300 leading-relaxed">Aim for a complete profile, passed competency test, strong pitch, accurate skills, and at least 5 completed approved tasks before expecting the highest budget gigs to rank strongly.</p>
+            <p class="text-[10px] text-slate-600 dark:text-slate-300 leading-relaxed">Aim for a complete profile, the right competency tier, strong pitch, accurate skills, and at least 5 completed approved tasks before expecting the highest budget gigs to rank strongly.</p>
+            <div class="grid grid-cols-3 gap-2 mt-3">
+                <button onclick="closeHigherPayGuide(); currentUser ? initTest('low') : navigate('auth')" class="btn btn-secondary text-[9px] py-1.5">Starter</button>
+                <button onclick="closeHigherPayGuide(); currentUser ? initTest('standard') : navigate('auth')" class="btn btn-secondary text-[9px] py-1.5">3000+</button>
+                <button onclick="closeHigherPayGuide(); currentUser ? initTest('premium') : navigate('auth')" class="btn btn-secondary text-[9px] py-1.5">5000+</button>
+            </div>
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mt-4">
             <button onclick="closeHigherPayGuide(); currentUser ? openSettings() : navigate('auth')" class="btn btn-primary text-[10px] py-2">Improve Profile</button>
-            <button onclick="closeHigherPayGuide(); currentUser ? initTest() : navigate('auth')" class="btn btn-secondary text-[10px] py-2">Competency Test</button>
+            <button onclick="closeHigherPayGuide(); currentUser ? initTest() : navigate('auth')" class="btn btn-secondary text-[10px] py-2">Next Test</button>
             <button onclick="closeHigherPayGuide(); setCategory('All'); document.getElementById('budget-filter') && (document.getElementById('budget-filter').value='under5k'); navigate('jobs')" class="btn btn-secondary text-[10px] py-2">Starter Jobs</button>
             <button onclick="closeHigherPayGuide(); currentUser ? navigate('mygigs') : navigate('auth')" class="btn btn-secondary text-[10px] py-2">Workspaces</button>
         </div>
@@ -2139,6 +2159,16 @@
             <button onclick="closeTaskInstructions()" class="p-1 text-slate-400 hover:text-slate-700 dark:hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
         </div>
         <div class="space-y-4 text-xs text-slate-600 dark:text-slate-300">
+            <div class="rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-3">
+                <h4 class="font-bold text-slate-800 dark:text-white mb-1">Workspace path</h4>
+                <ol class="list-decimal pl-4 space-y-1.5">
+                    <li>Open My Gigs, then open the job Workspace.</li>
+                    <li>Use Overview for instructions and shortcuts.</li>
+                    <li>Use File Vault to add or edit Google Docs, Word, Drive, OneDrive or Dropbox deliverable links.</li>
+                    <li>Use Action Center to submit final work, approve work, request revision or handle extensions.</li>
+                    <li>Use Activity Log to confirm every major action is recorded.</li>
+                </ol>
+            </div>
             <div>
                 <h4 class="font-bold text-slate-800 dark:text-white mb-1">Google Docs</h4>
                 <ol class="list-decimal pl-4 space-y-1.5">
@@ -2156,8 +2186,17 @@
                     <li>Add the Word link to the File Vault first. The final submission will be blocked until the vault has a file.</li>
                 </ol>
             </div>
+            <div>
+                <h4 class="font-bold text-slate-800 dark:text-white mb-1">Google Drive / Microsoft Word file upload</h4>
+                <ol class="list-decimal pl-4 space-y-1.5">
+                    <li>Upload your .docx, .xlsx, PDF, image or zip file to Google Drive, OneDrive or Dropbox.</li>
+                    <li>Open sharing settings and choose Anyone with the link can view.</li>
+                    <li>Copy the sharing link, add it in File Vault with a clear label like Final Work v1.</li>
+                    <li>Go to Action Center, add a short handover note, then Submit For Review.</li>
+                </ol>
+            </div>
             <div class="rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 p-3 text-amber-700 dark:text-amber-200">
-                Always test the link in a private browser window before submitting so the employer can open it.
+                Always test the link in a private browser window before submitting so the employer can open it. Do not send personal contacts in chat; use File Vault for links and Action Center for approvals.
             </div>
         </div>
     </div>
@@ -3212,6 +3251,7 @@
                             <option value="budget_low">Lowest</option>
                             <option value="match">Best Match</option>
                         </select>
+                        <button onclick="currentUser ? navigate('post') : navigate('auth')" class="btn bg-emerald-500 text-white border-emerald-400 hover:bg-emerald-600 text-xs px-3 py-2 shrink-0"><i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Post Job</button>
                     </div>
                 </div>
             </div>
@@ -3502,6 +3542,9 @@ What tools will you use?"></textarea>
 <button id="desktop-mygigs-float" onclick="currentUser ? navigate('mygigs') : navigate('auth')" class="hidden md:flex no-print fixed right-5 bottom-6 z-[120] items-center gap-2 bg-brand text-white shadow-2xl hover:bg-branddark transition rounded-lg px-4 py-3 text-xs font-black">
     <i data-lucide="folder-check" class="w-4 h-4"></i> My Gigs
 </button>
+<button id="desktop-post-float" onclick="currentUser ? navigate('post') : navigate('auth')" class="hidden md:flex no-print fixed left-5 bottom-6 z-[120] items-center gap-2 bg-emerald-600 text-white shadow-2xl hover:bg-emerald-700 transition rounded-lg px-4 py-3 text-xs font-black">
+    <i data-lucide="plus-circle" class="w-4 h-4"></i> Post a Gig
+</button>
 
 <!-- ===================== MOBILE BOTTOM NAV ===================== -->
 <nav class="bottom-nav md:hidden no-print w-full shrink-0">
@@ -3569,7 +3612,7 @@ let isDarkMode = localStorage.theme === 'dark';
 let unsubJobs = null, unsubApps = null, unsubMsgs = null, unsubNotifs = null, unsubTopups = null, unsubPayouts = null, unsubUser = null, unsubUsers = null, unsubSettings = null;
 let loadingScreenHidden = false;
 let selectedSkills = [];
-let testInterval = null, activeTestQuestions = [];
+let testInterval = null, activeTestQuestions = [], activeTestTier = 'low';
 let currentJobId = null;
 let currentProfileUid = null;
 let currentApplyJobId = null;
@@ -3656,26 +3699,119 @@ const testBank = [
 ];
 const TEST_QUESTION_COUNT = 10;
 const TEST_PASS_PERCENT = 90;
+const COMPETENCY_TIERS = {
+    low: {
+        label: 'Starter',
+        minBudget: 0,
+        passPercent: 80,
+        time: 180,
+        unlockText: 'low budget and starter jobs',
+        bank: testBank
+    },
+    standard: {
+        label: 'Standard 3000+',
+        minBudget: 3000,
+        passPercent: 85,
+        time: 150,
+        unlockText: 'KSh 3,000+ jobs',
+        bank: [
+            { q:"A client asks for 1,200 words in 3 sections by 6 PM. What should you confirm first?", type:"radio", opts:[{v:"scope deadline format",t:"Scope, deadline and format"},{v:"payment outside",t:"Private payment details"},{v:"personal phone",t:"Personal phone number"}], ans:"scope deadline format" },
+            { q:"A KSh 3,600 job has a 5% platform fee. What is 5% of 3,600?", type:"text", ans:"180" },
+            { q:"Best way to submit a Google Docs deliverable?", type:"radio", opts:[{v:"vault public view link",t:"Add a viewable link in File Vault, then submit in Action Center"},{v:"send whatsapp",t:"Send it by WhatsApp"},{v:"paste phone",t:"Paste your phone number"}], ans:"vault public view link" },
+            { q:"If a task is unclear, what should the worker do?", type:"radio", opts:[{v:"ask in workspace",t:"Ask a clear question in workspace/messages"},{v:"guess",t:"Guess and submit fast"},{v:"leave platform",t:"Move conversation off platform"}], ans:"ask in workspace" },
+            { q:"A worker logs 2h 30m on Monday and 1h 45m on Tuesday. Total minutes?", type:"text", ans:"255" },
+            { q:"Which response is most professional after receiving a revision request?", type:"radio", opts:[{v:"confirm changes deadline",t:"Confirm requested changes and delivery time"},{v:"argue",t:"Argue without checking notes"},{v:"ignore",t:"Ignore until deadline"}], ans:"confirm changes deadline" },
+            { q:"What should be checked before submitting a Word Online link?", type:"radio", opts:[{v:"permission",t:"Anyone with the link can view permission"},{v:"font only",t:"Only font size"},{v:"phone",t:"Employer phone number"}], ans:"permission" },
+            { q:"A budget is KSh 4,500. Worker bids KSh 4,000. Difference?", type:"text", ans:"500" },
+            { q:"Which workspace area stores deliverable links?", type:"radio", opts:[{v:"file vault",t:"File Vault"},{v:"profile",t:"Profile photo"},{v:"leaderboard",t:"Leaderboard"}], ans:"file vault" },
+            { q:"What is the safest place for approval decisions?", type:"radio", opts:[{v:"platform",t:"Inside Gigs Kenya workspace/action center"},{v:"private call",t:"Private call only"},{v:"social dm",t:"Social media DM"}], ans:"platform" },
+            { q:"If a deadline cannot be met, what should happen?", type:"radio", opts:[{v:"request extension",t:"Request an extension with a reason before deadline"},{v:"vanish",t:"Disappear"},{v:"submit incomplete",t:"Submit incomplete work silently"}], ans:"request extension" },
+            { q:"What is 12.5% of 800?", type:"text", ans:"100" }
+        ]
+    },
+    premium: {
+        label: 'Premium 5000+',
+        minBudget: 5000,
+        passPercent: 90,
+        time: 120,
+        unlockText: 'KSh 5,000+ and higher paying jobs',
+        bank: [
+            { q:"A KSh 8,000 project has milestones 30%, 40%, 30%. What is the second milestone value?", type:"text", ans:"3200" },
+            { q:"An employer says the Google Docs link is locked. Best action?", type:"radio", opts:[{v:"fix permissions vault",t:"Fix sharing permissions, test privately, update File Vault"},{v:"ask phone",t:"Ask for their phone number"},{v:"ignore",t:"Ignore because work is done"}], ans:"fix permissions vault" },
+            { q:"Premium work acceptance criteria should be:", type:"radio", opts:[{v:"specific measurable",t:"Specific, measurable and saved in workspace"},{v:"verbal only",t:"Verbal only"},{v:"hidden",t:"Hidden from employer"}], ans:"specific measurable" },
+            { q:"A worker estimates 18 hours at KSh 450/hour. Total?", type:"text", ans:"8100" },
+            { q:"A client requests scope outside the agreed brief. Best response?", type:"radio", opts:[{v:"document change",t:"Document the change request and agree scope/timeline before doing it"},{v:"free work",t:"Do it all for free silently"},{v:"off platform",t:"Move discussion to Telegram"}], ans:"document change" },
+            { q:"Which items should be in final handover?", type:"radio", opts:[{v:"final link notes permissions",t:"Final link, notes, permissions checked and summary"},{v:"only emoji",t:"Only an emoji"},{v:"personal email",t:"Personal email address"}], ans:"final link notes permissions" },
+            { q:"If 3 reviewers each find 2 issues and 5 are fixed, how many remain?", type:"text", ans:"1" },
+            { q:"For high-value gigs, the strongest pitch includes:", type:"radio", opts:[{v:"relevant proof plan timeline",t:"Relevant proof, plan, timeline and risk handling"},{v:"phone number",t:"Phone number only"},{v:"lowest price only",t:"Lowest price with no plan"}], ans:"relevant proof plan timeline" },
+            { q:"A KSh 12,000 job is paid after approval. Why keep work in workspace?", type:"radio", opts:[{v:"audit escrow proof",t:"Audit trail, escrow proof and clear approval record"},{v:"avoid records",t:"Avoid records"},{v:"private deal",t:"Make a private deal"}], ans:"audit escrow proof" },
+            { q:"What is 7.5% of 20,000?", type:"text", ans:"1500" },
+            { q:"When a file is revised, best practice is to:", type:"radio", opts:[{v:"version label changelog",t:"Update version label and change log"},{v:"delete old context",t:"Delete all context"},{v:"send private link",t:"Send a private contact link"}], ans:"version label changelog" },
+            { q:"A premium profile is strongest when it has:", type:"radio", opts:[{v:"bio skills reviews completed work",t:"Detailed bio, skills, reviews and completed work history"},{v:"blank bio",t:"Blank bio"},{v:"external phone",t:"External phone contact"}], ans:"bio skills reviews completed work" }
+        ]
+    }
+};
+const COMPETENCY_TIER_ORDER = ['low', 'standard', 'premium'];
 
 function normalizeTestAnswer(v) {
     return String(v || '').trim().toLowerCase().replace(/[^a-z0-9.]/g, '');
 }
 
-function getUnusedTestIndexes() {
+function getUnusedTestIndexes(tier = activeTestTier) {
+    const bank = COMPETENCY_TIERS[tier]?.bank || testBank;
     let used = [];
-    try { used = JSON.parse(localStorage.getItem('gk_used_test_indexes') || '[]'); } catch(e) {}
-    used = Array.isArray(used) ? used.filter(i => Number.isInteger(i) && i >= 0 && i < testBank.length) : [];
-    if(testBank.length - used.length < TEST_QUESTION_COUNT) used = [];
-    const pool = testBank.map((_, i) => i).filter(i => !used.includes(i));
+    try { used = JSON.parse(localStorage.getItem(`gk_used_test_indexes_${tier}`) || '[]'); } catch(e) {}
+    used = Array.isArray(used) ? used.filter(i => Number.isInteger(i) && i >= 0 && i < bank.length) : [];
+    if(bank.length - used.length < TEST_QUESTION_COUNT) used = [];
+    const pool = bank.map((_, i) => i).filter(i => !used.includes(i));
     return { used, pool };
 }
 
-function pickRandomTestIndexes() {
-    const { used, pool } = getUnusedTestIndexes();
+function pickRandomTestIndexes(tier = activeTestTier) {
+    const { used, pool } = getUnusedTestIndexes(tier);
     const shuffled = [...pool].sort(() => 0.5 - Math.random());
     const chosen = shuffled.slice(0, TEST_QUESTION_COUNT);
-    try { localStorage.setItem('gk_used_test_indexes', JSON.stringify([...used, ...chosen])); } catch(e) {}
+    try { localStorage.setItem(`gk_used_test_indexes_${tier}`, JSON.stringify([...used, ...chosen])); } catch(e) {}
     return chosen;
+}
+
+function getRequiredCompetencyTierForBudget(budget = 0) {
+    const b = Number(budget || 0);
+    if(b >= 5000) return 'premium';
+    if(b >= 3000) return 'standard';
+    return 'low';
+}
+
+function getRequiredCompetencyTier(job = {}) {
+    const exp = String(job.experience || '').toLowerCase();
+    if(exp.includes('expert')) return 'premium';
+    if(exp.includes('intermediate')) return 'standard';
+    return getRequiredCompetencyTierForBudget(job.budget);
+}
+
+function getUserCompetencyLevel(user = userData) {
+    if(!user) return 'none';
+    const levels = user.competencyLevels || {};
+    if(levels.premium || user.competencyTier === 'premium') return 'premium';
+    if(levels.standard || user.competencyTier === 'standard') return 'standard';
+    if(levels.low || user.testPassed || user.competencyTier === 'low') return 'low';
+    return 'none';
+}
+
+function getCompetencyRank(tier = 'none') {
+    return tier === 'premium' ? 3 : tier === 'standard' ? 2 : tier === 'low' ? 1 : 0;
+}
+
+function hasCompetencyForTier(user, tier) {
+    return getCompetencyRank(getUserCompetencyLevel(user)) >= getCompetencyRank(tier);
+}
+
+function getNextCompetencyTier(user = userData) {
+    const level = getUserCompetencyLevel(user);
+    if(level === 'none') return 'low';
+    if(level === 'low') return 'standard';
+    if(level === 'standard') return 'premium';
+    return 'premium';
 }
 
 
@@ -4624,7 +4760,7 @@ document.getElementById('auth-form').addEventListener('submit', async e => {
             
             await userDoc(cred.user.uid).set({
                 uid: cred.user.uid, name, role, phone, email: loginId,
-                bookmarks:[], skills:[], testPassed:false, isActivated:false, createdAt:new Date().toISOString(),
+                bookmarks:[], skills:[], testPassed:false, competencyLevels:{}, competencyTier:'none', isActivated:false, createdAt:new Date().toISOString(),
                 headline:'', bio:'', rate:0, availability:'Full-Time', education:'None', experience:0,
                 lang1:'English', lang2:'Swahili', paymentMethod:'M-Pesa', mpesa:phone,
                 paypal:'', bankName:'', bankAccName:'', bankAccNo:'', bankBranch:'',
@@ -4745,9 +4881,15 @@ function updateNavUI() {
 }
 
 // ===================== COMPETENCY TEST =====================
-window.initTest = () => {
-    const chosenIndexes = pickRandomTestIndexes();
-    activeTestQuestions = chosenIndexes.map(i => ({ ...testBank[i], bankIndex: i }));
+window.initTest = (tier = null) => {
+    activeTestTier = COMPETENCY_TIERS[tier] ? tier : getNextCompetencyTier(userData);
+    const tierConfig = COMPETENCY_TIERS[activeTestTier] || COMPETENCY_TIERS.low;
+    const chosenIndexes = pickRandomTestIndexes(activeTestTier);
+    activeTestQuestions = chosenIndexes.map(i => ({ ...tierConfig.bank[i], bankIndex: i }));
+    const title = document.getElementById('test-title');
+    const intro = document.getElementById('test-intro');
+    if(title) title.innerText = `${tierConfig.label} Competency Test`;
+    if(intro) intro.innerHTML = `Pass this to unlock ${tierConfig.unlockText}. Required score: <strong>${tierConfig.passPercent}%</strong>. Time: <strong id="test-timer" class="text-brand font-mono text-sm">${tierConfig.time}</strong>s`;
     
     document.getElementById('dynamic-test-questions').innerHTML = activeTestQuestions.map((q,i) => `
         <div class="bg-slate-50 dark:bg-slate-700/50 p-3 rounded-xl border border-slate-200 dark:border-slate-600">
@@ -4760,7 +4902,7 @@ window.initTest = () => {
         
     document.getElementById('test-modal').classList.remove('gk-hidden');
     document.getElementById('test-error-overlay').classList.add('gk-hidden');
-    let time = 180;
+    let time = tierConfig.time;
     const timer = document.getElementById('test-timer');
     timer.classList.remove('text-red-600','font-mono');
     timer.innerText = time;
@@ -4795,17 +4937,31 @@ document.getElementById('test-form').addEventListener('submit', async e => {
     }
     const scorePercent = Math.round((correctAnswers / activeTestQuestions.length) * 100);
     
-    if(scorePercent >= TEST_PASS_PERCENT) {
+    const tierConfig = COMPETENCY_TIERS[activeTestTier] || COMPETENCY_TIERS.low;
+    if(scorePercent >= tierConfig.passPercent) {
         if(currentUser) {
-            await userDoc().update({testPassed:true});
-            addActivity(`Competency test passed ✅ (${scorePercent}%)`);
+            const currentTier = userData?.competencyTier || getUserCompetencyLevel(userData);
+            const nextTier = getCompetencyRank(activeTestTier) > getCompetencyRank(currentTier) ? activeTestTier : currentTier;
+            const levels = { ...(userData?.competencyLevels || {}), [activeTestTier]: true };
+            await userDoc().update({
+                testPassed: true,
+                competencyLevels: levels,
+                competencyTier: nextTier,
+                [`competencyScores.${activeTestTier}`]: scorePercent
+            });
+            addActivity(`${tierConfig.label} competency test passed (${scorePercent}%)`);
         }
-        if(userData) userData.testPassed = true;
-        showToast(`Test passed at ${scorePercent}%! You can now apply for premium jobs.`,'success');
+        if(userData) {
+            userData.testPassed = true;
+            userData.competencyLevels = { ...(userData.competencyLevels || {}), [activeTestTier]: true };
+            if(getCompetencyRank(activeTestTier) > getCompetencyRank(userData.competencyTier)) userData.competencyTier = activeTestTier;
+            userData.competencyScores = { ...(userData.competencyScores || {}), [activeTestTier]: scorePercent };
+        }
+        showToast(`${tierConfig.label} test passed at ${scorePercent}%!`,'success');
         document.getElementById('test-modal').classList.add('gk-hidden');
         if(activeView==='dashboard') renderDashboard();
     } else {
-        failTest(`You scored ${scorePercent}%. Answer at least 9 of 10 questions correctly to pass.`);
+        failTest(`You scored ${scorePercent}%. ${tierConfig.label} requires ${tierConfig.passPercent}% to pass.`);
     }
 });
 
@@ -4816,7 +4972,7 @@ function failTest(msg) {
 
 window.retryTest = () => { 
     document.getElementById('test-error-overlay').classList.add('gk-hidden'); 
-    initTest(); 
+    initTest(activeTestTier); 
 };
 
 window.skipTest = () => { 
@@ -4886,9 +5042,9 @@ window.getWorkerCompletedTaskCount = (user = userData) => {
 function getBudgetQualification(job = {}) {
     const budget = Number(job.budget || 0);
     const exp = String(job.experience || '').toLowerCase();
-    if(budget >= 15000 || exp.includes('expert')) return { tier:'premium', requiredTasks: 5, requiredProfile: 85, label:'High-value' };
-    if(budget >= 5000 || exp.includes('intermediate')) return { tier:'standard', requiredTasks: 2, requiredProfile: 65, label:'Standard' };
-    return { tier:'starter', requiredTasks: 0, requiredProfile: 35, label:'Starter' };
+    if(budget >= 5000 || exp.includes('expert')) return { tier:'premium', requiredTasks: 5, requiredProfile: 85, label:'High-value', competencyTier:'premium' };
+    if(budget >= 3000 || exp.includes('intermediate')) return { tier:'standard', requiredTasks: 2, requiredProfile: 65, label:'Standard', competencyTier:'standard' };
+    return { tier:'starter', requiredTasks: 0, requiredProfile: 35, label:'Starter', competencyTier:'low' };
 }
 
 function getProfileKeywordBank(user = userData) {
@@ -4940,9 +5096,11 @@ window.getJobMatchProfile = (job = {}, user = userData) => {
     const locationScore = !job.location || String(job.location).toLowerCase() === 'remote' ? 100 : (
         String(user?.location || user?.city || '').toLowerCase().includes(String(job.location || '').toLowerCase()) ? 100 : 35
     );
-    const competencyScore = user?.testPassed ? 100 : 35;
+    const requiredCompetencyTier = getRequiredCompetencyTier(job);
+    const competencyScore = hasCompetencyForTier(user, requiredCompetencyTier) ? 100 : Math.max(20, getCompetencyRank(getUserCompetencyLevel(user)) * 30);
     const historyScore = Math.min(100, Math.round((completedTasks / Math.max(qualification.requiredTasks, 1)) * 100));
     const bioPenalty = String(user?.bio || '').trim().length < 60 ? 18 : 0;
+    const competencyPenalty = hasCompetencyForTier(user, requiredCompetencyTier) ? 0 : 18;
     const highValuePenalty = qualification.tier === 'premium' && completedTasks < qualification.requiredTasks ? 16 : 0;
 
     const raw = Math.round(
@@ -4953,10 +5111,11 @@ window.getJobMatchProfile = (job = {}, user = userData) => {
         (historyScore * .10) +
         (locationScore * .06)
     );
-    const score = Math.max(0, Math.min(100, raw - bioPenalty - highValuePenalty));
-    const eligibleForTier = profileScore >= qualification.requiredProfile && completedTasks >= qualification.requiredTasks;
+    const score = Math.max(0, Math.min(100, raw - bioPenalty - highValuePenalty - competencyPenalty));
+    const eligibleForTier = profileScore >= qualification.requiredProfile && completedTasks >= qualification.requiredTasks && hasCompetencyForTier(user, requiredCompetencyTier);
     let label = 'Profile fit';
     if(profileScore < 45) label = 'Complete profile';
+    else if(!hasCompetencyForTier(user, requiredCompetencyTier)) label = `Needs ${COMPETENCY_TIERS[requiredCompetencyTier].label}`;
     else if(!eligibleForTier && qualification.tier !== 'starter') label = 'Build history';
     else if(score >= 80 && eligibleForTier) label = 'Strong fit';
     else if(score >= 58) label = 'Good starter fit';
@@ -4968,10 +5127,13 @@ window.getJobMatchProfile = (job = {}, user = userData) => {
         profileScore,
         completedTasks,
         qualification,
+        requiredCompetencyTier,
+        userCompetencyTier: getUserCompetencyLevel(user),
         eligibleForTier,
         label,
         isStarter: qualification.tier === 'starter',
         needsBio: String(user?.bio || '').trim().length < 60,
+        tierLocked: qualification.tier !== 'starter' && !eligibleForTier,
         highPayLocked: qualification.tier === 'premium' && !eligibleForTier
     };
 };
@@ -5047,6 +5209,10 @@ window.renderJobs = () => {
     else if(sortFilter === 'budget_low') filtered.sort((a,b)=>(Number(a.budget)||0)-(Number(b.budget)||0));
     else if(sortFilter === 'deadline') filtered.sort((a,b)=>dateTimeValue(a.deadline || a.expiry, 8640000000000000)-dateTimeValue(b.deadline || b.expiry, 8640000000000000));
     else if(sortFilter === 'match') filtered.sort((a,b)=>getJobMatchProfile(b, userData).score-getJobMatchProfile(a, userData).score);
+    else if(currentUser && userData?.role === 'worker') filtered.sort((a,b)=>{
+        const matchDiff = getJobMatchProfile(b, userData).score - getJobMatchProfile(a, userData).score;
+        return matchDiff || dateTimeValue(b.createdAt, 0)-dateTimeValue(a.createdAt, 0);
+    });
     else filtered.sort((a,b)=>dateTimeValue(b.createdAt, 0)-dateTimeValue(a.createdAt, 0));
 
     const badge = document.getElementById('job-count-badge');
@@ -5102,7 +5268,7 @@ window.renderJobs = () => {
                         <span class="badge ${matchProfile.eligibleForTier ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400' : 'bg-blue-50 dark:bg-blue-900/20 text-brand'} text-[9px]">${match}% Match</span>
                     </div>
                     <div class="job-match-meter"><span style="width:${match}%"></span></div>
-                    ${matchProfile.highPayLocked ? `<p class="text-[9px] text-amber-600 dark:text-amber-400 mt-1">High paying gigs rank higher after ${matchProfile.qualification.requiredTasks} completed approved tasks and a strong profile.</p>` : ''}
+                    ${matchProfile.tierLocked ? `<p class="text-[9px] text-amber-600 dark:text-amber-400 mt-1">${matchProfile.qualification.label} gigs unlock after ${matchProfile.qualification.requiredTasks} approved task${matchProfile.qualification.requiredTasks === 1 ? '' : 's'}, ${matchProfile.qualification.requiredProfile}% profile strength and ${COMPETENCY_TIERS[matchProfile.requiredCompetencyTier].label} competency.</p>` : ''}
                     ${matchProfile.needsBio ? `<p class="text-[9px] text-slate-500 dark:text-slate-400 mt-1">Add a stronger bio to move beyond starter matches.</p>` : ''}
                 </div>
                 <p class="text-slate-500 dark:text-slate-400 text-[10px] md:text-xs mb-2 line-clamp-2 leading-relaxed">${safeText(job.description||'')}</p>
@@ -5510,7 +5676,7 @@ window.openJobDetail = jobId => {
                     <div>
                         <p class="text-xs font-bold text-slate-800 dark:text-white">${safeText(matchProfile.label)} for this gig</p>
                         <p class="text-[10px] text-slate-600 dark:text-slate-300 leading-relaxed">
-                            ${matchProfile.highPayLocked ? `More qualified profiles get high paying jobs after ${matchProfile.qualification.requiredTasks} completed approved tasks. You currently have ${matchProfile.completedTasks}.` : `This score considers skills, bio, education, location, competency status and completed workspace history.`}
+                            ${matchProfile.tierLocked ? `${matchProfile.qualification.label} gigs unlock after ${matchProfile.qualification.requiredTasks} approved task${matchProfile.qualification.requiredTasks === 1 ? '' : 's'}, ${matchProfile.qualification.requiredProfile}% profile strength and ${COMPETENCY_TIERS[matchProfile.requiredCompetencyTier].label} competency. You currently have ${matchProfile.completedTasks} approved task${matchProfile.completedTasks === 1 ? '' : 's'}.` : `This score considers skills, bio, education, location, ${COMPETENCY_TIERS[matchProfile.requiredCompetencyTier].label} competency and completed workspace history.`}
                         </p>
                     </div>
                 </div>
@@ -5545,23 +5711,30 @@ window.closeJobDetail = () => {
 window.openApplyModal = jobId => {
     if(!currentUser || !userData) return showToast('Please sign in','error');
     if(userData.role !== 'worker') return showToast('Only workers can apply. Switch to Worker role.','error');
+    const job = allJobs.find(j => j.id === jobId);
+    if(!job) return showToast('Job not found', 'error');
     if(!userData.isActivated) { 
         showToast('Account activation required to apply for jobs.', 'error'); 
         navigate('dashboard'); 
         return; 
     }
-    if(!userData.testPassed) { 
-        showToast('Pass the competency test first to unlock applications.','error'); 
-        initTest(); 
+    const requiredTier = getRequiredCompetencyTier(job);
+    if(!hasCompetencyForTier(userData, requiredTier)) { 
+        showToast(`Pass the ${COMPETENCY_TIERS[requiredTier].label} test to apply for this budget tier.`,'error'); 
+        initTest(requiredTier); 
         return; 
+    }
+    const matchProfile = getJobMatchProfile(job, userData);
+    if(matchProfile.qualification.tier !== 'starter' && !matchProfile.eligibleForTier) {
+        showToast(`Complete your profile to ${matchProfile.qualification.requiredProfile}% and finish ${matchProfile.qualification.requiredTasks} approved task${matchProfile.qualification.requiredTasks === 1 ? '' : 's'} before applying to this pay tier.`, 'warning');
+        openHigherPayGuide('apply-lock');
+        return;
     }
     
     const alreadyApplied = allApps.some(a => a.jobId === jobId && a.workerId === currentUser.uid);
     if(alreadyApplied) return showToast('You already applied for this job','warning');
     
-    const job = allJobs.find(j => j.id === jobId);
     currentApplyJobId = jobId;
-    const matchProfile = getJobMatchProfile(job, userData);
     
     document.getElementById('apply-job-summary').innerHTML = `
         <div class="font-bold text-slate-800 dark:text-white">${safeText(job?.title)}</div>
@@ -5571,7 +5744,7 @@ window.openApplyModal = jobId => {
                 <span class="text-[9px] font-black uppercase text-slate-500">${safeText(matchProfile.label)}</span>
                 <span class="badge bg-blue-50 dark:bg-blue-900/30 text-brand">${matchProfile.score}% match</span>
             </div>
-            <p class="text-[10px] text-slate-600 dark:text-slate-300 leading-relaxed">${matchProfile.highPayLocked ? `Premium gigs rank better after ${matchProfile.qualification.requiredTasks} completed approved tasks. Complete profile details and finish more work to qualify for higher pay.` : `Better profile details improve matching and employer trust.`}</p>
+            <p class="text-[10px] text-slate-600 dark:text-slate-300 leading-relaxed">${matchProfile.tierLocked ? `This job needs ${COMPETENCY_TIERS[matchProfile.requiredCompetencyTier].label}, ${matchProfile.qualification.requiredTasks} approved tasks and ${matchProfile.qualification.requiredProfile}% profile strength.` : `This job uses ${COMPETENCY_TIERS[matchProfile.requiredCompetencyTier].label}; better profile details improve matching and employer trust.`}</p>
         </div>`;
         
     document.getElementById('apply-rate').value = job?.budget||'';
@@ -5687,6 +5860,8 @@ function renderApplicantProfileCard(app, job) {
         .sort((a,b) => dateTimeValue(b.createdAt, 0) - dateTimeValue(a.createdAt, 0))[0];
     const workerName = safeText(worker.name || app.workerName || 'Worker');
     const avatar = worker.avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(worker.name || app.workerName || 'Worker')}&background=2563eb&color=fff`;
+    const workerCompetencyTier = getUserCompetencyLevel(worker);
+    const workerCompetencyLabel = COMPETENCY_TIERS[workerCompetencyTier]?.label || 'Pending';
     const compactStats = [
         ['Match', `${matchProfile.score}%`],
         ['Rating', `${avgRating} (${reviews.length})`],
@@ -5703,7 +5878,7 @@ function renderApplicantProfileCard(app, job) {
         ['Views', String(worker.profileViews || 0)],
         ['Availability', safeText(worker.availability || (worker.isAvailable ? 'Available' : 'Busy'))],
         ['Portfolio', portfolioUrl ? 'Yes' : 'No'],
-        ['Test', worker.testPassed ? 'Passed' : 'Pending'],
+        ['Test', workerCompetencyLabel],
         ['Complete', `${Number(worker.completionRate || 0)}%`],
         ['Earned', fmtMoney(worker.totalEarnings || 0)],
         ['Lang 1', safeText(worker.lang1 || 'Not set')],
@@ -5726,7 +5901,7 @@ function renderApplicantProfileCard(app, job) {
                     <div class="min-w-0 flex-1">
                         <div class="flex flex-wrap items-center gap-1 mb-0.5">
                             <button onclick='showPublicProfile(${jsString(worker.uid)})' class="font-bold text-xs text-slate-900 dark:text-white hover:text-brand text-left truncate">${workerName}</button>
-                            ${worker.testPassed ? '<span class="compact-chip bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">Verified</span>' : '<span class="compact-chip bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400">Test pending</span>'}
+                            ${workerCompetencyTier !== 'none' ? `<span class="compact-chip bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">${workerCompetencyLabel}</span>` : '<span class="compact-chip bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400">Test pending</span>'}
                             ${worker.isAvailable ? '<span class="compact-chip bg-blue-50 dark:bg-blue-900/30 text-brand">Available</span>' : '<span class="compact-chip bg-slate-100 dark:bg-slate-700 text-slate-500">Busy</span>'}
                             <span class="compact-chip bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">${safeText(matchProfile.label)}</span>
                         </div>
@@ -5873,6 +6048,35 @@ window.startWorkspaceChat = () => {
     } else {
         startChatDirectly(job.employerId, job.employerName);
     }
+};
+
+function getCurrentUserWorkspaceJobs(activeOnly = true) {
+    if(!currentUser) return [];
+    const activeStatuses = ['disputed','in_review','in_progress'];
+    const visibleStatuses = activeOnly ? activeStatuses : [...activeStatuses, 'completed', 'paid_out'];
+    const priority = { disputed: 0, in_review: 1, in_progress: 2, completed: 3, paid_out: 4 };
+    return (allJobs || [])
+        .filter(j => j.employerId === currentUser.uid || j.workerId === currentUser.uid)
+        .filter(j => visibleStatuses.includes(getJobStatus(j)))
+        .sort((a,b) => {
+            const statusDiff = (priority[getJobStatus(a)] ?? 9) - (priority[getJobStatus(b)] ?? 9);
+            if(statusDiff) return statusDiff;
+            return dateTimeValue(b.updatedAt || b.createdAt, 0) - dateTimeValue(a.updatedAt || a.createdAt, 0);
+        });
+}
+
+window.openWorkspaceQuickTab = async (tabId = 'overview') => {
+    const jobs = getCurrentUserWorkspaceJobs(true);
+    if(!jobs.length) {
+        navigate('mygigs');
+        showToast('No active workspace yet. Open My Gigs to post, apply, or review available work.', 'info');
+        return;
+    }
+    await openWorkspace(jobs[0].id);
+    setTimeout(() => {
+        if(tabId === 'messages') startWorkspaceChat();
+        else switchWorkspaceTab(tabId);
+    }, 40);
 };
 
 function isWorkerLockedAfterCompletion(job) {
@@ -7405,7 +7609,7 @@ window.renderDashboard = () => {
         </div>
         <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-center">
             <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="badge-check" class="w-3 h-3 text-emerald-500"></i> Test Status</p>
-            <p class="text-sm md:text-base font-display font-black text-slate-800 dark:text-white">${userData.testPassed ? 'Passed' : 'Pending'}</p>
+            <p class="text-sm md:text-base font-display font-black text-slate-800 dark:text-white">${getUserCompetencyLevel(userData) !== 'none' ? (COMPETENCY_TIERS[getUserCompetencyLevel(userData)]?.label || 'Passed') : 'Pending'}</p>
         </div>
         <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-center">
             <p class="text-[9px] font-bold uppercase text-slate-500 mb-1 flex items-center gap-1"><i data-lucide="banknote" class="w-3 h-3 text-lime-500"></i> Hourly Rate</p>
@@ -7534,12 +7738,40 @@ window.renderDashboard = () => {
                         <i data-lucide="bar-chart-3" class="w-5 h-5 text-amber-500 group-hover:scale-110 transition"></i>
                         <span class="text-[10px] font-bold">Stats & Transactions</span>
                     </button>
+                    <button onclick="navigate('post')" class="flex flex-col items-center justify-center gap-2 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800 hover:border-brand transition group">
+                        <i data-lucide="plus-circle" class="w-5 h-5 text-brand group-hover:scale-110 transition"></i>
+                        <span class="text-[10px] font-bold">Post Job</span>
+                    </button>
+                    <button onclick="navigate('mygigs')" class="flex flex-col items-center justify-center gap-2 p-3 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-brand transition group">
+                        <i data-lucide="folder-check" class="w-5 h-5 text-indigo-500 group-hover:scale-110 transition"></i>
+                        <span class="text-[10px] font-bold">My Workspaces</span>
+                    </button>
+                    <button onclick="openTaskInstructions()" class="flex flex-col items-center justify-center gap-2 p-3 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-brand transition group">
+                        <i data-lucide="play-circle" class="w-5 h-5 text-rose-500 group-hover:scale-110 transition"></i>
+                        <span class="text-[10px] font-bold">Workspace Tutorial</span>
+                    </button>
+                    <button onclick="openWorkspaceQuickTab('vault')" class="flex flex-col items-center justify-center gap-2 p-3 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-brand transition group">
+                        <i data-lucide="folder-archive" class="w-5 h-5 text-cyan-500 group-hover:scale-110 transition"></i>
+                        <span class="text-[10px] font-bold">View/Edit Work</span>
+                    </button>
+                    <button onclick="openWorkspaceQuickTab('action')" class="flex flex-col items-center justify-center gap-2 p-3 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-brand transition group">
+                        <i data-lucide="send" class="w-5 h-5 text-emerald-500 group-hover:scale-110 transition"></i>
+                        <span class="text-[10px] font-bold">Action Center</span>
+                    </button>
+                    <button onclick="openWorkspaceQuickTab('activity')" class="flex flex-col items-center justify-center gap-2 p-3 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-brand transition group">
+                        <i data-lucide="activity" class="w-5 h-5 text-orange-500 group-hover:scale-110 transition"></i>
+                        <span class="text-[10px] font-bold">Activity</span>
+                    </button>
                     <button onclick="downloadAndroidApp('dashboard-quick-action')" class="flex flex-col items-center justify-center gap-2 p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-200 dark:border-emerald-800 hover:border-emerald-500 transition group">
                         <i data-lucide="smartphone" class="w-5 h-5 text-emerald-600 group-hover:scale-110 transition"></i>
                         <span class="text-[10px] font-bold">Android App</span>
                     </button>
-                    <button onclick="navigate('messages')" class="flex flex-col items-center justify-center gap-2 p-3 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-brand transition group">
+                    <button onclick="openWorkspaceQuickTab('messages')" class="flex flex-col items-center justify-center gap-2 p-3 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-brand transition group">
                         <i data-lucide="message-square" class="w-5 h-5 text-purple-500 group-hover:scale-110 transition"></i>
+                        <span class="text-[10px] font-bold">Work Messages</span>
+                    </button>
+                    <button onclick="navigate('messages')" class="flex flex-col items-center justify-center gap-2 p-3 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-brand transition group">
+                        <i data-lucide="headphones" class="w-5 h-5 text-slate-500 group-hover:scale-110 transition"></i>
                         <span class="text-[10px] font-bold">Support Chat</span>
                     </button>
                 </div>
@@ -7793,6 +8025,13 @@ window.renderMyGigs = () => {
                         </button>
                     `).join('') : `<div class="md:col-span-3 text-[10px] text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-3">No active workspace needs attention right now.</div>`}
                 </div>
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-2 mt-3">
+                    <button onclick="openTaskInstructions()" class="btn btn-primary text-[10px] py-1.5"><i data-lucide="play-circle" class="w-3.5 h-3.5"></i> Tutorial</button>
+                    <button onclick="openWorkspaceQuickTab('vault')" class="btn btn-secondary text-[10px] py-1.5"><i data-lucide="folder-archive" class="w-3.5 h-3.5"></i> View/Edit Work</button>
+                    <button onclick="openWorkspaceQuickTab('action')" class="btn btn-secondary text-[10px] py-1.5"><i data-lucide="send" class="w-3.5 h-3.5"></i> Action Center</button>
+                    <button onclick="openWorkspaceQuickTab('activity')" class="btn btn-secondary text-[10px] py-1.5"><i data-lucide="activity" class="w-3.5 h-3.5"></i> Activity</button>
+                    <button onclick="openWorkspaceQuickTab('messages')" class="btn btn-secondary text-[10px] py-1.5"><i data-lucide="message-square" class="w-3.5 h-3.5"></i> Message</button>
+                </div>
             </div>`;
         focusPanel.innerHTML = `<div class="space-y-3 mb-3">${employerSummary}${workspaceSummary}</div>`;
     }
@@ -8011,6 +8250,43 @@ function detectContactSafetyIssue(text = '') {
         type: hit.type,
         message: `Blocked ${hit.type}. Keep communication, payments, files and approvals inside Gigs Kenya. Use the workspace File Vault for deliverable links.`
     };
+    const wordNumberIssue = detectWrittenPhoneNumber(normalized);
+    if(wordNumberIssue.blocked) return wordNumberIssue;
+    return { blocked: false };
+}
+
+function detectWrittenPhoneNumber(text = '') {
+    const numberWords = new Set(['zero','oh','o','one','two','three','four','five','six','seven','eight','nine','sifuri','moja','mbili','tatu','nne','tano','sita','saba','nane','tisa']);
+    const multipliers = new Set(['double','triple']);
+    const connectors = new Set(['plus','dash','hyphen','and']);
+    const tokens = String(text || '').toLowerCase().replace(/[^a-z0-9\s-]/g, ' ').split(/[\s-]+/).filter(Boolean);
+    let run = 0;
+    let repeatNext = 1;
+    for(const token of tokens) {
+        if(/^\d+$/.test(token)) {
+            run += token.length * repeatNext;
+            repeatNext = 1;
+        } else if(numberWords.has(token)) {
+            run += repeatNext;
+            repeatNext = 1;
+        } else if(multipliers.has(token)) {
+            repeatNext = token === 'triple' ? 3 : 2;
+            continue;
+        } else if(connectors.has(token) && run > 0) {
+            continue;
+        } else {
+            if(run >= 7) break;
+            run = 0;
+            repeatNext = 1;
+        }
+        if(run >= 7) {
+            return {
+                blocked: true,
+                type: 'phone number written in words',
+                message: 'Blocked phone number written in words. Keep communication, payments and approvals inside Gigs Kenya.'
+            };
+        }
+    }
     return { blocked: false };
 }
 
@@ -8354,7 +8630,7 @@ window.submitReview = async () => {
 // ===================== LEADERBOARD / PUBLIC PROFILE =====================
 window.renderLeaderboard = () => {
     const container = document.getElementById('leaderboard-container');
-    const workers = allUsers.filter(u => u.role === 'worker' && u.testPassed);
+    const workers = allUsers.filter(u => u.role === 'worker' && getUserCompetencyLevel(u) !== 'none');
     
     const stats = workers.map(w => {
         const myJobs = allJobs.filter(j => j.workerId === w.uid && (j.status === 'completed' || j.status === 'paid_out'));
@@ -8404,10 +8680,14 @@ window.showPublicProfile = (uid) => {
     document.getElementById('profile-modal-tagline').innerText = u.headline || (u.role === 'worker' ? 'Freelancer' : 'Employer');
     document.getElementById('profile-modal-role').innerText = u.role.toUpperCase();
     
-    if(u.testPassed) {
-        document.getElementById('profile-modal-test-badge').classList.remove('gk-hidden');
+    const publicCompetencyLevel = getUserCompetencyLevel(u);
+    const publicCompetencyLabel = COMPETENCY_TIERS[publicCompetencyLevel]?.label || 'Verified';
+    const publicCompetencyBadge = document.getElementById('profile-modal-test-badge');
+    if(publicCompetencyLevel !== 'none') {
+        publicCompetencyBadge.innerHTML = `<i data-lucide="shield-check" class="w-3 h-3"></i> ${safeText(publicCompetencyLabel)}`;
+        publicCompetencyBadge.classList.remove('gk-hidden');
     } else {
-        document.getElementById('profile-modal-test-badge').classList.add('gk-hidden');
+        publicCompetencyBadge.classList.add('gk-hidden');
     }
     
     const ind = document.getElementById('profile-online-status');
@@ -8685,10 +8965,15 @@ function renderHigherPayGuideStatus(source = 'manual') {
     const skills = toProfileList(userData?.skills || []);
     const bioReady = String(userData?.bio || '').trim().length >= 60;
     const payoutReady = !!(userData?.mpesa || userData?.paypal || userData?.bankAccountNumber || userData?.bankAccNo || userData?.bankName);
+    const competencyLevel = getUserCompetencyLevel(userData);
+    const competencyLabel = COMPETENCY_TIERS[competencyLevel]?.label || 'Pending';
+    const nextCompetencyTier = getNextCompetencyTier(userData);
+    const nextCompetencyLabel = COMPETENCY_TIERS[nextCompetencyTier]?.label || 'Starter';
     const nextSteps = [];
     if(!bioReady) nextSteps.push('write a stronger bio');
     if(skills.length < 2) nextSteps.push('add at least 2 skills');
-    if(!userData?.testPassed) nextSteps.push('pass the competency test');
+    if(competencyLevel === 'none') nextSteps.push('pass the Starter test');
+    else if(competencyLevel !== 'premium') nextSteps.push(`pass the ${nextCompetencyLabel} test`);
     if(!payoutReady) nextSteps.push('add payout details');
     if(completedTasks < 5) nextSteps.push(`${5 - completedTasks} more approved task${5 - completedTasks === 1 ? '' : 's'}`);
     const nextText = nextSteps.length ? nextSteps.slice(0, 3).join(', ') : 'keep your profile and workspace history fresh';
@@ -8712,7 +8997,7 @@ function renderHigherPayGuideStatus(source = 'manual') {
                 </div>
                 <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-2 text-center">
                     <p class="text-[9px] text-slate-400">Test</p>
-                    <p class="font-black text-sm ${userData?.testPassed ? 'text-emerald-600' : 'text-amber-600'}">${userData?.testPassed ? 'Passed' : 'Pending'}</p>
+                    <p class="font-black text-sm ${competencyLevel !== 'none' ? 'text-emerald-600' : 'text-amber-600'}">${competencyLabel}</p>
                 </div>
             </div>
         </div>
@@ -9171,13 +9456,20 @@ window.openSettings = () => {
     const testStatus = document.getElementById('settings-test-status');
     const testBtn = document.getElementById('settings-test-btn');
     
-    if(userData.testPassed) {
-        testStatus.innerHTML = '<span class="text-emerald-600 font-bold">Passed</span>';
-        testBtn.classList.add('gk-hidden');
+    const competencyLevel = getUserCompetencyLevel(userData);
+    const competencyLabel = COMPETENCY_TIERS[competencyLevel]?.label || 'Not passed';
+    const nextCompetencyTier = getNextCompetencyTier(userData);
+    const nextCompetencyLabel = COMPETENCY_TIERS[nextCompetencyTier]?.label || 'Starter';
+    const maxCompetency = competencyLevel === 'premium';
+    if(competencyLevel !== 'none') {
+        testStatus.innerHTML = `<span class="text-emerald-600 font-bold">${competencyLabel} passed</span><span class="text-slate-400"> - ${maxCompetency ? 'KSh 5,000+ ready' : `next: ${nextCompetencyLabel}`}</span>`;
     } else {
-        testStatus.innerText = 'Take test to unlock applications.';
-        testBtn.classList.remove('gk-hidden');
+        testStatus.innerText = 'Take Starter test for low budget jobs, then upgrade for KSh 3,000+ and KSh 5,000+ jobs.';
     }
+    testBtn.classList.remove('gk-hidden');
+    testBtn.disabled = maxCompetency;
+    testBtn.classList.toggle('opacity-50', maxCompetency);
+    testBtn.innerText = maxCompetency ? 'Max Level' : (competencyLevel === 'none' ? 'Take Starter Test' : `Upgrade: ${nextCompetencyLabel}`);
     
     // Finance
     document.getElementById('set-paymethod').value = userData.paymentMethod || 'M-Pesa';
