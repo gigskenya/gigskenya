@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" class="light">
 <head>
@@ -816,6 +817,371 @@
             }
         }
 
+        /* V9 professional UX refresh: layout polish without removing feature hooks */
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        #main-scroller {
+            scroll-behavior: smooth;
+            background:
+                linear-gradient(180deg, rgba(239,246,255,.65), rgba(248,250,252,0) 18rem),
+                #f8fafc;
+        }
+
+        .dark #main-scroller {
+            background:
+                linear-gradient(180deg, rgba(30,58,95,.25), rgba(15,23,42,0) 18rem),
+                #0f172a;
+        }
+
+        #main-scroller > main {
+            padding-top: 1rem;
+        }
+
+        #top-nav {
+            box-shadow: 0 10px 28px rgba(15,23,42,.05);
+        }
+
+        .nav-link {
+            border-radius: .5rem;
+        }
+
+        .modal-box,
+        .rounded-2xl,
+        .rounded-xl {
+            border-radius: .75rem;
+        }
+
+        .btn,
+        .gk-input {
+            border-radius: .5rem;
+        }
+
+        .card-hover {
+            min-height: 100%;
+        }
+
+        .card-hover:hover {
+            box-shadow: 0 14px 36px rgba(15,23,42,.12);
+        }
+
+        .dark .card-hover:hover {
+            box-shadow: 0 18px 42px rgba(0,0,0,.35);
+        }
+
+        .qualification-callout {
+            border: 1px solid #bfdbfe;
+            background: linear-gradient(135deg, #eff6ff, #ffffff);
+        }
+
+        .dark .qualification-callout {
+            border-color: #1e3a5f;
+            background: linear-gradient(135deg, rgba(30,58,95,.45), rgba(15,23,42,.82));
+        }
+
+        .job-match-meter {
+            height: .35rem;
+            overflow: hidden;
+            border-radius: 999px;
+            background: #e2e8f0;
+        }
+
+        .dark .job-match-meter {
+            background: #334155;
+        }
+
+        .job-match-meter > span {
+            display: block;
+            height: 100%;
+            min-width: .35rem;
+            background: linear-gradient(90deg, #2563eb, #10b981);
+            border-radius: inherit;
+        }
+
+        .compact-profile-card {
+            border-radius: .6rem;
+            padding: .55rem;
+        }
+
+        .compact-data-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: .3rem;
+        }
+
+        .compact-data-cell {
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            border-radius: .45rem;
+            padding: .35rem .45rem;
+            min-width: 0;
+        }
+
+        .dark .compact-data-cell {
+            border-color: #334155;
+            background: #0f172a;
+        }
+
+        .compact-data-cell span:first-child {
+            display: block;
+            color: #94a3b8;
+            font-size: .5rem;
+            line-height: 1;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .compact-data-cell span:last-child {
+            display: block;
+            font-size: .62rem;
+            line-height: 1.15;
+            font-weight: 800;
+            color: #334155;
+            margin-top: .15rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .dark .compact-data-cell span:last-child {
+            color: #e2e8f0;
+        }
+
+        .compact-chip {
+            border-radius: .4rem;
+            padding: .12rem .38rem;
+            font-size: .58rem;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        #view-jobs .gradient-hero,
+        #view-dashboard .gradient-hero {
+            box-shadow: 0 22px 56px rgba(15,23,42,.22);
+        }
+
+        #jobs-container {
+            align-items: stretch;
+        }
+
+        #view-mygigs > .bg-white,
+        #view-bookmarks > .bg-white,
+        #view-post > .bg-white {
+            box-shadow: 0 16px 40px rgba(15,23,42,.06);
+        }
+
+        #dashboard-metrics-grid > div {
+            min-height: 5.35rem;
+        }
+
+        #desktop-mygigs-float {
+            border-radius: .5rem;
+        }
+
+        #workspace-modal {
+            padding: 1rem;
+        }
+
+        #workspace-modal .modal-box {
+            width: min(96vw, 1320px);
+            height: min(94dvh, 940px);
+            max-width: 1320px;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 28px 80px rgba(2,6,23,.35);
+        }
+
+        .dark #workspace-modal .modal-box {
+            border-color: #334155;
+        }
+
+        #workspace-modal .sticky {
+            border-radius: .75rem .75rem 0 0;
+        }
+
+        #workspace-modal .ws-tab-btn {
+            border-radius: .5rem .5rem 0 0;
+            min-height: 2.7rem;
+        }
+
+        #workspace-modal .ws-tab.active {
+            animation: fadeIn .18s ease-out;
+        }
+
+        #workspace-modal .overflow-y-auto.bg-slate-50 {
+            background:
+                linear-gradient(180deg, rgba(239,246,255,.7), rgba(248,250,252,.95) 11rem);
+        }
+
+        .dark #workspace-modal .overflow-y-auto.bg-slate-50 {
+            background:
+                linear-gradient(180deg, rgba(30,58,95,.2), rgba(15,23,42,.96) 11rem);
+        }
+
+        #ws-command-strip {
+            border-bottom: 1px solid #e2e8f0;
+            background: #fff;
+        }
+
+        .dark #ws-command-strip {
+            border-bottom-color: #334155;
+            background: #1e293b;
+        }
+
+        .ws-command-card {
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            border-radius: .6rem;
+            padding: .65rem .75rem;
+            min-height: 4.1rem;
+        }
+
+        .dark .ws-command-card {
+            border-color: #334155;
+            background: #0f172a;
+        }
+
+        #ws-tab-overview .grid.md\:grid-cols-3 > div,
+        #ws-tab-vault .grid.md\:grid-cols-2 > div,
+        #ws-tab-action .grid.md\:grid-cols-3 > div,
+        #ws-tab-toolkit .bg-white {
+            border-radius: .65rem;
+        }
+
+        #ws-action-area {
+            min-height: 22rem;
+        }
+
+        #ws-toolkit-kpis > div {
+            min-height: 4.5rem;
+        }
+
+        @media (min-width: 1024px) {
+            #view-dashboard {
+                display: none;
+            }
+
+            #view-dashboard.active {
+                display: grid !important;
+                grid-template-columns: minmax(0, 1.35fr) minmax(320px, .65fr);
+                align-items: start;
+            }
+
+            #view-dashboard > #activation-banner-container,
+            #view-dashboard > .gradient-hero,
+            #view-dashboard > #dashboard-metrics-grid {
+                grid-column: 1 / -1;
+            }
+
+            #dashboard-metrics-grid {
+                grid-template-columns: repeat(5, minmax(0, 1fr));
+            }
+
+            #dashboard-bottom-content {
+                grid-column: 1 / -1;
+                grid-template-columns: minmax(0, 1fr) minmax(320px, .7fr);
+            }
+
+            #workspace-modal .modal-box {
+                display: grid;
+                grid-template-rows: auto auto auto minmax(0, 1fr);
+            }
+        }
+
+        @media (max-width: 767px) {
+            #main-scroller > main {
+                padding-top: .65rem;
+            }
+
+            #view-jobs .gradient-hero,
+            #view-dashboard .gradient-hero {
+                margin-left: -.15rem;
+                margin-right: -.15rem;
+            }
+
+            #jobs-container {
+                gap: .65rem;
+            }
+
+            .qualification-callout {
+                border-radius: .65rem;
+            }
+
+            .compact-data-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            #workspace-modal {
+                padding: 0;
+            }
+
+            #workspace-modal .modal-box {
+                width: 100vw;
+                height: 100dvh;
+                max-height: 100dvh;
+                border-radius: 0;
+                border-width: 0;
+            }
+
+            #workspace-modal .sticky {
+                border-radius: 0;
+            }
+
+            #workspace-modal .sticky > div:first-child {
+                min-width: 0;
+            }
+
+            #workspace-modal #ws-job-title {
+                max-width: 58vw;
+            }
+
+            #workspace-modal .sticky .btn {
+                min-height: 2rem;
+            }
+
+            #workspace-modal .flex.border-b {
+                padding-left: .55rem;
+                padding-right: .55rem;
+            }
+
+            #ws-command-strip {
+                overflow-x: auto;
+                padding: .55rem;
+            }
+
+            #ws-command-strip .grid {
+                display: flex;
+                min-width: max-content;
+            }
+
+            .ws-command-card {
+                width: 10rem;
+                min-height: 3.9rem;
+            }
+
+            #ws-tab-vault .flex.gap-2,
+            #ws-time-input-area,
+            #ws-todo-input-area {
+                flex-wrap: wrap;
+            }
+
+            #ws-time-input-area input,
+            #ws-tab-vault .flex.gap-2 input {
+                min-width: 7rem;
+            }
+
+            #ws-action-area {
+                min-height: 18rem;
+            }
+
+            #mygigs-container > div {
+                gap: .75rem;
+            }
+        }
+
     </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 flex flex-col w-full h-[100dvh]">
@@ -1086,7 +1452,7 @@
             <button onclick="closeAppsModal()" class="p-1 text-slate-400 hover:text-slate-700 dark:hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
         </div>
         <p id="apps-modal-job-title" class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-3"></p>
-        <div id="apps-list" class="space-y-2 max-h-[55vh] overflow-y-auto pr-1"></div>
+        <div id="apps-list" class="space-y-1.5 max-h-[68vh] overflow-y-auto pr-1"></div>
     </div>
 </div>
 
@@ -1131,6 +1497,30 @@
                 <button onclick="switchWorkspaceTab('activity')" id="ws-tab-btn-activity" class="ws-tab-btn px-4 py-3 text-[10px] md:text-xs font-bold border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 whitespace-nowrap">Activity Log</button>
                 <button onclick="switchWorkspaceTab('action')" id="ws-tab-btn-action" class="ws-tab-btn px-4 py-3 text-[10px] md:text-xs font-bold border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 whitespace-nowrap">Action Center</button>
                 <button onclick="switchWorkspaceTab('toolkit')" id="ws-tab-btn-toolkit" class="ws-tab-btn px-4 py-3 text-[10px] md:text-xs font-bold border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 whitespace-nowrap">Ops Toolkit</button>
+        </div>
+
+        <!-- Workspace Command Strip -->
+        <div id="ws-command-strip" class="shrink-0 px-4 py-3">
+                <div class="grid grid-cols-4 gap-2">
+                        <div class="ws-command-card">
+                                <p class="text-[9px] font-black uppercase tracking-wide text-slate-400 mb-1">Progress</p>
+                                <p id="ws-command-progress" class="font-display font-black text-sm text-slate-900 dark:text-white">0%</p>
+                                <p id="ws-command-progress-note" class="text-[9px] text-slate-500 dark:text-slate-400 mt-0.5">Tasks not started</p>
+                        </div>
+                        <div class="ws-command-card">
+                                <p class="text-[9px] font-black uppercase tracking-wide text-slate-400 mb-1">Next Step</p>
+                                <p id="ws-command-next" class="font-bold text-xs text-slate-800 dark:text-slate-100 line-clamp-2">Open overview</p>
+                        </div>
+                        <div class="ws-command-card">
+                                <p class="text-[9px] font-black uppercase tracking-wide text-slate-400 mb-1">Workspace</p>
+                                <p id="ws-command-state" class="font-bold text-xs text-slate-800 dark:text-slate-100">Ready</p>
+                                <p id="ws-command-role" class="text-[9px] text-slate-500 dark:text-slate-400 mt-0.5">Role context</p>
+                        </div>
+                        <div class="ws-command-card">
+                                <p class="text-[9px] font-black uppercase tracking-wide text-slate-400 mb-1">Delivery</p>
+                                <p id="ws-command-deadline" class="font-bold text-xs text-slate-800 dark:text-slate-100 line-clamp-2">Flexible</p>
+                        </div>
+                </div>
         </div>
 
         <!-- Workspace Content Area -->
@@ -1599,6 +1989,67 @@
         <div class="flex gap-2">
             <button onclick="closeCompleteProfilePrompt()" class="btn btn-secondary flex-1 py-2 text-xs">Later</button>
             <button onclick="completeProfileNow()" class="btn btn-primary flex-1 py-2 text-xs">Complete Now</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== MODAL: HIGHER PAY GUIDE ===================== -->
+<div id="higher-pay-guide-modal" class="modal-overlay gk-hidden" style="z-index:440" onclick="closeHigherPayGuide()">
+    <div class="modal-box p-4 md:p-6" style="max-width:620px" onclick="event.stopPropagation()">
+        <div class="flex items-start justify-between gap-3 mb-4">
+            <div>
+                <p class="badge bg-blue-50 dark:bg-blue-900/30 text-brand mb-2">Higher paying jobs</p>
+                <h3 class="font-display font-black text-xl text-slate-900 dark:text-white">How to qualify for better gigs</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Premium jobs are ranked by trust, delivery history, profile quality and matching details.</p>
+            </div>
+            <button onclick="closeHigherPayGuide()" class="p-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-white bg-slate-100 dark:bg-slate-700 rounded-lg">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+        </div>
+
+        <div id="higher-pay-guide-status" class="qualification-callout rounded-xl p-3 mb-4"></div>
+
+        <div class="grid md:grid-cols-2 gap-3">
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="w-7 h-7 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-brand flex items-center justify-center font-black text-xs">1</span>
+                    <h4 class="font-bold text-xs text-slate-900 dark:text-white">Complete the profile</h4>
+                </div>
+                <p class="text-[10px] text-slate-600 dark:text-slate-300 leading-relaxed">Add a clear 60+ character bio, headline, education, location, portfolio, rates, skills and payout details. Empty profiles are limited to starter matches.</p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="w-7 h-7 rounded-lg bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 flex items-center justify-center font-black text-xs">2</span>
+                    <h4 class="font-bold text-xs text-slate-900 dark:text-white">Pass competency checks</h4>
+                </div>
+                <p class="text-[10px] text-slate-600 dark:text-slate-300 leading-relaxed">The competency test and job-specific screening answers help employers trust that you can deliver before they approve your application.</p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="w-7 h-7 rounded-lg bg-amber-50 dark:bg-amber-900/30 text-amber-600 flex items-center justify-center font-black text-xs">3</span>
+                    <h4 class="font-bold text-xs text-slate-900 dark:text-white">Finish approved tasks</h4>
+                </div>
+                <p class="text-[10px] text-slate-600 dark:text-slate-300 leading-relaxed">High-paying jobs rank better after several completed, approved tasks. Start with starter and standard gigs, then use reviews to move up.</p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="w-7 h-7 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 flex items-center justify-center font-black text-xs">4</span>
+                    <h4 class="font-bold text-xs text-slate-900 dark:text-white">Use the workspace well</h4>
+                </div>
+                <p class="text-[10px] text-slate-600 dark:text-slate-300 leading-relaxed">Keep tasks updated, upload files to the vault, log time honestly, submit clean work and respond inside messages. Workspace history strengthens matching.</p>
+            </div>
+        </div>
+
+        <div class="mt-4 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 p-3">
+            <h4 class="font-bold text-xs text-slate-900 dark:text-white mb-2 flex items-center gap-1.5"><i data-lucide="target" class="w-4 h-4 text-brand"></i> Quick target</h4>
+            <p class="text-[10px] text-slate-600 dark:text-slate-300 leading-relaxed">Aim for a complete profile, passed competency test, strong pitch, accurate skills, and at least 5 completed approved tasks before expecting the highest budget gigs to rank strongly.</p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mt-4">
+            <button onclick="closeHigherPayGuide(); currentUser ? openSettings() : navigate('auth')" class="btn btn-primary text-[10px] py-2">Improve Profile</button>
+            <button onclick="closeHigherPayGuide(); currentUser ? initTest() : navigate('auth')" class="btn btn-secondary text-[10px] py-2">Competency Test</button>
+            <button onclick="closeHigherPayGuide(); setCategory('All'); document.getElementById('budget-filter') && (document.getElementById('budget-filter').value='under5k'); navigate('jobs')" class="btn btn-secondary text-[10px] py-2">Starter Jobs</button>
+            <button onclick="closeHigherPayGuide(); currentUser ? navigate('mygigs') : navigate('auth')" class="btn btn-secondary text-[10px] py-2">Workspaces</button>
         </div>
     </div>
 </div>
@@ -2759,13 +3210,26 @@
                             <option value="newest">Newest</option>
                             <option value="budget_high">Highest</option>
                             <option value="budget_low">Lowest</option>
-                            <option value="match">Match</option>
+                            <option value="match">Best Match</option>
                         </select>
                     </div>
                 </div>
             </div>
             <!-- Category filters -->
             <div id="category-filters" class="flex flex-wrap gap-1.5 md:gap-2 mb-2"></div>
+            <div id="job-match-profile-message" class="qualification-callout rounded-xl p-3 mb-3 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+                <div class="flex items-start gap-2">
+                    <i data-lucide="badge-check" class="w-4 h-4 text-brand mt-0.5 shrink-0"></i>
+                    <div>
+                        <p class="text-xs font-bold text-slate-800 dark:text-white">Profile-qualified matching</p>
+                        <p class="text-[10px] text-slate-600 dark:text-slate-300 leading-relaxed" id="job-match-profile-copy">Complete your bio, skills, education and payment details to improve job matches.</p>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-2 shrink-0">
+                    <button onclick="openHigherPayGuide('jobs-callout')" class="btn btn-primary text-[10px] py-1.5 px-2">Higher Pay Guide</button>
+                    <button onclick="currentUser ? openSettings() : navigate('auth')" class="btn btn-secondary text-[10px] py-1.5 px-2">Improve Profile</button>
+                </div>
+            </div>
             <p class="text-[9px] md:text-[10px] text-slate-500 dark:text-slate-400 mb-4">Terms & policy: browse only genuine, lawful opportunities. Location tags indicate where work happens or is coordinated, and users are expected to keep category and location details accurate.</p>
             <!-- Save search -->
             <div id="save-search-bar" class="gk-hidden flex items-center gap-2 mb-4 p-2.5 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800">
@@ -4370,12 +4834,162 @@ window.setCategory = (c) => {
     renderJobs(); 
 };
 
-window.getSkillMatch = (jobSkills, userSkills) => {
-    if(!jobSkills || !userSkills || !userSkills.length) return 0;
-    const j = String(jobSkills).toLowerCase().split(',').map(s=>s.trim()).filter(Boolean);
-    const u = userSkills.map(s=>String(s).toLowerCase().trim());
-    return Math.round(j.filter(s=>u.includes(s)).length/j.length*100) || 0;
+function toProfileList(value) {
+    if(Array.isArray(value)) return value.map(v => String(v || '').trim()).filter(Boolean);
+    return String(value || '').split(/[,|;/\n]+/).map(v => v.trim()).filter(Boolean);
+}
+
+function getSearchTerms(value) {
+    return toProfileList(value)
+        .join(' ')
+        .toLowerCase()
+        .replace(/[^a-z0-9\s+#.]/g, ' ')
+        .split(/\s+/)
+        .map(t => t.trim())
+        .filter(t => t.length > 2);
+}
+
+function uniqueTerms(value) {
+    return Array.from(new Set(getSearchTerms(value)));
+}
+
+window.getProfileCompletionScore = (user = userData) => {
+    if(!user) return 0;
+    const skills = toProfileList(user.skills);
+    const paymentReady = !!(user.mpesa || user.paypal || user.bankAccountNumber || user.bankAccNo || user.bankName);
+    const checks = [
+        !!user.name,
+        !!(user.phone || user.mpesa),
+        paymentReady,
+        !!(user.headline || user.tagline),
+        String(user.bio || '').trim().length >= 60,
+        skills.length >= 2,
+        !!(user.education && user.education !== 'None'),
+        !!(user.location || user.city),
+        !!(user.portfolio || user.avatarUrl),
+        Number(user.rate || user.hourlyRate || user.dailyRate || 0) > 0
+    ];
+    return Math.round((checks.filter(Boolean).length / checks.length) * 100);
 };
+
+window.getWorkerCompletedTaskCount = (user = userData) => {
+    if(!user) return 0;
+    const ids = [user.uid, user.id].filter(Boolean).map(String);
+    if((user === userData || (!user.uid && !user.id)) && currentUser?.uid) ids.push(String(currentUser.uid));
+    const completedFromJobs = (allJobs || []).filter(j => ids.includes(String(j.workerId || '')) && ['completed','paid_out'].includes(getJobStatus(j))).length;
+    return Math.max(
+        completedFromJobs,
+        Number(user.completedJobs || user.completedJobsCount || user.jobsCompleted || user.completedTasks || 0)
+    );
+};
+
+function getBudgetQualification(job = {}) {
+    const budget = Number(job.budget || 0);
+    const exp = String(job.experience || '').toLowerCase();
+    if(budget >= 15000 || exp.includes('expert')) return { tier:'premium', requiredTasks: 5, requiredProfile: 85, label:'High-value' };
+    if(budget >= 5000 || exp.includes('intermediate')) return { tier:'standard', requiredTasks: 2, requiredProfile: 65, label:'Standard' };
+    return { tier:'starter', requiredTasks: 0, requiredProfile: 35, label:'Starter' };
+}
+
+function getProfileKeywordBank(user = userData) {
+    if(!user) return [];
+    return uniqueTerms([
+        toProfileList(user.skills).join(' '),
+        user.bio,
+        user.headline,
+        user.tagline,
+        user.education,
+        user.location,
+        user.city,
+        user.availability,
+        user.portfolio
+    ].join(' '));
+}
+
+function getJobKeywordBank(job = {}) {
+    return uniqueTerms([
+        job.skills,
+        job.title,
+        job.description,
+        job.category,
+        job.location,
+        job.experience,
+        job.requirements
+    ].join(' '));
+}
+
+function keywordOverlapScore(jobTerms, profileTerms) {
+    if(!jobTerms.length || !profileTerms.length) return 0;
+    const profileSet = new Set(profileTerms);
+    const hits = jobTerms.filter(term => profileSet.has(term)).length;
+    return Math.round((hits / Math.max(jobTerms.length, 1)) * 100);
+}
+
+window.getSkillMatch = (jobSkills, userSkills) => {
+    const jobSkillTerms = uniqueTerms(jobSkills);
+    const userSkillTerms = uniqueTerms(toProfileList(userSkills).join(' '));
+    return keywordOverlapScore(jobSkillTerms, userSkillTerms);
+};
+
+window.getJobMatchProfile = (job = {}, user = userData) => {
+    const profileScore = getProfileCompletionScore(user);
+    const completedTasks = getWorkerCompletedTaskCount(user);
+    const qualification = getBudgetQualification(job);
+    const skillScore = getSkillMatch(job.skills, user?.skills || []);
+    const textScore = keywordOverlapScore(getJobKeywordBank(job), getProfileKeywordBank(user));
+    const locationScore = !job.location || String(job.location).toLowerCase() === 'remote' ? 100 : (
+        String(user?.location || user?.city || '').toLowerCase().includes(String(job.location || '').toLowerCase()) ? 100 : 35
+    );
+    const competencyScore = user?.testPassed ? 100 : 35;
+    const historyScore = Math.min(100, Math.round((completedTasks / Math.max(qualification.requiredTasks, 1)) * 100));
+    const bioPenalty = String(user?.bio || '').trim().length < 60 ? 18 : 0;
+    const highValuePenalty = qualification.tier === 'premium' && completedTasks < qualification.requiredTasks ? 16 : 0;
+
+    const raw = Math.round(
+        (skillScore * .34) +
+        (textScore * .22) +
+        (profileScore * .18) +
+        (competencyScore * .10) +
+        (historyScore * .10) +
+        (locationScore * .06)
+    );
+    const score = Math.max(0, Math.min(100, raw - bioPenalty - highValuePenalty));
+    const eligibleForTier = profileScore >= qualification.requiredProfile && completedTasks >= qualification.requiredTasks;
+    let label = 'Profile fit';
+    if(profileScore < 45) label = 'Complete profile';
+    else if(!eligibleForTier && qualification.tier !== 'starter') label = 'Build history';
+    else if(score >= 80 && eligibleForTier) label = 'Strong fit';
+    else if(score >= 58) label = 'Good starter fit';
+
+    return {
+        score,
+        skillScore,
+        textScore,
+        profileScore,
+        completedTasks,
+        qualification,
+        eligibleForTier,
+        label,
+        isStarter: qualification.tier === 'starter',
+        needsBio: String(user?.bio || '').trim().length < 60,
+        highPayLocked: qualification.tier === 'premium' && !eligibleForTier
+    };
+};
+
+function getQualificationMessage(user = userData) {
+    if(!currentUser) return 'Sign in and complete your profile to see smarter job ranking based on your skills, bio, education and completed work.';
+    if(user?.role === 'employer') return 'Worker matching uses profile quality, competency checks, completed tasks, skills and job requirements so stronger applicants surface faster.';
+    const profileScore = getProfileCompletionScore(user);
+    const completedTasks = getWorkerCompletedTaskCount(user);
+    if(profileScore < 45) return 'Add a useful bio, skills, education and payout details. Incomplete profiles are shown mostly starter jobs until qualification improves.';
+    if(completedTasks < 5) return `More qualified profiles get high paying jobs after proven delivery. Complete ${Math.max(0, 5 - completedTasks)} more approved task${Math.max(0, 5 - completedTasks) === 1 ? '' : 's'} to rank better for premium gigs.`;
+    return 'Your profile is ready for stronger matches. Keep skills, bio and completed workspace history current to stay competitive for high paying gigs.';
+}
+
+function renderJobQualificationMessage() {
+    const copy = document.getElementById('job-match-profile-copy');
+    if(copy) copy.textContent = getQualificationMessage(userData);
+}
 
 function renderCategoryFilters() {
     const c = document.getElementById('category-filters');
@@ -4432,7 +5046,7 @@ window.renderJobs = () => {
     if(sortFilter === 'budget_high') filtered.sort((a,b)=>(Number(b.budget)||0)-(Number(a.budget)||0));
     else if(sortFilter === 'budget_low') filtered.sort((a,b)=>(Number(a.budget)||0)-(Number(b.budget)||0));
     else if(sortFilter === 'deadline') filtered.sort((a,b)=>dateTimeValue(a.deadline || a.expiry, 8640000000000000)-dateTimeValue(b.deadline || b.expiry, 8640000000000000));
-    else if(sortFilter === 'match') filtered.sort((a,b)=>getSkillMatch(b.skills,userData?.skills||[])-getSkillMatch(a.skills,userData?.skills||[]));
+    else if(sortFilter === 'match') filtered.sort((a,b)=>getJobMatchProfile(b, userData).score-getJobMatchProfile(a, userData).score);
     else filtered.sort((a,b)=>dateTimeValue(b.createdAt, 0)-dateTimeValue(a.createdAt, 0));
 
     const badge = document.getElementById('job-count-badge');
@@ -4445,6 +5059,8 @@ window.renderJobs = () => {
     } else { 
         saveBar?.classList.add('gk-hidden'); 
     }
+    renderJobQualificationMessage();
+    maybeShowHigherPayGuide();
 
     if(!filtered.length) {
         container.innerHTML = `<div class="col-span-full text-center py-12 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700"><i data-lucide="search-x" class="w-10 h-10 text-slate-300 mx-auto mb-2"></i><p class="text-slate-400 font-semibold text-sm">No jobs found</p></div>`;
@@ -4455,7 +5071,8 @@ window.renderJobs = () => {
 
     container.innerHTML = show.map(job => {
         const bookmarked = userData?.bookmarks?.includes(job.id);
-        const match = (userData?.skills && job.skills) ? getSkillMatch(job.skills,userData.skills) : 0;
+        const matchProfile = getJobMatchProfile(job, userData);
+        const match = matchProfile.score;
         const daysLeft = daysUntilJobDue(job);
         
         const hot = (job.views||0) > 20;
@@ -4479,7 +5096,15 @@ window.renderJobs = () => {
                     ${daysLeft&&daysLeft<=3?`<span class="badge bg-orange-100 dark:bg-orange-900/30 text-orange-600 text-[8px]">⏳ ${daysLeft}d left</span>`:''}
                     ${hot?'<span class="badge bg-orange-100 dark:bg-orange-900/20 text-orange-500 text-[8px]">🔥 Hot</span>':''}
                 </div>
-                ${match>0?`<span class="badge bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 mb-2 inline-flex text-[9px]">${match}% Match</span>`:''}
+                <div class="mb-2 rounded-lg bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700 p-2">
+                    <div class="flex items-center justify-between gap-2 mb-1">
+                        <span class="text-[9px] font-black uppercase text-slate-500">${safeText(matchProfile.label)}</span>
+                        <span class="badge ${matchProfile.eligibleForTier ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400' : 'bg-blue-50 dark:bg-blue-900/20 text-brand'} text-[9px]">${match}% Match</span>
+                    </div>
+                    <div class="job-match-meter"><span style="width:${match}%"></span></div>
+                    ${matchProfile.highPayLocked ? `<p class="text-[9px] text-amber-600 dark:text-amber-400 mt-1">High paying gigs rank higher after ${matchProfile.qualification.requiredTasks} completed approved tasks and a strong profile.</p>` : ''}
+                    ${matchProfile.needsBio ? `<p class="text-[9px] text-slate-500 dark:text-slate-400 mt-1">Add a stronger bio to move beyond starter matches.</p>` : ''}
+                </div>
                 <p class="text-slate-500 dark:text-slate-400 text-[10px] md:text-xs mb-2 line-clamp-2 leading-relaxed">${safeText(job.description||'')}</p>
             </div>
             <div class="mt-auto">
@@ -4811,7 +5436,8 @@ window.openJobDetail = jobId => {
         job.views = (job.views||0)+1;
     }
     
-    const match = (userData?.skills&&job.skills) ? getSkillMatch(job.skills,userData.skills) : 0;
+    const matchProfile = getJobMatchProfile(job, userData);
+    const match = matchProfile.score;
     const daysLeft = daysUntilJobDue(job);
     const appCount = allApps.filter(a => a.jobId === jobId).length;
     const status = getJobStatus(job);
@@ -4876,7 +5502,18 @@ window.openJobDetail = jobId => {
                 <span class="flex items-center gap-1"><i data-lucide="users" class="w-2.5 h-2.5"></i>${appCount} applied</span>
                 <span class="flex items-center gap-1"><i data-lucide="eye" class="w-2.5 h-2.5"></i>${job.views||0} views</span>
                 ${daysLeft !== null ? `<span class="flex items-center gap-1 ${daysLeft<=3?'text-red-500':''}"><i data-lucide="calendar" class="w-2.5 h-2.5"></i>${daysLeft}d left</span>`:''}
-                ${match>0?`<span class="badge bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">${match}% match</span>`:''}
+                <span class="badge ${matchProfile.eligibleForTier ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400' : 'bg-blue-100 dark:bg-blue-900/30 text-brand'}">${match}% match</span>
+            </div>
+            <div class="qualification-callout rounded-xl p-3">
+                <div class="flex items-start gap-2">
+                    <i data-lucide="${matchProfile.eligibleForTier ? 'badge-check' : 'trending-up'}" class="w-4 h-4 text-brand mt-0.5 shrink-0"></i>
+                    <div>
+                        <p class="text-xs font-bold text-slate-800 dark:text-white">${safeText(matchProfile.label)} for this gig</p>
+                        <p class="text-[10px] text-slate-600 dark:text-slate-300 leading-relaxed">
+                            ${matchProfile.highPayLocked ? `More qualified profiles get high paying jobs after ${matchProfile.qualification.requiredTasks} completed approved tasks. You currently have ${matchProfile.completedTasks}.` : `This score considers skills, bio, education, location, competency status and completed workspace history.`}
+                        </p>
+                    </div>
+                </div>
             </div>
             <div>
                 <h4 class="font-bold text-xs mb-1 text-slate-700 dark:text-slate-300">Description</h4>
@@ -4924,10 +5561,18 @@ window.openApplyModal = jobId => {
     
     const job = allJobs.find(j => j.id === jobId);
     currentApplyJobId = jobId;
+    const matchProfile = getJobMatchProfile(job, userData);
     
     document.getElementById('apply-job-summary').innerHTML = `
         <div class="font-bold text-slate-800 dark:text-white">${safeText(job?.title)}</div>
-        <div class="text-slate-500 text-xs mt-0.5">${fmtMoney(job?.budget)} · ${safeText(job?.location||'Remote')}</div>`;
+        <div class="text-slate-500 text-xs mt-0.5">${fmtMoney(job?.budget)} · ${safeText(job?.location||'Remote')}</div>
+        <div class="mt-2 qualification-callout rounded-lg p-2">
+            <div class="flex items-center justify-between gap-2 mb-1">
+                <span class="text-[9px] font-black uppercase text-slate-500">${safeText(matchProfile.label)}</span>
+                <span class="badge bg-blue-50 dark:bg-blue-900/30 text-brand">${matchProfile.score}% match</span>
+            </div>
+            <p class="text-[10px] text-slate-600 dark:text-slate-300 leading-relaxed">${matchProfile.highPayLocked ? `Premium gigs rank better after ${matchProfile.qualification.requiredTasks} completed approved tasks. Complete profile details and finish more work to qualify for higher pay.` : `Better profile details improve matching and employer trust.`}</p>
+        </div>`;
         
     document.getElementById('apply-rate').value = job?.budget||'';
     document.getElementById('apply-pitch').value = '';
@@ -5017,6 +5662,110 @@ window.submitApplication = async () => {
 };
 
 // ===== APPLICATIONS MANAGER =====
+function renderApplicantProfileCard(app, job) {
+    const worker = allUsers.find(u => u.uid === app.workerId) || {
+        uid: app.workerId,
+        name: app.workerName,
+        phone: app.workerPhone,
+        role: 'worker',
+        skills: [],
+        headline: 'Worker profile not fully loaded'
+    };
+    const skills = toProfileList(worker.skills);
+    const reviews = allReviews.filter(r => r.targetId === worker.uid);
+    const avgRating = reviews.length ? (reviews.reduce((sum, r) => sum + Number(r.rating || 0), 0) / reviews.length).toFixed(1) : '0.0';
+    const completed = getWorkerCompletedTaskCount(worker);
+    const profileScore = getProfileCompletionScore(worker);
+    const matchProfile = getJobMatchProfile(job || {}, worker);
+    const payoutReady = !!(worker.mpesa || worker.paypal || worker.bankAccountNumber || worker.bankAccNo || worker.bankName);
+    const portfolioUrl = worker.portfolio ? (String(worker.portfolio).startsWith('http') ? worker.portfolio : `https://${worker.portfolio}`) : '';
+    const recentCompleted = allJobs
+        .filter(j => j.workerId === worker.uid && ['completed','paid_out'].includes(getJobStatus(j)))
+        .sort((a,b) => dateTimeValue(b.updatedAt || b.createdAt, 0) - dateTimeValue(a.updatedAt || a.createdAt, 0))
+        .slice(0, 2);
+    const latestReview = reviews
+        .sort((a,b) => dateTimeValue(b.createdAt, 0) - dateTimeValue(a.createdAt, 0))[0];
+    const workerName = safeText(worker.name || app.workerName || 'Worker');
+    const avatar = worker.avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(worker.name || app.workerName || 'Worker')}&background=2563eb&color=fff`;
+    const compactStats = [
+        ['Match', `${matchProfile.score}%`],
+        ['Rating', `${avgRating} (${reviews.length})`],
+        ['Done', String(completed)],
+        ['Profile', `${profileScore}%`],
+        ['Rate', `${fmtMoney(worker.rate || worker.hourlyRate || app.rate || 0)}/hr`],
+        ['Bid', fmtMoney(app.rate || 0)],
+        ['Delivery', safeText(app.delivery || 'Not set')],
+        ['Payout', payoutReady ? 'Ready' : 'Missing'],
+        ['Location', safeText(worker.location || worker.city || 'Not set')],
+        ['Education', safeText(worker.education || 'Not set')],
+        ['Experience', `${Number(worker.experience || 0)} yrs`],
+        ['Response', safeText(worker.responseTime || 'N/A')],
+        ['Views', String(worker.profileViews || 0)],
+        ['Availability', safeText(worker.availability || (worker.isAvailable ? 'Available' : 'Busy'))],
+        ['Portfolio', portfolioUrl ? 'Yes' : 'No'],
+        ['Test', worker.testPassed ? 'Passed' : 'Pending'],
+        ['Complete', `${Number(worker.completionRate || 0)}%`],
+        ['Earned', fmtMoney(worker.totalEarnings || 0)],
+        ['Lang 1', safeText(worker.lang1 || 'Not set')],
+        ['Lang 2', safeText(worker.lang2 || 'Not set')]
+    ];
+    const compactStatsHtml = compactStats.map(([label, value]) => `<div class="compact-data-cell"><span>${label}</span><span>${value}</span></div>`).join('');
+    const compactSkillsHtml = skills.length
+        ? skills.slice(0, 10).map(s => `<span class="compact-chip bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 border border-blue-100 dark:border-blue-800">${safeText(s)}</span>`).join('') + (skills.length > 10 ? `<span class="compact-chip bg-slate-100 dark:bg-slate-700 text-slate-500">+${skills.length - 10}</span>` : '')
+        : '<span class="text-[10px] text-slate-400 italic">No skills listed</span>';
+    const compactRecentWork = recentCompleted.length
+        ? recentCompleted.map(j => `${safeText(j.title || 'Completed gig')} (${fmtMoney(j.budget || 0)})`).join(' | ')
+        : 'No completed work yet';
+    const compactLatestReview = latestReview ? `${Number(latestReview.rating || 0)}/5 - ${safeText(latestReview.text || 'Reviewed')}` : 'No reviews yet';
+
+    return `
+        <div class="compact-profile-card bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 mb-2">
+            <div class="flex flex-col md:flex-row md:items-start gap-2">
+                <div class="flex items-start gap-2 flex-1 min-w-0">
+                    <img src="${avatar}" class="w-10 h-10 rounded-lg object-cover bg-slate-100 border border-slate-200 dark:border-slate-700 shrink-0">
+                    <div class="min-w-0 flex-1">
+                        <div class="flex flex-wrap items-center gap-1 mb-0.5">
+                            <button onclick='showPublicProfile(${jsString(worker.uid)})' class="font-bold text-xs text-slate-900 dark:text-white hover:text-brand text-left truncate">${workerName}</button>
+                            ${worker.testPassed ? '<span class="compact-chip bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">Verified</span>' : '<span class="compact-chip bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400">Test pending</span>'}
+                            ${worker.isAvailable ? '<span class="compact-chip bg-blue-50 dark:bg-blue-900/30 text-brand">Available</span>' : '<span class="compact-chip bg-slate-100 dark:bg-slate-700 text-slate-500">Busy</span>'}
+                            <span class="compact-chip bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">${safeText(matchProfile.label)}</span>
+                        </div>
+                        <p class="text-[10px] text-slate-500 dark:text-slate-400 line-clamp-2">${safeText(worker.headline || worker.tagline || 'No headline yet')} - ${safeText(worker.bio || 'No bio provided yet.')}</p>
+                    </div>
+                </div>
+                <div class="text-right shrink-0">
+                    <p class="font-display font-black text-base text-brand leading-none">${matchProfile.score}%</p>
+                    <p class="text-[8px] text-slate-400 font-bold">match</p>
+                </div>
+            </div>
+
+            <div class="job-match-meter mt-2"><span style="width:${matchProfile.score}%"></span></div>
+            <p class="text-[9px] text-slate-500 dark:text-slate-400 mt-1">${safeText(matchProfile.label)} - ${matchProfile.highPayLocked ? 'still building premium-job history' : 'profile details support this match'}</p>
+
+            <div class="compact-data-grid mt-2">${compactStatsHtml}</div>
+
+            <div class="mt-2 flex flex-wrap gap-1">${compactSkillsHtml}</div>
+
+            <div class="grid md:grid-cols-2 gap-1.5 mt-2">
+                <div class="compact-data-cell">
+                    <p class="text-[9px] font-black uppercase text-slate-400 mb-1">Recent work</p>
+                    ${recentCompleted.length ? recentCompleted.map(j => `<p class="text-[10px] text-slate-700 dark:text-slate-300 truncate">${safeText(j.title || 'Completed gig')} - ${fmtMoney(j.budget || 0)}</p>`).join('') : '<p class="text-[10px] text-slate-400 italic">No completed work yet</p>'}
+                </div>
+                <div class="compact-data-cell">
+                    <p class="text-[9px] font-black uppercase text-slate-400 mb-1">Latest review</p>
+                    ${latestReview ? `<p class="text-[10px] text-slate-700 dark:text-slate-300 line-clamp-2"><span class="text-amber-500">${'★'.repeat(Number(latestReview.rating || 0))}</span> ${safeText(latestReview.text || 'Reviewed')}</p>` : '<p class="text-[10px] text-slate-400 italic">No reviews yet</p>'}
+                </div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mt-3">
+                <button onclick='showPublicProfile(${jsString(worker.uid)})' class="btn btn-secondary text-[10px] py-1.5 px-2"><i data-lucide="user-round" class="w-3 h-3"></i> Full Profile</button>
+                ${portfolioUrl ? `<a href="${safeText(portfolioUrl)}" target="_blank" class="btn btn-secondary text-[10px] py-1.5 px-2"><i data-lucide="external-link" class="w-3 h-3"></i> Portfolio</a>` : ''}
+                ${app.status === 'accepted' && ['in_progress','in_review'].includes(getJobStatus(job)) ? `<button onclick='startChatDirectly(${jsString(worker.uid)}, ${jsString(worker.name || app.workerName || 'Worker')})' class="btn bg-blue-100 text-blue-700 hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-400 text-[10px] py-1.5 px-2"><i data-lucide="message-square" class="w-3 h-3"></i> Message</button>` : `<span class="badge bg-slate-100 dark:bg-slate-700 text-slate-500">Messaging opens after acceptance</span>`}
+            </div>
+        </div>
+    `;
+}
+
 window.openAppsModal = async jobId => {
     const job = allJobs.find(j => j.id === jobId);
     document.getElementById('apps-modal-job-title').innerText = job?.title||'';
@@ -5026,7 +5775,7 @@ window.openAppsModal = async jobId => {
         document.getElementById('apps-list').innerHTML='<p class="text-slate-400 text-sm text-center py-8">No applications yet</p>';
     } else {
         document.getElementById('apps-list').innerHTML = apps.map(a => `
-            <div class="bg-slate-50 dark:bg-slate-700/50 p-3 rounded-xl border dark:border-slate-600">
+            <div class="bg-slate-50 dark:bg-slate-700/50 p-2 rounded-lg border dark:border-slate-600">
                 <div class="flex justify-between items-start mb-1.5">
                     <div class="cursor-pointer hover:text-brand" onclick="showPublicProfile('${a.workerId}')">
                         <p class="font-bold text-slate-800 dark:text-white text-xs">${safeText(a.workerName)}</p>
@@ -5034,9 +5783,13 @@ window.openAppsModal = async jobId => {
                     </div>
                     <span class="badge ${a.status==='pending'?'bg-amber-100 text-amber-700':a.status==='accepted'?'bg-emerald-100 text-emerald-700':'bg-red-100 text-red-600'}">${a.status}</span>
                 </div>
-                <p class="text-[10px] text-slate-600 dark:text-slate-300 mb-2 leading-relaxed">${safeText(a.pitch)}</p>
+                ${renderApplicantProfileCard(a, job)}
+                <div class="bg-white dark:bg-slate-800 p-1.5 rounded-lg border border-slate-200 dark:border-slate-600 mb-1.5">
+                    <p class="text-[10px] font-bold text-slate-700 dark:text-slate-200 mb-1">Pitch / Cover Letter</p>
+                    <p class="text-[10px] text-slate-600 dark:text-slate-300 leading-relaxed">${safeText(a.pitch)}</p>
+                </div>
                 ${Array.isArray(a.customAnswers) && a.customAnswers.length ? `
-                    <div class="mb-2 space-y-1.5 bg-white dark:bg-slate-800 p-2 rounded-lg border border-slate-200 dark:border-slate-600">
+                    <div class="mb-1.5 space-y-1 bg-white dark:bg-slate-800 p-1.5 rounded-lg border border-slate-200 dark:border-slate-600">
                         <p class="text-[10px] font-bold text-slate-700 dark:text-slate-200">Competency Answers</p>
                         ${a.customAnswers.map(ans => `
                             <div>
@@ -5179,6 +5932,33 @@ function applyCompletedWorkerWorkspaceLock(job) {
         }
     });
     lucide.createIcons();
+}
+
+function renderWorkspaceCommandStrip(job) {
+    if(!job) return;
+    const todos = Array.isArray(job.todos) ? job.todos : [];
+    const done = todos.filter(t => t.done).length;
+    const progress = todos.length ? Math.round((done / todos.length) * 100) : 0;
+    const nextTodo = todos.find(t => !t.done);
+    const status = getJobStatus(job).replace('_', ' ');
+    const isWorker = userData?.role === 'worker';
+    const roleText = isWorker ? 'Worker delivery view' : 'Employer review view';
+    const deadline = job.extension?.status === 'approved' ? `${job.extension.requestedDate} (extended)` : (job.deadline || job.expiry || 'Flexible');
+    const state = ['completed','paid_out'].includes(getJobStatus(job)) ? 'Archived record' : (getJobStatus(job) === 'in_review' ? 'Ready for review' : 'Active workspace');
+
+    const progressEl = document.getElementById('ws-command-progress');
+    const progressNoteEl = document.getElementById('ws-command-progress-note');
+    const nextEl = document.getElementById('ws-command-next');
+    const stateEl = document.getElementById('ws-command-state');
+    const roleEl = document.getElementById('ws-command-role');
+    const deadlineEl = document.getElementById('ws-command-deadline');
+
+    if(progressEl) progressEl.textContent = `${progress}%`;
+    if(progressNoteEl) progressNoteEl.textContent = todos.length ? `${done} of ${todos.length} tasks complete` : 'Add tasks to track work';
+    if(nextEl) nextEl.textContent = nextTodo?.text || (getJobStatus(job) === 'in_review' ? 'Review submission in Action Center' : 'Use Action Center for the next move');
+    if(stateEl) stateEl.textContent = `${state} - ${status}`;
+    if(roleEl) roleEl.textContent = roleText;
+    if(deadlineEl) deadlineEl.textContent = `${deadline} - ${fmtMoney(job.budget)}`;
 }
 
 window.openWorkspace = async (jobId) => {
@@ -5335,6 +6115,7 @@ window.openWorkspace = async (jobId) => {
     renderWorkspaceTime(job);
     renderWorkspaceLogs(job);
     renderWorkspaceToolkit(job);
+    renderWorkspaceCommandStrip(job);
     const wsHistoryBtn = document.getElementById('ws-history-btn');
     if(wsHistoryBtn) {
         if(userData.role === 'employer') wsHistoryBtn.classList.remove('hidden');
@@ -5416,6 +6197,7 @@ function renderWorkspaceTodos(job) {
         list.innerHTML = '<p class="text-[10px] text-slate-400 italic text-center mt-4">No tasks added yet.</p>';
         document.getElementById('ws-milestone-bar').style.width = '0%';
         document.getElementById('ws-milestone-text').innerText = '0% Complete';
+        renderWorkspaceCommandStrip(job);
         return;
     }
 
@@ -5435,6 +6217,7 @@ function renderWorkspaceTodos(job) {
     `).join('');
     
     lucide.createIcons();
+    renderWorkspaceCommandStrip(job);
 }
 
 window.addWorkspaceTodo = async () => {
@@ -6967,6 +7750,53 @@ window.renderMyGigs = () => {
         });
     }
 
+    const focusPanel = document.getElementById('mygigs-employer-panel');
+    if(focusPanel) {
+        const posted = userData.role === 'employer' ? allJobs.filter(j => j.employerId === currentUser.uid) : [];
+        const openCount = posted.filter(j => getJobStatus(j) === 'open').length;
+        const inProgressCount = posted.filter(j => ['in_progress','in_review'].includes(getJobStatus(j))).length;
+        const completedCount = posted.filter(j => ['completed','paid_out'].includes(getJobStatus(j))).length;
+        const workspaceQueue = items
+            .filter(j => ['in_progress','in_review','disputed'].includes(getJobStatus(j)))
+            .sort((a,b) => {
+                const priority = { disputed: 0, in_review: 1, in_progress: 2 };
+                return (priority[getJobStatus(a)] ?? 5) - (priority[getJobStatus(b)] ?? 5);
+            })
+            .slice(0, 3);
+        const employerSummary = userData.role === 'employer' ? `
+            <div class="bg-white dark:bg-slate-800 p-3 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center justify-between gap-3">
+                <div>
+                    <div class="text-xs text-slate-500">Your posted jobs</div>
+                    <div class="font-display font-black text-xl mt-1">${posted.length}</div>
+                    <div class="text-[10px] text-slate-400 mt-1">Open: ${openCount} - Active: ${inProgressCount} - Completed: ${completedCount}</div>
+                </div>
+                <div class="flex flex-col gap-2 shrink-0">
+                    <button onclick="navigate('post')" class="btn btn-primary text-[10px] py-1.5">Post New Job</button>
+                    <button onclick="navigate('jobs')" class="btn btn-secondary text-[10px] py-1.5">Browse Market</button>
+                </div>
+            </div>` : '';
+        const workspaceSummary = `
+            <div class="qualification-callout rounded-xl p-3">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-3">
+                    <div>
+                        <p class="text-xs font-black text-slate-800 dark:text-white flex items-center gap-1.5"><i data-lucide="layout-dashboard" class="w-4 h-4 text-brand"></i> Workspace priority</p>
+                        <p class="text-[10px] text-slate-600 dark:text-slate-300">Active work, review queues, disputes and delivery actions stay here first.</p>
+                    </div>
+                    <button onclick="myGigsPreferredFilter='in_progress'; document.getElementById('mygigs-filter').value='in_progress'; renderMyGigs()" class="btn btn-secondary text-[10px] py-1.5 px-2">Active Only</button>
+                </div>
+                <div class="grid md:grid-cols-3 gap-2">
+                    ${workspaceQueue.length ? workspaceQueue.map(j => `
+                        <button onclick="openWorkspace('${j.id}')" class="text-left bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-2.5 hover:border-brand transition">
+                            <span class="badge bg-blue-50 dark:bg-blue-900/30 text-brand mb-1">${safeText(getJobStatus(j).replace('_',' '))}</span>
+                            <p class="font-bold text-xs text-slate-800 dark:text-white truncate">${safeText(j.title)}</p>
+                            <p class="text-[9px] text-slate-500 mt-0.5">${fmtMoney(j.budget)} - ${safeText(j.deadline || 'Flexible')}</p>
+                        </button>
+                    `).join('') : `<div class="md:col-span-3 text-[10px] text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-3">No active workspace needs attention right now.</div>`}
+                </div>
+            </div>`;
+        focusPanel.innerHTML = `<div class="space-y-3 mb-3">${employerSummary}${workspaceSummary}</div>`;
+    }
+
     items.sort((a,b) => dateTimeValue(b.updatedAt||b.createdAt, 0) - dateTimeValue(a.updatedAt||a.createdAt, 0));
 
     if(!items.length) {
@@ -7155,6 +7985,49 @@ window.renderBookmarks = () => {
 };
 
 // ===================== MESSAGING =====================
+const CONTACT_SAFETY_PATTERNS = [
+    { type: 'email address', pattern: /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i },
+    { type: 'phone number', pattern: /(?:\+?\d[\s().-]*){8,}/ },
+    { type: 'web link', pattern: /\b(?:https?:\/\/|www\.|[a-z0-9-]+\.(?:com|co|ke|net|org|io|app|me|info|biz|online|site)\b)/i },
+    { type: 'WhatsApp contact', pattern: /\b(?:whats\s*app|whatsapp|wa\.me|wa\s+me)\b/i },
+    { type: 'Telegram contact', pattern: /\b(?:telegram|t\.me|tele\s*gram)\b/i },
+    { type: 'social handle', pattern: /(?:^|\s)@[a-z0-9_.]{3,}/i },
+    { type: 'social channel', pattern: /\b(?:instagram|insta|facebook|fb|twitter|x\.com|linkedin|snapchat|discord|signal|skype)\b/i },
+    { type: 'external meeting channel', pattern: /\b(?:zoom|google\s*meet|meet\.google|teams|microsoft\s*teams)\b/i },
+    { type: 'direct contact request', pattern: /\b(?:call me|text me|email me|dm me|inbox me|reach me|contact me outside|outside the platform)\b/i },
+    { type: 'obfuscated email', pattern: /\b[a-z0-9._%+-]+\s*(?:\(|\[)?\s*(?:at|@)\s*(?:\)|\])?\s*[a-z0-9.-]+\s*(?:\(|\[)?\s*(?:dot|\.)\s*(?:\)|\])?\s*[a-z]{2,}\b/i },
+    { type: 'obfuscated phone number', pattern: /\b(?:zero|one|two|three|four|five|six|seven|eight|nine|oh|o)\b(?:[\s-]+(?:zero|one|two|three|four|five|six|seven|eight|nine|oh|o|\d)){6,}/i }
+];
+
+function detectContactSafetyIssue(text = '') {
+    const normalized = String(text || '')
+        .replace(/\u200b/g, '')
+        .replace(/[(){}\[\]]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    const hit = CONTACT_SAFETY_PATTERNS.find(rule => rule.pattern.test(normalized));
+    if(hit) return {
+        blocked: true,
+        type: hit.type,
+        message: `Blocked ${hit.type}. Keep communication, payments, files and approvals inside Gigs Kenya. Use the workspace File Vault for deliverable links.`
+    };
+    return { blocked: false };
+}
+
+function showContactSafetyNotice(issue) {
+    const area = document.getElementById('chat-input-area');
+    if(!area) return;
+    let notice = document.getElementById('chat-contact-safety-notice');
+    if(!notice) {
+        notice = document.createElement('div');
+        notice.id = 'chat-contact-safety-notice';
+        notice.className = 'mb-2 p-2 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-[10px] text-red-700 dark:text-red-300 font-bold leading-relaxed';
+        area.prepend(notice);
+    }
+    notice.innerHTML = `<i data-lucide="shield-alert" class="w-3 h-3 inline mr-1"></i>${safeText(issue.message || 'Message blocked for contact safety.')}`;
+    lucide.createIcons();
+}
+
 window.renderMessages = () => {
     const threadList = document.getElementById('thread-list');
     
@@ -7271,6 +8144,9 @@ window.openThread = async (otherId, otherName) => {
         // Always show input on desktop; on non-active relationships show a locked notice but also provide a disabled input for accessibility
         if (hasActiveJob) {
             inputArea.innerHTML = `
+                <div class="mb-2 p-2 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 text-[10px] text-blue-700 dark:text-blue-300 leading-relaxed">
+                    <i data-lucide="shield-check" class="w-3 h-3 inline mr-1"></i> Keep contact, payments and approvals inside Gigs Kenya. Phone numbers, emails, links and external channels are blocked in chat.
+                </div>
                 <form onsubmit="sendMessage(event)" class="flex gap-2 relative">
                     <input id="chat-input" type="text" class="gk-input text-xs py-2 pr-10" placeholder="Type a message..." autocomplete="off">
                     <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 text-brand hover:text-branddark p-1 rounded-full"><i data-lucide="send" class="w-4 h-4"></i></button>
@@ -7351,6 +8227,12 @@ window.sendMessage = async (e) => {
     const input = document.getElementById('chat-input');
     const text = input.value.trim();
     if(!text || !activeThread) return;
+    const contactIssue = activeThread !== 'admin_support' ? detectContactSafetyIssue(text) : { blocked: false };
+    if(contactIssue.blocked) {
+        showContactSafetyNotice(contactIssue);
+        showToast('Message blocked. Keep communication inside Gigs Kenya.', 'error');
+        return;
+    }
     
     input.value = '';
     
@@ -7794,6 +8676,74 @@ window.completeProfileNow = () => {
     openSettings();
     switchSettingsTab('professional');
 };
+
+function renderHigherPayGuideStatus(source = 'manual') {
+    const box = document.getElementById('higher-pay-guide-status');
+    if(!box) return;
+    const profileScore = getProfileCompletionScore(userData);
+    const completedTasks = getWorkerCompletedTaskCount(userData);
+    const skills = toProfileList(userData?.skills || []);
+    const bioReady = String(userData?.bio || '').trim().length >= 60;
+    const payoutReady = !!(userData?.mpesa || userData?.paypal || userData?.bankAccountNumber || userData?.bankAccNo || userData?.bankName);
+    const nextSteps = [];
+    if(!bioReady) nextSteps.push('write a stronger bio');
+    if(skills.length < 2) nextSteps.push('add at least 2 skills');
+    if(!userData?.testPassed) nextSteps.push('pass the competency test');
+    if(!payoutReady) nextSteps.push('add payout details');
+    if(completedTasks < 5) nextSteps.push(`${5 - completedTasks} more approved task${5 - completedTasks === 1 ? '' : 's'}`);
+    const nextText = nextSteps.length ? nextSteps.slice(0, 3).join(', ') : 'keep your profile and workspace history fresh';
+
+    box.innerHTML = `
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div>
+                <p class="text-xs font-bold text-slate-900 dark:text-white">Your premium readiness</p>
+                <p class="text-[10px] text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
+                    Profile ${profileScore}% complete. ${completedTasks} approved completed task${completedTasks === 1 ? '' : 's'}. Next: ${safeText(nextText)}.
+                </p>
+            </div>
+            <div class="grid grid-cols-3 gap-2 min-w-[210px]">
+                <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-2 text-center">
+                    <p class="text-[9px] text-slate-400">Profile</p>
+                    <p class="font-black text-sm text-brand">${profileScore}%</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-2 text-center">
+                    <p class="text-[9px] text-slate-400">Done</p>
+                    <p class="font-black text-sm text-emerald-600">${completedTasks}</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-2 text-center">
+                    <p class="text-[9px] text-slate-400">Test</p>
+                    <p class="font-black text-sm ${userData?.testPassed ? 'text-emerald-600' : 'text-amber-600'}">${userData?.testPassed ? 'Passed' : 'Pending'}</p>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+window.openHigherPayGuide = (source = 'manual') => {
+    renderHigherPayGuideStatus(source);
+    document.getElementById('higher-pay-guide-modal')?.classList.remove('gk-hidden');
+    try { localStorage.setItem('gk_higher_pay_guide_seen_v1', new Date().toISOString()); } catch(e) {}
+    lucide.createIcons();
+};
+
+window.closeHigherPayGuide = () => {
+    document.getElementById('higher-pay-guide-modal')?.classList.add('gk-hidden');
+};
+
+function maybeShowHigherPayGuide() {
+    if(!currentUser || userData?.role !== 'worker') return;
+    try {
+        if(localStorage.getItem('gk_higher_pay_guide_seen_v1')) return;
+    } catch(e) {}
+    const profileScore = getProfileCompletionScore(userData);
+    const completedTasks = getWorkerCompletedTaskCount(userData);
+    if(profileScore >= 85 && completedTasks >= 5) return;
+    setTimeout(() => {
+        if(activeView === 'jobs' && document.getElementById('higher-pay-guide-modal')?.classList.contains('gk-hidden')) {
+            openHigherPayGuide('auto');
+        }
+    }, 800);
+}
 
 window.openReferralRules = () => {
     document.getElementById('referral-rules-modal')?.classList.remove('gk-hidden');
