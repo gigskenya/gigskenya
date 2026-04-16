@@ -4525,8 +4525,6 @@ window.toggleNotificationSounds = (checked) => {
     localStorage.setItem('gk_sounds_enabled', checked ? 'true' : 'false');
     updateNotifSoundToggleUI();
     if (checked) {
-        window.AudioContext = window.AudioContext || window.webkitAudioContext;
-        if (!soundCtx) soundCtx = new window.AudioContext();
         playSystemSound('notif'); 
         showToast('Notification sounds enabled', 'success');
     } else {
@@ -4540,32 +4538,78 @@ window.toggleNotificationSoundQuick = (e) => {
 };
 
 window.playSystemSound = (type = 'notif') => {
-    if (!soundsEnabled || !soundCtx) return;
-    if (soundCtx.state === 'suspended') soundCtx.resume();
+    if (!soundsEnabled) return;
+    if (!soundCtx) {
+        try {
+            window.AudioContext = window.AudioContext || window.webkitAudioContext;
+            soundCtx = new window.AudioContext();
+        } catch(e) { return; }
+    }
+    if (soundCtx.state === 'suspended') {
+        soundCtx.resume().catch(()=>{});
+    }
     
-    const osc = soundCtx.createOscillator();
-    const gain = soundCtx.createGain();
-    osc.connect(gain);
-    gain.connect(soundCtx.destination);
-    
+    const t = soundCtx.currentTime;
+
     if (type === 'notif') {
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(880, soundCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(1760, soundCtx.currentTime + 0.1); 
-        gain.gain.setValueAtTime(0.3, soundCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, soundCtx.currentTime + 0.3);
-        osc.start(soundCtx.currentTime);
-        osc.stop(soundCtx.currentTime + 0.3);
+        const osc1 = soundCtx.createOscillator();
+        const osc2 = soundCtx.createOscillator();
+        const gainNode = soundCtx.createGain();
+        
+        osc1.type = 'sine';
+        osc2.type = 'sine';
+        
+        osc1.frequency.setValueAtTime(880, t);
+        osc2.frequency.setValueAtTime(1174.66, t + 0.1); 
+        
+        gainNode.gain.setValueAtTime(0, t);
+        gainNode.gain.linearRampToValueAtTime(0.2, t + 0.02);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, t + 0.4);
+        
+        osc1.connect(gainNode);
+        osc2.connect(gainNode);
+        gainNode.connect(soundCtx.destination);
+        
+        osc1.start(t);
+        osc1.stop(t + 0.4);
+        
+        osc2.start(t + 0.1);
+        osc2.stop(t + 0.5);
     } else if (type === 'msg') {
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(600, soundCtx.currentTime);
-        osc.frequency.setValueAtTime(800, soundCtx.currentTime + 0.1);
-        gain.gain.setValueAtTime(0.2, soundCtx.currentTime);
-        gain.gain.linearRampToValueAtTime(0, soundCtx.currentTime + 0.2);
-        osc.start(soundCtx.currentTime);
-        osc.stop(soundCtx.currentTime + 0.2);
+        const osc = soundCtx.createOscillator();
+        const gainNode = soundCtx.createGain();
+        
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(600, t);
+        osc.frequency.exponentialRampToValueAtTime(1200, t + 0.1);
+        
+        gainNode.gain.setValueAtTime(0, t);
+        gainNode.gain.linearRampToValueAtTime(0.2, t + 0.02);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, t + 0.2);
+        
+        osc.connect(gainNode);
+        gainNode.connect(soundCtx.destination);
+        
+        osc.start(t);
+        osc.stop(t + 0.2);
     }
 };
+
+function unlockAudio() {
+    if (soundsEnabled) {
+        if (!soundCtx) {
+            try {
+                window.AudioContext = window.AudioContext || window.webkitAudioContext;
+                soundCtx = new window.AudioContext();
+            } catch(e) {}
+        }
+        if (soundCtx && soundCtx.state === 'suspended') {
+            soundCtx.resume().catch(()=>{});
+        }
+    }
+}
+document.addEventListener('click', unlockAudio, { passive: true });
+document.addEventListener('keydown', unlockAudio, { passive: true });
 
 window.promptForSystemSounds = () => {
     if (soundPromptDismissed) return;
