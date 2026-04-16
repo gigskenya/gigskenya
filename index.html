@@ -307,6 +307,133 @@
         .gradient-hero {
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1e3a5f 100%);
         }
+
+        .home-hero-shell {
+            position: relative;
+            isolation: isolate;
+        }
+
+        .home-hero-shell::before {
+            content: '';
+            position: absolute;
+            inset: 1rem;
+            border-radius: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, .08);
+            pointer-events: none;
+        }
+
+        .home-grid-lines {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(148, 163, 184, .10) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(148, 163, 184, .10) 1px, transparent 1px);
+            background-size: 120px 120px;
+            opacity: .35;
+            pointer-events: none;
+        }
+
+        .home-kicker-line {
+            display: inline-flex;
+            align-items: center;
+            gap: .7rem;
+        }
+
+        .home-kicker-line::before,
+        .home-kicker-line::after {
+            content: '';
+            display: block;
+            height: 1px;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, .35);
+        }
+
+        .home-kicker-line::before {
+            width: 2.8rem;
+        }
+
+        .home-kicker-line::after {
+            width: 1.2rem;
+            background: rgba(255, 255, 255, .2);
+        }
+
+        .home-hero-stat,
+        .home-soft-card {
+            border: 1px solid rgba(255, 255, 255, .12);
+            background: rgba(255, 255, 255, .08);
+            backdrop-filter: blur(10px);
+        }
+
+        .home-section-lead {
+            display: inline-flex;
+            align-items: center;
+            gap: .75rem;
+            font-size: .72rem;
+            font-weight: 800;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: #2563eb;
+        }
+
+        .home-section-lead::before {
+            content: '';
+            width: 2.5rem;
+            height: 1px;
+            border-radius: 9999px;
+            background: rgba(37, 99, 235, .55);
+        }
+
+        .home-section-rule {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(148, 163, 184, .45), transparent);
+        }
+
+        .home-panel {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, .04);
+        }
+
+        .dark .home-panel {
+            background: #1e293b;
+            border-color: #334155;
+        }
+
+        .home-panel-accent {
+            width: 3.25rem;
+            height: 3px;
+            border-radius: 9999px;
+            background: linear-gradient(90deg, #2563eb, rgba(37, 99, 235, .18));
+        }
+
+        .home-list-row + .home-list-row {
+            border-top: 1px solid #e2e8f0;
+            padding-top: .85rem;
+        }
+
+        .dark .home-list-row + .home-list-row {
+            border-top-color: #334155;
+        }
+
+        .home-quick-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+            padding: .5rem .75rem;
+            border-radius: .9rem;
+            border: 1px solid #dbeafe;
+            background: #f8fbff;
+            color: #1e3a8a;
+            font-size: .72rem;
+            font-weight: 700;
+        }
+
+        .dark .home-quick-chip {
+            border-color: #1e3a5f;
+            background: #0f172a;
+            color: #bfdbfe;
+        }
         
         .badge {
             display: inline-flex;
@@ -648,6 +775,15 @@
 
             .gradient-hero {
                 border-radius: .85rem;
+            }
+
+            .home-hero-shell::before {
+                inset: .65rem;
+                border-radius: .85rem;
+            }
+
+            .home-grid-lines {
+                background-size: 84px 84px;
             }
 
             .btn {
@@ -1331,6 +1467,7 @@
                 <div>
                     <label class="block text-[10px] font-bold mb-1 text-slate-700 dark:text-slate-300">Category *</label>
                     <select id="edit-job-category" required class="gk-input">
+                        <option>Cyber Cafe Services</option>
                         <option>Writing</option>
                         <option>Tech</option>
                         <option>Design</option>
@@ -1390,15 +1527,18 @@
 <div id="expand-work-modal" class="modal-overlay gk-hidden" style="z-index:400" onclick="closeExpandWork()">
     <div class="modal-box p-4 md:p-6" style="max-width: 800px; max-height: 90dvh; display: flex; flex-direction: column;" onclick="event.stopPropagation()">
         <div class="flex items-center justify-between mb-3 shrink-0">
-            <h3 class="font-display font-black text-lg text-slate-900 dark:text-white flex items-center gap-2"><i data-lucide="file-text" class="text-brand w-5 h-5"></i> Submitted Work Details</h3>
+            <div>
+                <h3 class="font-display font-black text-lg text-slate-900 dark:text-white flex items-center gap-2"><i data-lucide="file-text" class="text-brand w-5 h-5"></i> Work Message / Details</h3>
+                <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">The expanded message can be the work note, handover text, or submission summary.</p>
+            </div>
             <button onclick="closeExpandWork()" class="p-1 text-slate-400 hover:text-slate-700 dark:hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
         </div>
         <div class="flex-1 overflow-hidden flex flex-col min-h-[50vh]">
             <textarea id="expand-work-text" class="gk-input w-full h-full flex-1 resize-none text-xs md:text-sm p-4 leading-relaxed bg-slate-50 dark:bg-slate-900 font-mono text-slate-700 dark:text-slate-300" readonly></textarea>
         </div>
         <div class="flex gap-2 pt-3 shrink-0">
-            <button onclick="downloadExpandedWork()" class="btn btn-primary flex-1 py-2 shadow-md"><i data-lucide="download" class="w-4 h-4"></i> Download as .txt</button>
-            <button onclick="downloadExpandedWorkPDF()" class="btn btn-secondary flex-1 py-2"><i data-lucide="file-down" class="w-4 h-4"></i> PDF</button>
+            <button onclick="downloadExpandedWork()" class="btn btn-primary flex-1 py-2 shadow-md"><i data-lucide="download" class="w-4 h-4"></i> Download .txt</button>
+            <button onclick="downloadExpandedWorkPDF()" class="btn btn-secondary flex-1 py-2"><i data-lucide="file-down" class="w-4 h-4"></i> Download PDF</button>
             <button onclick="closeExpandWork()" class="btn btn-secondary flex-1 py-2">Close</button>
         </div>
     </div>
@@ -1492,10 +1632,10 @@
         
         <!-- Workspace Navigation Tabs -->
         <div class="flex border-b dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-4 overflow-x-auto scrollbar-hide shrink-0">
-                <button onclick="switchWorkspaceTab('overview')" id="ws-tab-btn-overview" class="ws-tab-btn px-4 py-3 text-[10px] md:text-xs font-bold border-b-2 border-brand text-brand whitespace-nowrap">Overview & Tasks</button>
-                <button onclick="switchWorkspaceTab('vault')" id="ws-tab-btn-vault" class="ws-tab-btn px-4 py-3 text-[10px] md:text-xs font-bold border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 whitespace-nowrap">File Vault & Time</button>
+                <button onclick="switchWorkspaceTab('overview')" id="ws-tab-btn-overview" class="ws-tab-btn px-4 py-3 text-[10px] md:text-xs font-bold border-b-2 border-brand text-brand whitespace-nowrap">Overview</button>
+                <button onclick="switchWorkspaceTab('vault')" id="ws-tab-btn-vault" class="ws-tab-btn px-4 py-3 text-[10px] md:text-xs font-bold border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 whitespace-nowrap">Deliverables</button>
                 <button onclick="switchWorkspaceTab('activity')" id="ws-tab-btn-activity" class="ws-tab-btn px-4 py-3 text-[10px] md:text-xs font-bold border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 whitespace-nowrap">Activity Log</button>
-                <button onclick="switchWorkspaceTab('action')" id="ws-tab-btn-action" class="ws-tab-btn px-4 py-3 text-[10px] md:text-xs font-bold border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 whitespace-nowrap">Action Center</button>
+                <button onclick="switchWorkspaceTab('action')" id="ws-tab-btn-action" class="ws-tab-btn px-4 py-3 text-[10px] md:text-xs font-bold border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 whitespace-nowrap">Submit & Review</button>
                 <button onclick="switchWorkspaceTab('toolkit')" id="ws-tab-btn-toolkit" class="ws-tab-btn px-4 py-3 text-[10px] md:text-xs font-bold border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 whitespace-nowrap">Ops Toolkit</button>
         </div>
 
@@ -1542,6 +1682,10 @@
                                         <button onclick="switchWorkspaceTab('activity')" class="btn btn-secondary text-[10px] py-2"><i data-lucide="activity" class="w-3.5 h-3.5"></i> Activity</button>
                                         <button onclick="startWorkspaceChat()" class="btn btn-secondary text-[10px] py-2"><i data-lucide="message-square" class="w-3.5 h-3.5"></i> Message</button>
                                 </div>
+                        </div>
+                        <div class="grid lg:grid-cols-3 gap-4">
+                                <div id="ws-guide-card" class="lg:col-span-2 bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm"></div>
+                                <div id="ws-delivery-card" class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm"></div>
                         </div>
                         <div class="grid md:grid-cols-3 gap-4">
                                 <!-- Job Details -->
@@ -2251,7 +2395,7 @@
                 <div>
                     <label class="block text-[10px] font-bold mb-1 text-slate-700 dark:text-slate-300">Category</label>
                     <select id="hire-category" class="gk-input">
-                        <option>Direct Hire</option><option>Writing</option><option>Design</option><option>Technology</option><option>Marketing</option><option>Data Entry</option><option>Tutoring</option><option>Research</option><option>Other</option>
+                        <option>Direct Hire</option><option>Cyber Cafe Services</option><option>Writing</option><option>Design</option><option>Technology</option><option>Marketing</option><option>Data Entry</option><option>Tutoring</option><option>Research</option><option>Other</option>
                     </select>
                 </div>
                 <div>
@@ -2859,15 +3003,17 @@
 
         <!-- ===== HOME VIEW ===== -->
         <div id="view-home" class="view-section fade-in" style="display:block">
-            <section class="gradient-hero rounded-3xl p-5 md:p-8 lg:p-10 mb-4 md:mb-6 text-white shadow-xl relative overflow-hidden">
-                <div class="absolute inset-0 opacity-20" style="background-image:radial-gradient(circle at 15% 15%, #60a5fa 0%, transparent 28%), radial-gradient(circle at 85% 20%, #2563eb 0%, transparent 26%), radial-gradient(circle at 50% 85%, #93c5fd 0%, transparent 26%)"></div>
-                <div class="relative z-10 grid lg:grid-cols-2 gap-6 items-center">
+            <section class="gradient-hero home-hero-shell rounded-3xl p-5 md:p-8 lg:p-10 mb-4 md:mb-6 text-white shadow-xl relative overflow-hidden">
+                <div class="home-grid-lines"></div>
+                <div class="absolute inset-0 opacity-30" style="background-image:radial-gradient(circle at 15% 15%, #60a5fa 0%, transparent 26%), radial-gradient(circle at 88% 18%, #2563eb 0%, transparent 24%), radial-gradient(circle at 50% 86%, #93c5fd 0%, transparent 24%)"></div>
+                <div class="relative z-10 grid lg:grid-cols-[1.15fr_.85fr] gap-6 md:gap-8 items-center">
                     <div>
                         <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] mb-3">
                             <i data-lucide="badge-check" class="w-3.5 h-3.5"></i> Built for Kenya's freelance economy
                         </span>
-                        <h1 class="font-display font-black text-3xl md:text-5xl leading-tight mb-3">Professional freelance hiring and work delivery, made simple.</h1>
-                        <p class="text-slate-200 text-sm md:text-base max-w-2xl mb-5">Gigs Kenya helps employers hire faster, workers earn through trusted projects, and both sides manage work, reviews, payouts, escrow-style workflows, and messaging in one place.</p>
+                        <div class="home-kicker-line text-[10px] md:text-xs font-bold uppercase tracking-[0.18em] text-slate-300 mb-3">Clear briefs, guided workspaces, local payouts</div>
+                        <h1 class="font-display font-black text-3xl md:text-5xl leading-tight mb-3">Hire faster. Work clearly. Deliver professionally.</h1>
+                        <p class="text-slate-200 text-sm md:text-base max-w-2xl mb-5 leading-relaxed">Gigs Kenya keeps jobs, applications, work messages, deliverables, reviews, payouts, cyber cafe services, and worker growth in one clean flow that still feels easy to use on mobile.</p>
                         <div class="flex flex-col sm:flex-row gap-2.5 mb-5">
                             <button onclick="navigate('jobs')" class="btn btn-primary bg-white text-brand hover:bg-slate-100 border-white px-4 py-3 text-sm">
                                 <i data-lucide="search" class="w-4 h-4"></i> Explore Open Jobs
@@ -2879,108 +3025,202 @@
                                 <i data-lucide="smartphone" class="w-4 h-4"></i> Android App
                             </button>
                         </div>
+                        <div class="grid sm:grid-cols-3 gap-2.5 mb-5">
+                            <div class="home-soft-card rounded-2xl p-3">
+                                <p class="text-[10px] uppercase tracking-[0.18em] text-slate-300 font-bold mb-1">Employers</p>
+                                <p class="text-xs text-slate-100">Post, shortlist, message, review submissions, and approve work from one place.</p>
+                            </div>
+                            <div class="home-soft-card rounded-2xl p-3">
+                                <p class="text-[10px] uppercase tracking-[0.18em] text-slate-300 font-bold mb-1">Workers</p>
+                                <p class="text-xs text-slate-100">Match better jobs, save drafts, submit deliverables, and build toward higher paying gigs.</p>
+                            </div>
+                            <div class="home-soft-card rounded-2xl p-3">
+                                <p class="text-[10px] uppercase tracking-[0.18em] text-slate-300 font-bold mb-1">Workspace</p>
+                                <p class="text-xs text-slate-100">Keep the work note, files, guides, and approval trail together so less gets lost.</p>
+                            </div>
+                        </div>
                         <div class="grid grid-cols-3 gap-2 md:gap-3">
-                            <div class="bg-white/10 border border-white/10 rounded-2xl p-3">
-                                <p class="text-[10px] uppercase tracking-widest text-slate-300 font-bold">Open gigs</p>
+                            <div class="home-hero-stat rounded-2xl p-3">
+                                <p class="text-[10px] uppercase tracking-[0.18em] text-slate-300 font-bold">Open gigs</p>
                                 <p id="home-stat-jobs" class="font-display font-black text-2xl mt-1">0</p>
                             </div>
-                            <div class="bg-white/10 border border-white/10 rounded-2xl p-3">
-                                <p class="text-[10px] uppercase tracking-widest text-slate-300 font-bold">Workers</p>
+                            <div class="home-hero-stat rounded-2xl p-3">
+                                <p class="text-[10px] uppercase tracking-[0.18em] text-slate-300 font-bold">Workers</p>
                                 <p id="home-stat-workers" class="font-display font-black text-2xl mt-1">0</p>
                             </div>
-                            <div class="bg-white/10 border border-white/10 rounded-2xl p-3">
-                                <p class="text-[10px] uppercase tracking-widest text-slate-300 font-bold">Employers</p>
+                            <div class="home-hero-stat rounded-2xl p-3">
+                                <p class="text-[10px] uppercase tracking-[0.18em] text-slate-300 font-bold">Employers</p>
                                 <p id="home-stat-employers" class="font-display font-black text-2xl mt-1">0</p>
                             </div>
                         </div>
                     </div>
-                    <div class="grid sm:grid-cols-2 gap-3">
-                        <div class="bg-white text-slate-900 rounded-3xl p-4 shadow-2xl">
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="badge bg-emerald-100 text-emerald-700">For Employers</span>
-                                <i data-lucide="briefcase-business" class="w-5 h-5 text-brand"></i>
+                    <div class="space-y-3">
+                        <div class="bg-white text-slate-900 rounded-3xl p-4 md:p-5 shadow-2xl">
+                            <div class="flex items-center justify-between gap-3 mb-3">
+                                <span class="badge bg-blue-100 text-blue-700">Workspace Focus</span>
+                                <span class="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">Main work area</span>
                             </div>
-                            <h3 class="font-display font-black text-lg mb-1">Post once. Hire with confidence.</h3>
-                            <p class="text-xs text-slate-600 mb-3">Create a gig, review applicants, manage work, track milestones, approve submissions, and rate top performers.</p>
-                            <div class="space-y-2 text-[11px] text-slate-700">
-                                <div class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500"></i> Structured applications</div>
-                                <div class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500"></i> Built-in messaging and workspaces</div>
-                                <div class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500"></i> Ratings, reviews and leaderboards</div>
+                            <h3 class="font-display font-black text-xl leading-tight mb-2">One place to brief, work, submit, review, and approve.</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed mb-4">The workspace stays simple on desktop and mobile, with draft saving, easy deliverable links, guided submission steps, activity history, and quick message access.</p>
+                            <div class="grid sm:grid-cols-3 gap-2.5">
+                                <div class="rounded-2xl bg-slate-50 border border-slate-200 p-3">
+                                    <p class="text-[10px] uppercase tracking-[0.18em] font-bold text-slate-500 mb-1">Overview</p>
+                                    <p class="text-xs text-slate-700">See the task guide, shortcuts, due date, and current work status.</p>
+                                </div>
+                                <div class="rounded-2xl bg-slate-50 border border-slate-200 p-3">
+                                    <p class="text-[10px] uppercase tracking-[0.18em] font-bold text-slate-500 mb-1">Deliverables</p>
+                                    <p class="text-xs text-slate-700">Keep links, uploaded files, drafts, and view-ready work together.</p>
+                                </div>
+                                <div class="rounded-2xl bg-slate-50 border border-slate-200 p-3">
+                                    <p class="text-[10px] uppercase tracking-[0.18em] font-bold text-slate-500 mb-1">Submit & Review</p>
+                                    <p class="text-xs text-slate-700">Preview the work message, send it for review, and download the record.</p>
+                                </div>
+                            </div>
+                            <div class="grid sm:grid-cols-2 gap-2.5 mt-3">
+                                <div class="rounded-2xl bg-slate-900 text-white p-3">
+                                    <p class="text-[10px] uppercase tracking-[0.18em] font-bold text-slate-300 mb-1">For workers</p>
+                                    <p class="text-xs text-slate-100">Save drafts before final submission and return without losing progress.</p>
+                                </div>
+                                <div class="rounded-2xl bg-slate-100 border border-slate-200 p-3">
+                                    <p class="text-[10px] uppercase tracking-[0.18em] font-bold text-slate-500 mb-1">For employers</p>
+                                    <p class="text-xs text-slate-700">Expand the work note, then download either a .txt or PDF copy.</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="bg-slate-900/70 backdrop-blur border border-white/10 text-white rounded-3xl p-4 shadow-2xl">
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="badge bg-blue-100 text-blue-700">For Workers</span>
-                                <i data-lucide="badge-dollar-sign" class="w-5 h-5 text-blue-300"></i>
+                        <div class="grid sm:grid-cols-2 gap-3">
+                            <div class="home-soft-card rounded-3xl p-4 shadow-2xl">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="badge bg-emerald-100 text-emerald-700">For Employers</span>
+                                    <i data-lucide="briefcase-business" class="w-5 h-5 text-emerald-300"></i>
+                                </div>
+                                <h3 class="font-display font-black text-lg mb-1">Post once and keep decisions clean.</h3>
+                                <p class="text-xs text-slate-200 mb-3">Review better worker profiles, compare applications quickly, and move straight into guided delivery.</p>
+                                <div class="space-y-2 text-[11px] text-slate-100">
+                                    <div class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-300"></i> Better applicant visibility</div>
+                                    <div class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-300"></i> Clear messaging and review trail</div>
+                                </div>
                             </div>
-                            <h3 class="font-display font-black text-lg mb-1">Turn your skills into steady income.</h3>
-                            <p class="text-xs text-slate-300 mb-3">Discover gigs, save jobs, submit proposals, work with clients, grow your rating, and withdraw earnings with familiar payment flows.</p>
-                            <div class="space-y-2 text-[11px] text-slate-200">
-                                <div class="flex items-center gap-2"><i data-lucide="star" class="w-4 h-4 text-yellow-300"></i> Verified worker pathways</div>
-                                <div class="flex items-center gap-2"><i data-lucide="star" class="w-4 h-4 text-yellow-300"></i> Referral rewards and visibility boosts</div>
-                                <div class="flex items-center gap-2"><i data-lucide="star" class="w-4 h-4 text-yellow-300"></i> Clear status tracking from application to payout</div>
+                            <div class="home-soft-card rounded-3xl p-4 shadow-2xl">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="badge bg-blue-100 text-blue-700">For Workers</span>
+                                    <i data-lucide="badge-dollar-sign" class="w-5 h-5 text-blue-300"></i>
+                                </div>
+                                <h3 class="font-display font-black text-lg mb-1">Grow from starter jobs to stronger pay.</h3>
+                                <p class="text-xs text-slate-200 mb-3">Profile strength, competency level, and completed work help unlock better visibility and higher job tiers.</p>
+                                <div class="space-y-2 text-[11px] text-slate-100">
+                                    <div class="flex items-center gap-2"><i data-lucide="star" class="w-4 h-4 text-yellow-300"></i> Better-matched job feeds</div>
+                                    <div class="flex items-center gap-2"><i data-lucide="star" class="w-4 h-4 text-yellow-300"></i> Higher pay path with clear milestones</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section class="grid lg:grid-cols-3 gap-3 md:gap-4 mb-4 md:mb-6">
-                <div class="bg-white dark:bg-slate-800 p-4 md:p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
-                    <div class="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-900/20 text-brand flex items-center justify-center mb-3"><i data-lucide="shield-check" class="w-5 h-5"></i></div>
-                    <h3 class="font-display font-black text-lg text-slate-900 dark:text-white mb-1">Professional trust signals</h3>
-                    <p class="text-xs text-slate-600 dark:text-slate-400">Profiles, reviews, competency checks, work histories, and status updates make it easier to hire and deliver professionally.</p>
+            <section class="mb-4 md:mb-6">
+                <div class="flex items-center gap-3 mb-3 md:mb-4">
+                    <span class="home-section-lead">Built for real work</span>
+                    <div class="home-section-rule"></div>
                 </div>
-                <div class="bg-white dark:bg-slate-800 p-4 md:p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
-                    <div class="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 flex items-center justify-center mb-3"><i data-lucide="wallet-cards" class="w-5 h-5"></i></div>
-                    <h3 class="font-display font-black text-lg text-slate-900 dark:text-white mb-1">Kenya-friendly payments</h3>
-                    <p class="text-xs text-slate-600 dark:text-slate-400">Wallet balances, top-ups, payout requests, invoice generation, and familiar payment language fit how local users already transact.</p>
-                </div>
-                <div class="bg-white dark:bg-slate-800 p-4 md:p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
-                    <div class="w-10 h-10 rounded-2xl bg-amber-50 dark:bg-amber-900/20 text-amber-600 flex items-center justify-center mb-3"><i data-lucide="workflow" class="w-5 h-5"></i></div>
-                    <h3 class="font-display font-black text-lg text-slate-900 dark:text-white mb-1">Workflows that actually help</h3>
-                    <p class="text-xs text-slate-600 dark:text-slate-400">From application review to workspace delivery, milestone tracking, time logging, and reviews, the platform stays useful after the hire.</p>
+                <div class="grid lg:grid-cols-3 gap-3 md:gap-4">
+                    <div class="home-panel card-hover p-4 md:p-5 rounded-2xl">
+                        <div class="home-panel-accent mb-3"></div>
+                        <div class="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-900/20 text-brand flex items-center justify-center mb-3"><i data-lucide="shield-check" class="w-5 h-5"></i></div>
+                        <h3 class="font-display font-black text-lg text-slate-900 dark:text-white mb-1">Professional trust signals</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Profiles, reviews, competency checks, work histories, and guided status updates make hiring feel more reliable from the first click.</p>
+                    </div>
+                    <div class="home-panel card-hover p-4 md:p-5 rounded-2xl">
+                        <div class="home-panel-accent mb-3"></div>
+                        <div class="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 flex items-center justify-center mb-3"><i data-lucide="wallet-cards" class="w-5 h-5"></i></div>
+                        <h3 class="font-display font-black text-lg text-slate-900 dark:text-white mb-1">Kenya-friendly payments</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Wallet balances, top-ups, payout requests, invoices, and familiar payment language keep money movement easy to follow.</p>
+                    </div>
+                    <div class="home-panel card-hover p-4 md:p-5 rounded-2xl">
+                        <div class="home-panel-accent mb-3"></div>
+                        <div class="w-10 h-10 rounded-2xl bg-amber-50 dark:bg-amber-900/20 text-amber-600 flex items-center justify-center mb-3"><i data-lucide="workflow" class="w-5 h-5"></i></div>
+                        <h3 class="font-display font-black text-lg text-slate-900 dark:text-white mb-1">Workflows that stay useful</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">From application review to workspace delivery, milestone tracking, activity history, and approvals, the platform helps after the hire too.</p>
+                    </div>
                 </div>
             </section>
 
             <section class="grid lg:grid-cols-2 gap-3 md:gap-4 mb-4 md:mb-6">
-                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
-                    <div class="flex items-center justify-between mb-3">
-                        <h2 class="font-display font-black text-xl text-slate-900 dark:text-white">Why businesses choose Gigs Kenya</h2>
+                <div class="home-panel rounded-2xl p-5">
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="home-section-lead">Why teams choose it</span>
+                        <div class="home-section-rule hidden sm:block"></div>
+                    </div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="font-display font-black text-xl text-slate-900 dark:text-white">A simpler path from posting to payout</h2>
                         <i data-lucide="building" class="w-5 h-5 text-brand"></i>
                     </div>
                     <div class="space-y-3 text-xs text-slate-600 dark:text-slate-300">
-                        <div class="flex gap-3"><div class="timeline-dot"></div><p>Publish opportunities across writing, design, tech, telecom, finance, admin support, marketing and more.</p></div>
-                        <div class="flex gap-3"><div class="timeline-dot"></div><p>Compare applicants in one place and move qualified workers into active workspaces with fewer back-and-forth steps.</p></div>
-                        <div class="flex gap-3"><div class="timeline-dot"></div><p>Keep records of submissions, deadlines, reviews, payout activity and communication for a cleaner hiring process.</p></div>
+                        <div class="home-list-row flex gap-3"><div class="timeline-dot"></div><p>Publish opportunities across writing, cyber cafe services, design, tech, telecom, finance, admin support, and more.</p></div>
+                        <div class="home-list-row flex gap-3"><div class="timeline-dot"></div><p>Compare applicants in one place, see more worker details before accepting, and move qualified workers into the workspace faster.</p></div>
+                        <div class="home-list-row flex gap-3"><div class="timeline-dot"></div><p>Keep the brief, messages, drafts, submissions, downloads, activity, reviews, and payout records in one clean timeline.</p></div>
                     </div>
-                    <div class="mt-4 flex gap-2">
+                    <div class="mt-4 flex flex-wrap gap-2">
                         <button onclick="navigate('post')" class="btn btn-primary text-xs"><i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Post a Gig</button>
-                        <button onclick="navigate('howitworks')" class="btn btn-secondary text-xs"><i data-lucide="arrow-right" class="w-3.5 h-3.5"></i> See workflow</button>
+                        <button onclick="navigate('howitworks')" class="btn btn-secondary text-xs"><i data-lucide="arrow-right" class="w-3.5 h-3.5"></i> See Workflow</button>
                     </div>
                 </div>
-                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                <div class="home-panel rounded-2xl p-5">
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="home-section-lead">Start quickly</span>
+                        <div class="home-section-rule hidden sm:block"></div>
+                    </div>
                     <div class="flex items-center justify-between mb-3">
-                        <h2 class="font-display font-black text-xl text-slate-900 dark:text-white">Popular categories</h2>
+                        <h2 class="font-display font-black text-xl text-slate-900 dark:text-white">Popular lanes and fast actions</h2>
                         <i data-lucide="layout-grid" class="w-5 h-5 text-brand"></i>
                     </div>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-4">Jump straight to the part of the platform people need most, whether that is finding a job, posting a task, or opening the cyber cafe lane.</p>
                     <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="badge bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1">Writing</span>
-                        <span class="badge bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1">Web Development</span>
-                        <span class="badge bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1">Graphic Design</span>
-                        <span class="badge bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1">Telecom</span>
-                        <span class="badge bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1">Virtual Assistant</span>
-                        <span class="badge bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1">Finance</span>
-                        <span class="badge bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1">Social Media</span>
-                        <span class="badge bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1">Research</span>
+                        <span class="home-quick-chip">Writing</span>
+                        <span class="home-quick-chip">Cyber Cafe Services</span>
+                        <span class="home-quick-chip">Web Development</span>
+                        <span class="home-quick-chip">Graphic Design</span>
+                        <span class="home-quick-chip">Virtual Assistant</span>
+                        <span class="home-quick-chip">Finance</span>
+                        <span class="home-quick-chip">Social Media</span>
+                        <span class="home-quick-chip">Research</span>
                     </div>
-                    <div class="rounded-2xl bg-slate-50 dark:bg-slate-900 p-4 border border-slate-200 dark:border-slate-700">
-                        <p class="text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-2">Need a fast start?</p>
-                        <p class="text-xs text-slate-600 dark:text-slate-300 mb-3">Go straight to the jobs board, sign in to save jobs, or create an account to post, apply, and track work from one dashboard.</p>
-                        <div class="flex flex-wrap gap-2">
-                            <button onclick="navigate('jobs')" class="btn btn-secondary text-xs">Browse Jobs</button>
-                            <button onclick="navigate('auth')" class="btn btn-primary text-xs">Create Account</button>
+                    <div class="grid sm:grid-cols-2 gap-2">
+                        <button onclick="navigate('jobs')" class="btn btn-secondary text-xs justify-center"><i data-lucide="search" class="w-3.5 h-3.5"></i> Browse Jobs</button>
+                        <button onclick="navigate('auth')" class="btn btn-primary text-xs justify-center"><i data-lucide="user-plus" class="w-3.5 h-3.5"></i> Create Account</button>
+                        <button onclick="openCyberCafeJobs()" class="btn btn-secondary text-xs justify-center"><i data-lucide="monitor-smartphone" class="w-3.5 h-3.5"></i> Cyber Cafe Jobs</button>
+                        <button onclick="downloadAndroidApp('home-quick-actions')" class="btn btn-secondary text-xs justify-center"><i data-lucide="smartphone" class="w-3.5 h-3.5"></i> Get Android App</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="home-panel rounded-3xl p-5 md:p-6 mb-4 md:mb-6">
+                <div class="flex items-center gap-3 mb-3">
+                    <span class="home-section-lead">Cyber cafe lane</span>
+                    <div class="home-section-rule"></div>
+                </div>
+                <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
+                    <div class="max-w-2xl">
+                        <span class="badge bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1 mb-3">Cyber Cafe Services</span>
+                        <h2 class="font-display font-black text-2xl md:text-3xl text-slate-900 dark:text-white mb-2">Post and find digital service jobs people usually handle in a cyber.</h2>
+                        <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-3">Use one lane for KRA, eCitizen, SHA, NSSF, NTSA, HELB, KUCCPS, TSC and similar service requests. Employers can post clearly, and workers can jump straight to these jobs from one section.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="home-quick-chip">KRA</span>
+                            <span class="home-quick-chip">eCitizen</span>
+                            <span class="home-quick-chip">SHA</span>
+                            <span class="home-quick-chip">NSSF</span>
+                            <span class="home-quick-chip">NTSA</span>
+                            <span class="home-quick-chip">HELB</span>
+                            <span class="home-quick-chip">KUCCPS</span>
+                            <span class="home-quick-chip">TSC</span>
                         </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 min-w-[240px]">
+                        <button onclick="openCyberCafeJobs()" class="btn btn-primary text-xs py-2"><i data-lucide="search" class="w-3.5 h-3.5"></i> Browse Jobs</button>
+                        <button onclick="openCyberCafePost()" class="btn btn-secondary text-xs py-2"><i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Post Cyber Job</button>
+                        <button onclick="openCyberCafeJobs('KRA')" class="btn btn-secondary text-xs py-2">KRA</button>
+                        <button onclick="openCyberCafeJobs('eCitizen')" class="btn btn-secondary text-xs py-2">eCitizen</button>
+                        <button onclick="openCyberCafeJobs('NTSA')" class="btn btn-secondary text-xs py-2">NTSA</button>
+                        <button onclick="openCyberCafeJobs('HELB')" class="btn btn-secondary text-xs py-2">HELB</button>
                     </div>
                 </div>
             </section>
@@ -3257,6 +3497,28 @@
             </div>
             <!-- Category filters -->
             <div id="category-filters" class="flex flex-wrap gap-1.5 md:gap-2 mb-2"></div>
+            <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-3 md:p-4 mb-3">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+                    <div>
+                        <p class="text-xs font-black text-slate-800 dark:text-white flex items-center gap-1.5"><i data-lucide="building-2" class="w-4 h-4 text-brand"></i> Cyber Cafe Services</p>
+                        <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-1">Fast lane for KRA, eCitizen, SHA, NSSF, NTSA, HELB, KUCCPS, TSC and similar service jobs.</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="openCyberCafeJobs()" class="btn btn-secondary text-[10px] py-1.5 px-2">Browse Cyber Jobs</button>
+                        <button onclick="openCyberCafePost()" class="btn btn-primary text-[10px] py-1.5 px-2">Post Cyber Job</button>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-1.5 mt-3">
+                    <button onclick="openCyberCafeJobs('KRA')" class="badge bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 px-2.5 py-1 hover:text-brand">KRA</button>
+                    <button onclick="openCyberCafeJobs('eCitizen')" class="badge bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 px-2.5 py-1 hover:text-brand">eCitizen</button>
+                    <button onclick="openCyberCafeJobs('SHA')" class="badge bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 px-2.5 py-1 hover:text-brand">SHA</button>
+                    <button onclick="openCyberCafeJobs('NSSF')" class="badge bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 px-2.5 py-1 hover:text-brand">NSSF</button>
+                    <button onclick="openCyberCafeJobs('NTSA')" class="badge bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 px-2.5 py-1 hover:text-brand">NTSA</button>
+                    <button onclick="openCyberCafeJobs('HELB')" class="badge bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 px-2.5 py-1 hover:text-brand">HELB</button>
+                    <button onclick="openCyberCafeJobs('KUCCPS')" class="badge bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 px-2.5 py-1 hover:text-brand">KUCCPS</button>
+                    <button onclick="openCyberCafeJobs('TSC')" class="badge bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 px-2.5 py-1 hover:text-brand">TSC</button>
+                </div>
+            </div>
             <div id="job-match-profile-message" class="qualification-callout rounded-xl p-3 mb-3 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
                 <div class="flex items-start gap-2">
                     <i data-lucide="badge-check" class="w-4 h-4 text-brand mt-0.5 shrink-0"></i>
@@ -3296,8 +3558,8 @@
                     <div class="grid grid-cols-2 gap-3 md:gap-4">
                         <div>
                             <label class="block text-[10px] md:text-xs font-bold mb-1 text-slate-700 dark:text-slate-300">Category *</label>
-                            <select id="post-category" required class="gk-input">
-                                <option value="Writing">Writing</option><option value="Tech">Tech</option><option value="Design">Design</option><option value="Data Entry">Data Entry</option><option value="Marketing">Marketing</option><option value="Finance">Finance</option><option value="Virtual Assistant">Virtual Assistant</option><option value="Customer Support">Customer Support</option><option value="Web Development">Web Development</option><option value="Mobile Apps">Mobile Apps</option><option value="UI/UX">UI/UX</option><option value="Telecom">Telecom</option><option value="Accounting">Accounting</option><option value="Legal">Legal</option><option value="Agriculture">Agriculture</option><option value="Sales">Sales</option><option value="Admin Support">Admin Support</option><option value="Translation">Translation</option><option value="Video Editing">Video Editing</option><option value="Social Media">Social Media</option><option value="Graphic Design">Graphic Design</option><option value="SEO">SEO</option><option value="Project Management">Project Management</option><option value="Business">Business</option><option value="Tutoring">Tutoring</option><option value="Engineering">Engineering</option><option value="Research">Research</option><option value="Photography">Photography</option><option value="Other">Other</option>
+                            <select id="post-category" required class="gk-input" onchange="handlePostCategoryChange()">
+                                <option value="Writing">Writing</option><option value="Cyber Cafe Services">Cyber Cafe Services</option><option value="Tech">Tech</option><option value="Design">Design</option><option value="Data Entry">Data Entry</option><option value="Marketing">Marketing</option><option value="Finance">Finance</option><option value="Virtual Assistant">Virtual Assistant</option><option value="Customer Support">Customer Support</option><option value="Web Development">Web Development</option><option value="Mobile Apps">Mobile Apps</option><option value="UI/UX">UI/UX</option><option value="Telecom">Telecom</option><option value="Accounting">Accounting</option><option value="Legal">Legal</option><option value="Agriculture">Agriculture</option><option value="Sales">Sales</option><option value="Admin Support">Admin Support</option><option value="Translation">Translation</option><option value="Video Editing">Video Editing</option><option value="Social Media">Social Media</option><option value="Graphic Design">Graphic Design</option><option value="SEO">SEO</option><option value="Project Management">Project Management</option><option value="Business">Business</option><option value="Tutoring">Tutoring</option><option value="Engineering">Engineering</option><option value="Research">Research</option><option value="Photography">Photography</option><option value="Other">Other</option>
                             </select>
                         </div>
                         <div>
@@ -3336,6 +3598,21 @@
                         <div class="col-span-2 md:col-span-1">
                             <label class="block text-[10px] md:text-xs font-bold mb-1 text-slate-700 dark:text-slate-300">Attachments</label>
                             <input type="file" id="post-file" class="gk-input text-[10px] py-1" accept=".pdf,.doc,.docx,.jpg,.png">
+                        </div>
+                    </div>
+                    <div id="post-cyber-guide" class="gk-hidden rounded-2xl border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/20 p-3">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                            <div>
+                                <p class="text-xs font-black text-slate-800 dark:text-white">Cyber Cafe Job Guide</p>
+                                <p class="text-[10px] text-slate-600 dark:text-slate-300 mt-1">Best for KRA, eCitizen, SHA, NSSF, NTSA, HELB, KUCCPS, TSC and similar online service requests. State the exact service, documents needed, urgency, and whether the worker should guide the client remotely or handle a physical cyber-cafe style workflow.</p>
+                            </div>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="badge bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-1">KRA</span>
+                                <span class="badge bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-1">eCitizen</span>
+                                <span class="badge bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-1">SHA</span>
+                                <span class="badge bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-1">NTSA</span>
+                                <span class="badge bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-1">HELB</span>
+                            </div>
                         </div>
                     </div>
                     <div>
@@ -3599,7 +3876,7 @@ let allJobs = [], allApps = [], allReviews = [], allMessages = [], allTopups = [
 let platformSettings = { activationFee: 100, escrowFee: 5, tillNumber: '542542', paybillBusinessNo: '542542', paybillAccountNo: '01708965396150', paymentMethodLabel: 'Paybill', minTopup: 50, minPayout: 1000 };
 let authMode = 'login';
 const categories = [
-    "All", "Writing", "Tech", "Design", "Data Entry", 
+    "All", "Cyber Cafe Services", "Writing", "Tech", "Design", "Data Entry", 
     "Marketing", "Finance", "Virtual Assistant", "Customer Support", 
     "Web Development", "Mobile Apps", "UI/UX", "Telecom", 
     "Accounting", "Legal", "Agriculture", "Sales", 
@@ -3607,6 +3884,7 @@ const categories = [
     "Graphic Design", "SEO", "Project Management", "Business", 
     "Tutoring", "Engineering", "Research", "Photography", "Other"
 ];
+const CYBER_CAFE_SERVICES = ['KRA','eCitizen','SHA','NSSF','NTSA','HELB','KUCCPS','TSC','CRB','KNEC'];
 let activeCategory = "All";
 let isDarkMode = localStorage.theme === 'dark';
 let unsubJobs = null, unsubApps = null, unsubMsgs = null, unsubNotifs = null, unsubTopups = null, unsubPayouts = null, unsubUser = null, unsubUsers = null, unsubSettings = null;
@@ -4524,6 +4802,13 @@ window.toggleDarkMode = () => {
 };
 
 // ===================== EXPAND/DOWNLOAD WORK =====================
+function buildExpandedWorkText(text = '', link = '') {
+    const parts = [];
+    if(String(text || '').trim()) parts.push(String(text).trim());
+    if(String(link || '').trim()) parts.push(`Primary Deliverable Link:\n${String(link).trim()}`);
+    return parts.join('\n\n');
+}
+
 window.openExpandWork = (encodedText) => {
     const decoded = decodeURIComponent(encodedText);
     document.getElementById('expand-work-text').value = decoded;
@@ -4573,6 +4858,14 @@ window.downloadExpandedWorkPDF = () => {
     w.document.close();
 };
 
+window.previewWorkspaceDraft = () => {
+    const text = document.getElementById('ws-submit-text')?.value || '';
+    const link = document.getElementById('ws-submit-link')?.value || '';
+    const composed = buildExpandedWorkText(text, link);
+    if(!composed.trim()) return showToast('Nothing to preview yet', 'warning');
+    openExpandWork(encodeURIComponent(composed));
+};
+
 
 function renderPublicPageStats() {
     const jobCount = (allJobs || []).filter(j => (j.status || 'open') === 'open').length;
@@ -4619,6 +4912,7 @@ window.navigate = (view) => {
         const postWallet = document.getElementById('post-wallet-display');
         if(postWallet) postWallet.innerText = fmtMoney(userData?.walletBalance || 0);
         calculateJobCost();
+        handlePostCategoryChange();
     }
 };
 
@@ -4990,6 +5284,45 @@ window.setCategory = (c) => {
     renderJobs(); 
 };
 
+window.openCyberCafeJobs = (service = '') => {
+    activeCategory = 'Cyber Cafe Services';
+    navigate('jobs');
+    setTimeout(() => {
+        renderCategoryFilters();
+        const searchInput = document.getElementById('search-input');
+        if(searchInput) searchInput.value = service || '';
+        renderJobs();
+    }, 30);
+};
+
+window.openCyberCafePost = () => {
+    navigate('post');
+    setTimeout(() => {
+        const categorySelect = document.getElementById('post-category');
+        if(categorySelect) categorySelect.value = 'Cyber Cafe Services';
+        handlePostCategoryChange();
+    }, 30);
+};
+
+window.handlePostCategoryChange = () => {
+    const category = document.getElementById('post-category')?.value || '';
+    const guide = document.getElementById('post-cyber-guide');
+    const title = document.getElementById('post-title');
+    const skills = document.getElementById('post-skills');
+    const desc = document.getElementById('post-desc');
+    if(category === 'Cyber Cafe Services') {
+        guide?.classList.remove('gk-hidden');
+        if(title) title.placeholder = 'e.g. NTSA TIMS Transfer / KRA PIN Registration Assistance';
+        if(skills && !String(skills.value || '').trim()) skills.placeholder = 'e.g. KRA, eCitizen, SHA, NSSF, NTSA';
+        if(desc && !String(desc.value || '').trim()) desc.placeholder = 'Describe the exact service, required documents, turnaround time, and whether the worker will guide the client remotely or complete the online process.';
+    } else {
+        guide?.classList.add('gk-hidden');
+        if(title) title.placeholder = 'e.g. Senior React Developer';
+        if(skills && !String(skills.value || '').trim()) skills.placeholder = 'e.g. React, Node.js';
+        if(desc && !String(desc.value || '').trim()) desc.placeholder = 'Describe the work in detail...';
+    }
+};
+
 function toProfileList(value) {
     if(Array.isArray(value)) return value.map(v => String(v || '').trim()).filter(Boolean);
     return String(value || '').split(/[,|;/\n]+/).map(v => v.trim()).filter(Boolean);
@@ -5156,8 +5489,9 @@ function renderJobQualificationMessage() {
 function renderCategoryFilters() {
     const c = document.getElementById('category-filters');
     if(c) {
-        const primaryCategories = categories.slice(0, 8);
-        const moreCategories = categories.slice(8);
+        const primarySeed = ['All', 'Cyber Cafe Services', 'Writing', 'Tech', 'Design', 'Data Entry', 'Marketing', 'Finance'];
+        const primaryCategories = primarySeed.filter(cat => categories.includes(cat));
+        const moreCategories = categories.filter(cat => !primaryCategories.includes(cat));
         c.innerHTML = `
             <div class="w-full flex flex-wrap items-center gap-1.5 md:gap-2">
                 ${primaryCategories.map(cat => `
@@ -5257,6 +5591,7 @@ window.renderJobs = () => {
                 </div>
                 <h3 class="font-display font-bold text-sm mb-1 text-slate-800 dark:text-white leading-snug">${safeText(job.title||'Untitled')}</h3>
                 <div class="flex flex-wrap gap-1 mb-2">
+                    ${String(job.category||'').toLowerCase() === 'cyber cafe services' ? '<span class="badge bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-[8px]">Cyber Cafe</span>' : ''}
                     ${job.urgent?'<span class="badge bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-[8px]">🔥 Urgent</span>':''}
                     ${job.featured?'<span class="badge bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 text-[8px]">⭐ Featured</span>':''}
                     ${daysLeft&&daysLeft<=3?`<span class="badge bg-orange-100 dark:bg-orange-900/30 text-orange-600 text-[8px]">⏳ ${daysLeft}d left</span>`:''}
@@ -5364,6 +5699,7 @@ document.getElementById('post-form')?.addEventListener('submit', async (e) => {
         
         document.getElementById('post-form').reset();
         calculateJobCost();
+        handlePostCategoryChange();
         
         document.getElementById('success-job-id').innerText = docRef.id;
         document.getElementById('post-success-modal').classList.remove('gk-hidden');
@@ -6165,6 +6501,70 @@ function renderWorkspaceCommandStrip(job) {
     if(deadlineEl) deadlineEl.textContent = `${deadline} - ${fmtMoney(job.budget)}`;
 }
 
+function renderWorkspaceGuidePanels(job) {
+    const guideCard = document.getElementById('ws-guide-card');
+    const deliveryCard = document.getElementById('ws-delivery-card');
+    if(!guideCard || !deliveryCard || !job) return;
+    const draft = job.drafts && currentUser?.uid ? job.drafts[currentUser.uid] : null;
+    const draftText = String(draft?.text || '').trim();
+    const draftLink = String(draft?.link || '').trim();
+    const submissionText = String(job.submission?.text || '').trim();
+    const submissionLink = String(job.submission?.link || '').trim();
+    const vaultCount = Array.isArray(job.vault) ? job.vault.length : 0;
+    const isWorker = userData?.role === 'worker';
+    const readyToSubmit = !!(draftText || draftLink);
+    const guideSteps = [
+        { title: '1. Read the job', detail: 'Check the brief, deadline and next step before editing anything.' },
+        { title: '2. Add deliverables', detail: 'Use Deliverables to save Google Docs, Word, Drive or other final links.' },
+        { title: '3. Write the work message', detail: 'Use Submit & Review to save a draft, edit it, and preview it before sending.' },
+        { title: '4. Submit or review', detail: isWorker ? 'Submit once the links and handover note are ready.' : 'Open the worker message, inspect the links, then approve or request revision.' }
+    ];
+
+    guideCard.innerHTML = `
+        <div class="flex items-center justify-between gap-3 mb-3">
+            <div>
+                <h4 class="font-bold text-xs text-slate-800 dark:text-white flex items-center gap-1.5"><i data-lucide="map" class="w-4 h-4 text-brand"></i> Simple Workspace Guide</h4>
+                <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-1">Move in one order: guide, deliverables, work message, then final review.</p>
+            </div>
+            <button onclick="openTaskInstructions()" class="btn btn-secondary text-[10px] py-1.5 px-2"><i data-lucide="play-circle" class="w-3.5 h-3.5"></i> Tutorial</button>
+        </div>
+        <div class="grid md:grid-cols-2 gap-2">
+            ${guideSteps.map(step => `
+                <div class="rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/40 p-3">
+                    <p class="font-black text-[10px] text-slate-800 dark:text-white">${safeText(step.title)}</p>
+                    <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">${safeText(step.detail)}</p>
+                </div>
+            `).join('')}
+        </div>
+        <div class="flex flex-wrap gap-2 mt-3">
+            <button onclick="switchWorkspaceTab('vault')" class="btn btn-secondary text-[10px] py-1.5 px-2"><i data-lucide="folder-archive" class="w-3.5 h-3.5"></i> Open Deliverables</button>
+            <button onclick="switchWorkspaceTab('action')" class="btn btn-primary text-[10px] py-1.5 px-2"><i data-lucide="send" class="w-3.5 h-3.5"></i> Open Submit & Review</button>
+            <button onclick="switchWorkspaceTab('activity')" class="btn btn-secondary text-[10px] py-1.5 px-2"><i data-lucide="activity" class="w-3.5 h-3.5"></i> Open Activity</button>
+        </div>
+    `;
+
+    deliveryCard.innerHTML = `
+        <h4 class="font-bold text-xs text-slate-800 dark:text-white flex items-center gap-1.5 mb-3"><i data-lucide="send-to-back" class="w-4 h-4 text-indigo-500"></i> Delivery Desk</h4>
+        <div class="space-y-2 text-[10px]">
+            <div class="rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/40 p-3">
+                <p class="text-slate-400 uppercase font-black mb-1">Deliverable Links</p>
+                <p class="font-bold text-slate-800 dark:text-white">${vaultCount} saved in Deliverables</p>
+                <p class="text-slate-500 dark:text-slate-400 mt-1">${draftLink || submissionLink || 'No primary link saved yet.'}</p>
+            </div>
+            <div class="rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/40 p-3">
+                <p class="text-slate-400 uppercase font-black mb-1">${submissionText || submissionLink ? 'Submitted Message' : 'Draft Message'}</p>
+                <p class="text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-4">${safeText(submissionText || draftText || 'No work message written yet.')}</p>
+            </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2 mt-3">
+            <button onclick="switchWorkspaceTab('vault')" class="btn btn-secondary text-[10px] py-1.5">View Deliverables</button>
+            <button onclick="switchWorkspaceTab('action')" class="btn btn-secondary text-[10px] py-1.5">${isWorker ? 'Edit Draft' : 'Review Work'}</button>
+            <button onclick="${submissionText || submissionLink ? `openExpandWork('${encodeURIComponent(buildExpandedWorkText(submissionText, submissionLink))}')` : `previewWorkspaceDraft()`}" class="btn btn-primary text-[10px] py-1.5 ${(!submissionText && !submissionLink && !readyToSubmit && isWorker) ? 'opacity-60' : ''}">View Message</button>
+            <button onclick="startWorkspaceChat()" class="btn btn-secondary text-[10px] py-1.5">Message</button>
+        </div>
+    `;
+}
+
 window.openWorkspace = async (jobId) => {
     const job = allJobs.find(j => j.id === jobId);
     if(!job) return;
@@ -6215,20 +6615,43 @@ window.openWorkspace = async (jobId) => {
             const draft = job.drafts && job.drafts[currentUser.uid] ? job.drafts[currentUser.uid] : null;
             const draftText = draft ? safeText(draft.text) : '';
             const draftLink = draft ? safeText(draft.link) : '';
+            const vaultCount = Array.isArray(job.vault) ? job.vault.length : 0;
 
             actionArea.innerHTML = `
-                <h4 class="font-bold text-sm mb-2 dark:text-white">Submit Final Work</h4>
-                <p class="text-[9px] text-amber-600 mb-2 font-bold bg-amber-50 dark:bg-amber-900/20 p-1.5 rounded border border-amber-200 dark:border-amber-800">
-                   <i data-lucide="alert-triangle" class="w-3 h-3 inline mr-1"></i> Ensure all files are uploaded to the Vault before submitting.
-                </p>
-                <button onclick="openTaskInstructions()" class="btn btn-secondary text-[10px] py-1.5 mb-2 self-start"><i data-lucide="file-question" class="w-3.5 h-3.5"></i> Instructions for Docs / Word links</button>
-                <div class="flex-1 flex flex-col gap-2">
-                    <input type="url" id="ws-submit-link" class="gk-input text-xs py-1.5" placeholder="Primary Deliverable Link (Optional)" value="${draftLink}">
-                    <textarea id="ws-submit-text" class="gk-input flex-1 resize-none text-xs p-2" placeholder="Message for employer explaining the submission..." rows="4">${draftText}</textarea>
-                </div>
-                <div class="flex gap-2 mt-3">
-                    <button onclick="saveWorkspaceDraft()" class="btn btn-secondary flex-1 py-2 text-xs"><i data-lucide="save" class="w-3.5 h-3.5"></i> Save Draft</button>
-                    <button onclick="submitWorkspaceWork()" class="btn btn-primary flex-1 py-2 text-xs"><i data-lucide="send" class="w-3.5 h-3.5"></i> Submit For Review</button>
+                <div class="flex flex-col gap-3 h-full">
+                    <div class="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/40 p-3">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+                            <div>
+                                <h4 class="font-bold text-sm dark:text-white flex items-center gap-1.5"><i data-lucide="send" class="w-4 h-4 text-brand"></i> Submit Final Work</h4>
+                                <p class="text-[10px] text-slate-500 mt-1">Simple flow: save deliverable links, write the work message, preview it, then submit.</p>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="openTaskInstructions()" class="btn btn-secondary text-[10px] py-1.5"><i data-lucide="file-question" class="w-3.5 h-3.5"></i> Guide</button>
+                                <button onclick="switchWorkspaceTab('vault')" class="btn btn-secondary text-[10px] py-1.5"><i data-lucide="folder-archive" class="w-3.5 h-3.5"></i> Deliverables (${vaultCount})</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-3">
+                        <div class="rounded-xl border border-slate-200 dark:border-slate-700 p-3 bg-white dark:bg-slate-800">
+                            <p class="text-[10px] font-black uppercase text-slate-400 mb-2">Step 1: Primary Link</p>
+                            <input type="url" id="ws-submit-link" class="gk-input text-xs py-1.5" placeholder="Primary Deliverable Link (Optional)" value="${draftLink}">
+                            <p class="text-[10px] text-slate-500 mt-2">Use Deliverables for Google Docs, Word, Drive, Dropbox or supporting links.</p>
+                        </div>
+                        <div class="rounded-xl border border-slate-200 dark:border-slate-700 p-3 bg-white dark:bg-slate-800">
+                            <p class="text-[10px] font-black uppercase text-slate-400 mb-2">Step 2: Work Message</p>
+                            <textarea id="ws-submit-text" class="gk-input resize-none text-xs p-2 min-h-[138px]" placeholder="Message for employer explaining the submission...">${draftText}</textarea>
+                            <p class="text-[10px] text-slate-500 mt-2">This message can act as the handover note or work summary.</p>
+                        </div>
+                    </div>
+                    <div class="rounded-xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 p-3 text-[10px] text-amber-700 dark:text-amber-300 font-bold">
+                        <i data-lucide="alert-triangle" class="w-3 h-3 inline mr-1"></i> Add your final files to Deliverables before submitting so the employer can open them easily.
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mt-auto">
+                        <button onclick="switchWorkspaceTab('vault')" class="btn btn-secondary py-2 text-xs"><i data-lucide="folder-open" class="w-3.5 h-3.5"></i> View Deliverables</button>
+                        <button onclick="previewWorkspaceDraft()" class="btn btn-secondary py-2 text-xs"><i data-lucide="maximize-2" class="w-3.5 h-3.5"></i> Preview Message</button>
+                        <button onclick="saveWorkspaceDraft()" class="btn btn-secondary py-2 text-xs"><i data-lucide="save" class="w-3.5 h-3.5"></i> Save Draft</button>
+                        <button onclick="submitWorkspaceWork()" class="btn btn-primary py-2 text-xs"><i data-lucide="send" class="w-3.5 h-3.5"></i> Submit For Review</button>
+                    </div>
                 </div>
             `;
         } else if (job.status === 'in_review') {
@@ -6273,12 +6696,12 @@ window.openWorkspace = async (jobId) => {
                 <h4 class="font-bold text-sm mb-2 dark:text-white flex items-center gap-2"><i data-lucide="eye" class="w-4 h-4 text-brand"></i> Review Submission</h4>
                 <div class="flex-1 flex flex-col gap-2 pb-2 border-b dark:border-slate-700 mb-3 h-full overflow-y-auto">
                     <div class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-lg border border-slate-200 dark:border-slate-700 relative">
-                        <p class="text-[10px] font-bold text-slate-500 mb-1">Worker's Note:</p>
+                        <p class="text-[10px] font-bold text-slate-500 mb-1">Worker's Message / Work Note:</p>
                         <p class="text-xs text-slate-700 dark:text-slate-300 line-clamp-3 mb-2">${submissionText}</p>
                         ${submissionLink ? `<a href="${submissionLink}" target="_blank" class="text-[10px] text-brand hover:underline font-bold flex items-center gap-1 mb-2"><i data-lucide="external-link" class="w-3 h-3"></i> View Primary Deliverable</a>` : ''}
                         
                         <!-- NEW EXPAND WORK FEATURE -->
-                        <button onclick="openExpandWork('${encodeURIComponent(job.submission?.text || '')}')" class="btn btn-secondary w-full py-1.5 text-[10px] mt-1"><i data-lucide="maximize-2" class="w-3 h-3"></i> Expand / Download Work</button>
+                        <button onclick="openExpandWork('${encodeURIComponent(buildExpandedWorkText(job.submission?.text || '', job.submission?.link || ''))}')" class="btn btn-secondary w-full py-1.5 text-[10px] mt-1"><i data-lucide="maximize-2" class="w-3 h-3"></i> Expand Message / Download</button>
                         <button onclick="exportDoneWorkPDF()" class="btn btn-secondary w-full py-1.5 text-[10px] mt-1"><i data-lucide="file-down" class="w-3 h-3"></i> Export Done Work PDF</button>
                     </div>
                     
@@ -6320,6 +6743,7 @@ window.openWorkspace = async (jobId) => {
     renderWorkspaceLogs(job);
     renderWorkspaceToolkit(job);
     renderWorkspaceCommandStrip(job);
+    renderWorkspaceGuidePanels(job);
     const wsHistoryBtn = document.getElementById('ws-history-btn');
     if(wsHistoryBtn) {
         if(userData.role === 'employer') wsHistoryBtn.classList.remove('hidden');
@@ -6517,6 +6941,7 @@ window.addWorkspaceFile = async () => {
         if(!job.vault) job.vault = [];
         job.vault.push(fileObj);
         renderWorkspaceVault(job);
+        renderWorkspaceGuidePanels(job);
         showToast('File added to vault', 'success');
     } catch(e) { showToast('Error adding file', 'error'); }
 };
@@ -6694,6 +7119,8 @@ window.saveWorkspaceDraft = async () => {
         drafts[currentUser.uid] = { text, link };
         
         await pubCol('jobs').doc(job.id).update({ drafts });
+        job.drafts = drafts;
+        renderWorkspaceGuidePanels(job);
         
         showToast('Draft saved securely', 'success');
     } catch(e) { 
