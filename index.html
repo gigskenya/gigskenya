@@ -3755,7 +3755,7 @@ What tools will you use?"></textarea>
 
         <!-- ===== MESSAGES VIEW ===== -->
         <div id="view-messages" class="view-section fade-in" style="display:none">
-            <div class="flex md:grid md:grid-cols-3 gap-0 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden relative" style="height:calc(100dvh - 120px); min-height:400px; max-height:600px;">
+            <div class="flex md:grid md:grid-cols-3 gap-0 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden relative" style="height: calc(100dvh - 200px);">
                 <!-- Thread list -->
                 <div id="msg-sidebar" class="w-full md:w-full border-r dark:border-slate-700 flex flex-col h-full shrink-0">
                     <div class="p-3 border-b dark:border-slate-700">
@@ -3768,12 +3768,12 @@ What tools will you use?"></textarea>
                     <div id="thread-list" class="overflow-y-auto flex-1"></div>
                 </div>
                 <!-- Chat window -->
-                <div id="msg-main" class="hidden md:flex flex-col h-full w-full md:w-full md:col-span-2 shrink-0 bg-white dark:bg-slate-800 z-10 absolute md:relative inset-0">
+                <div id="msg-main" class="hidden md:flex flex-col h-full w-full md:w-full md:col-span-2 shrink-0 bg-white dark:bg-slate-800 z-10 absolute md:relative inset-0 overflow-hidden">
                     <div id="chat-header" class="p-3 border-b dark:border-slate-700 flex items-center gap-2 bg-white dark:bg-slate-800">
                         <button onclick="closeMobileChat()" class="md:hidden p-1.5 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-full shrink-0"><i data-lucide="arrow-left" class="w-4 h-4"></i></button>
                         <div id="chat-header-content" class="text-slate-500 dark:text-slate-400 text-xs truncate flex-1">Select a conversation</div>
                     </div>
-                    <div id="chat-messages" class="flex-1 p-3 overflow-y-auto space-y-2"></div>
+                    <div id="chat-messages" class="flex-1 min-h-0 p-3 overflow-y-auto space-y-2"></div>
                     <div id="chat-input-area" class="p-3 border-t dark:border-slate-700 gk-hidden bg-white dark:bg-slate-800 shrink-0">
                         <!-- Content filled dynamically based on job status restriction -->
                     </div>
@@ -4444,6 +4444,11 @@ window.openAndroidAppPrompt = (force = false) => {
     if(!modal) return;
     modal.classList.remove('gk-hidden');
     lucide.createIcons();
+
+    // Auto-open first thread on desktop if none selected
+    if (!activeThread && threadArr.length > 0 && window.innerWidth >= 768) {
+        setTimeout(() => openThread(threadArr[0].otherId, threadArr[0].otherName), 50);
+    }
 };
 
 function scheduleAndroidAppPrompt() {
